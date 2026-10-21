@@ -91,7 +91,7 @@ public class FoodListingService : IFoodListingService
             Description = dto.Description,
             FoodCategory = dto.FoodCategory,
             Quantity = dto.Quantity,
-            UnitOfMeasurement = dto.UnitOfMeasurement,
+            UnitOfMeasurement = dto.UnitOfMeasurement ?? "kg",
             PreparationDate = dto.PreparationDate,
             PickupDeadline = dto.PickupDeadline,
             PickupAddress = dto.PickupAddress,
@@ -174,7 +174,10 @@ public class FoodListingService : IFoodListingService
         listing.Description = dto.Description;
         listing.FoodCategory = dto.FoodCategory;
         listing.Quantity = dto.Quantity;
-        listing.UnitOfMeasurement = dto.UnitOfMeasurement;
+        if (!string.IsNullOrWhiteSpace(dto.UnitOfMeasurement))
+        {
+            listing.UnitOfMeasurement = dto.UnitOfMeasurement;
+        }
         listing.PreparationDate = dto.PreparationDate;
         listing.PickupDeadline = dto.PickupDeadline;
         listing.PickupAddress = dto.PickupAddress;
