@@ -969,13 +969,73 @@ function updateAuthUI() {
             </div>
         `;
     }
+    updateNavLinks();
+}
+
+function updateNavLinks() {
+    const navProvider = document.getElementById('nav-provider');
+    const navCharity = document.getElementById('nav-charity');
+    const navAdmin = document.getElementById('nav-admin');
+
+    if (!currentUser) {
+        if (navAdmin) navAdmin.classList.add('hidden');
+        if (navProvider) navProvider.classList.add('hidden');
+        if (navCharity) navCharity.classList.add('hidden');
+    } else {
+        if (currentUser.role === 'Admin') {
+            if (navAdmin) navAdmin.classList.remove('hidden');
+            if (navProvider) navProvider.classList.remove('hidden');
+            if (navCharity) navCharity.classList.remove('hidden');
+        } else if (currentUser.role === 'Provider') {
+            if (navAdmin) navAdmin.classList.add('hidden');
+            if (navProvider) navProvider.classList.remove('hidden');
+            if (navCharity) navCharity.classList.add('hidden');
+        } else if (currentUser.role === 'Charity') {
+            if (navAdmin) navAdmin.classList.add('hidden');
+            if (navProvider) navProvider.classList.add('hidden');
+            if (navCharity) navCharity.classList.remove('hidden');
+        }
+    }
+}
+
+function clearCachedViews() {
+    const idsToClear = [
+        'adminVerificationList',
+        'adminUsersTableBody',
+        'adminReportedListings',
+        'adminReportedReviews',
+        'adminProblemReports',
+        'adminAuditLogsTableBody',
+        'providerListingsTableBody',
+        'providerIncomingRequestsList',
+        'charityActiveReservationsList',
+        'notificationList'
+    ];
+    idsToClear.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
+
+    const statIds = [
+        'adminStatUsers', 'adminStatProviders', 'adminStatCharities',
+        'adminStatPendingVerifications', 'adminBadgeVerifications',
+        'adminStatCompleted', 'adminStatRedistributed', 'adminStatReports',
+        'providerStatActive', 'providerStatCompleted', 'providerStatPending', 'providerStatSaved',
+        'charityStatActive', 'charityStatCompleted', 'charityStatPeople'
+    ];
+    statIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '0';
+    });
 }
 
 function logout() {
     currentUser = null;
     localStorage.removeItem('foodbridge_user');
+    clearCachedViews();
     updateAuthUI();
-    showToast('Signed Out', 'You have been signed out successfully.', 'info');
+    const isAr = currentLang === 'ar';
+    showToast(isAr ? 'تم تسجيل الخروج' : 'Signed Out', isAr ? 'تم تسجيل الخروج بنجاح وتأمين الجلسة.' : 'You have been signed out successfully.', 'info');
     navigateTo('landing');
     if (signalrConnection) {
         signalrConnection.stop();
@@ -1041,6 +1101,25 @@ async function loadLandingStats() {
 // NAVIGATION ENGINE
 // ============================================================================
 function navigateTo(viewName) {
+    const isAr = currentLang === 'ar';
+
+    // Route Protection Guards
+    if (viewName === 'admin' && (!currentUser || currentUser.role !== 'Admin')) {
+        showToast(isAr ? 'تنبيه أمني' : 'Access Restricted', isAr ? 'لوحة المشرف مخصصة للمسؤولين فقط. يرجى تسجيل الدخول بحساب المشرف.' : 'Please sign in with an Administrator account.', 'warning');
+        openAuthModal('login');
+        return;
+    }
+    if (viewName === 'provider' && (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin'))) {
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة المزودين مخصصة لمزودي الطعام المعتمدين.' : 'Please sign in with a Provider account.', 'warning');
+        openAuthModal('login');
+        return;
+    }
+    if (viewName === 'charity' && (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin'))) {
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة الجمعيات مخصصة للجمعيات الخيرية المسجلة.' : 'Please sign in with a Charity account.', 'warning');
+        openAuthModal('login');
+        return;
+    }
+
     currentView = viewName;
 
     // Update active nav link style
@@ -1272,7 +1351,10 @@ async function requestReservationFromModal() {
 // ============================================================================
 async function loadProviderPortal() {
     if (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin')) {
-        showToast('Provider Access Only', 'Please sign in or switch to a Provider profile.', 'info');
+        const isAr = currentLang === 'ar';
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Provider Access Only', isAr ? 'يرجى تسجيل الدخول بحساب مزود طعام.' : 'Please sign in or switch to a Provider profile.', 'info');
+        navigateTo('landing');
+        return;
     }
 
     await loadProviderStats();
@@ -1653,7 +1735,10 @@ async function markReadyForPickup(id) {
 // ============================================================================
 async function loadCharityPortal() {
     if (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin')) {
-        showToast('Charity Access Only', 'Please sign in or switch to a Charity profile.', 'info');
+        const isAr = currentLang === 'ar';
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Charity Access Only', isAr ? 'يرجى تسجيل الدخول بحساب جمعية خيرية.' : 'Please sign in or switch to a Charity profile.', 'info');
+        navigateTo('landing');
+        return;
     }
 
     await loadCharityStats();
@@ -1918,7 +2003,10 @@ async function handleReviewSubmit(e) {
 // ============================================================================
 async function loadAdminPortal() {
     if (!currentUser || currentUser.role !== 'Admin') {
-        showToast('Administrator Required', 'Please switch to the Administrator profile.', 'warning');
+        const isAr = currentLang === 'ar';
+        showToast(isAr ? 'تنبيه أمني' : 'Administrator Required', isAr ? 'يرجى تسجيل الدخول بحساب المشرف.' : 'Please switch to the Administrator profile.', 'warning');
+        navigateTo('landing');
+        return;
     }
 
     await loadAdminStats();
