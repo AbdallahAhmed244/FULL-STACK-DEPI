@@ -187,4 +187,42 @@ public class ReservationConcurrencyTests
         var updatedListing = await db.FoodListings.FindAsync(30);
         Assert.Equal(FoodListingStatus.Completed, updatedListing!.Status);
     }
+
+    [Fact]
+    public async Task CancelReservation_WhenPickupWithinTwoHours_ReturnsFailureCutoffWindow()
+    {
+        var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
+        var service = new ReservationService(db, _mockNotification.Object);
+
+        var charity = new ApplicationUser { Id = "charity-cutoff", FullName = "Charity", UserType = UserType.Charity, Status = UserStatus.Active };
+        var provider = new ApplicationUser { Id = "provider-cutoff", FullName = "Provider", UserType = UserType.FoodProvider, Status = UserStatus.Active };
+        var listing = new FoodListing
+        {
+            Id = 50,
+            ProviderId = "provider-cutoff",
+            FoodName = "Hot Meals",
+            Quantity = 10,
+            PickupDeadline = DateTime.UtcNow.AddHours(5),
+            Status = FoodListingStatus.Reserved
+        };
+        var reservation = new Reservation
+        {
+            Id = 50,
+            FoodListingId = 50,
+            CharityId = "charity-cutoff",
+            Status = ReservationStatus.Accepted,
+            PickupDateTime = DateTime.UtcNow.AddMinutes(45) // Scheduled in 45 mins (imminent!)
+        };
+
+        db.Users.AddRange(charity, provider);
+        db.FoodListings.Add(listing);
+        db.Reservations.Add(reservation);
+        await db.SaveChangesAsync();
+
+        var cancelDto = new CancelReservationDto { Reason = "Traffic delay" };
+        var result = await service.CancelReservationAsync("charity-cutoff", 50, cancelDto);
+
+        Assert.False(result.Succeeded);
+        Assert.Contains("less than 2 hours", result.Error);
+    }
 }

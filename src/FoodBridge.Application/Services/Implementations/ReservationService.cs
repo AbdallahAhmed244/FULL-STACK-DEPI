@@ -332,6 +332,16 @@ public class ReservationService : IReservationService
 
         var wasAccepted = reservation.Status == ReservationStatus.Accepted || reservation.Status == ReservationStatus.ReadyForPickup;
 
+        // Imminent Pickup Cutoff Protection:
+        if (wasAccepted && reservation.PickupDateTime.HasValue)
+        {
+            var timeUntilPickup = reservation.PickupDateTime.Value - DateTime.UtcNow;
+            if (timeUntilPickup <= TimeSpan.FromHours(2) && timeUntilPickup > TimeSpan.Zero)
+            {
+                return Result<ReservationDto>.Failure("Cancellation rejected: The scheduled pickup is in less than 2 hours. The courier/transport team is already en route or preparing. Please contact the partner directly or file a problem report if urgent.");
+            }
+        }
+
         reservation.Status = ReservationStatus.Cancelled;
         reservation.CancellationReason = dto.Reason;
 

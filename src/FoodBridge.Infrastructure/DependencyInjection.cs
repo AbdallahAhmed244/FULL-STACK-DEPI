@@ -35,6 +35,11 @@ public static class DependencyInjection
             options.Password.RequireLowercase = false;
             options.User.RequireUniqueEmail = true;
             options.SignIn.RequireConfirmedEmail = true; // Email verification required per FR1.5
+
+            // Lockout Configuration against brute-force attacks
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
         })
         .AddEntityFrameworkStores<FoodBridgeDbContext>()
         .AddDefaultTokenProviders();

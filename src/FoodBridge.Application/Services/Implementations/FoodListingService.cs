@@ -52,6 +52,22 @@ public class FoodListingService : IFoodListingService
             return Result<FoodListingDto>.Failure("Donation quantity must be greater than zero.");
         }
 
+        var unitLower = (dto.UnitOfMeasurement ?? "").Trim().ToLower();
+        if (unitLower.Contains("kg") || unitLower.Contains("كيلو") || unitLower.Contains("kilo"))
+        {
+            if (dto.Quantity < 1m)
+            {
+                return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Kilograms (kg) is 1 kg to ensure practical logistics for charity collection.");
+            }
+        }
+        else if (unitLower.Contains("liter") || unitLower.Contains("litre") || unitLower.Contains("لتر") || unitLower == "l")
+        {
+            if (dto.Quantity < 1m)
+            {
+                return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Liters (L) is 1 Liter to ensure practical distribution for charities.");
+            }
+        }
+
         if (dto.PickupDeadline <= DateTime.UtcNow)
         {
             return Result<FoodListingDto>.Failure("Pickup deadline must be set to a future date and time.");
@@ -117,6 +133,27 @@ public class FoodListingService : IFoodListingService
         if (listing.Status != FoodListingStatus.Available)
         {
             return Result<FoodListingDto>.Failure($"Cannot edit listing while its status is {listing.Status}. Only Available listings can be edited.");
+        }
+
+        if (dto.Quantity <= 0)
+        {
+            return Result<FoodListingDto>.Failure("Donation quantity must be greater than zero.");
+        }
+
+        var updateUnitLower = (dto.UnitOfMeasurement ?? "").Trim().ToLower();
+        if (updateUnitLower.Contains("kg") || updateUnitLower.Contains("كيلو") || updateUnitLower.Contains("kilo"))
+        {
+            if (dto.Quantity < 1m)
+            {
+                return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Kilograms (kg) is 1 kg to ensure practical logistics for charity collection.");
+            }
+        }
+        else if (updateUnitLower.Contains("liter") || updateUnitLower.Contains("litre") || updateUnitLower.Contains("لتر") || updateUnitLower == "l")
+        {
+            if (dto.Quantity < 1m)
+            {
+                return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Liters (L) is 1 Liter to ensure practical distribution for charities.");
+            }
         }
 
         if (dto.PickupDeadline <= dto.PreparationDate)

@@ -146,11 +146,27 @@ public class AuthService : IAuthService
             return Result<AuthResponseDto>.Failure("Your account has been suspended by an administrator. Please contact support.");
         }
 
+        if (await _userManager.IsLockedOutAsync(user))
+        {
+            var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+            var remainingMinutes = lockoutEnd.HasValue ? Math.Max(1, (int)Math.Ceiling((lockoutEnd.Value - DateTimeOffset.UtcNow).TotalMinutes)) : 15;
+            return Result<AuthResponseDto>.Failure($"Account is temporarily locked due to multiple failed login attempts. Please try again in {remainingMinutes} minutes.");
+        }
+
         var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
         if (!passwordValid)
         {
-            return Result<AuthResponseDto>.Failure("Invalid email or password.");
+            await _userManager.AccessFailedAsync(user);
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                return Result<AuthResponseDto>.Failure("Account has been locked for 15 minutes due to 5 consecutive failed login attempts.");
+            }
+            var failedCount = await _userManager.GetAccessFailedCountAsync(user);
+            var remaining = Math.Max(0, 5 - failedCount);
+            return Result<AuthResponseDto>.Failure($"Invalid email or password. ({remaining} attempts remaining before temporary account lockout)");
         }
+
+        await _userManager.ResetAccessFailedCountAsync(user);
 
         var roles = await _userManager.GetRolesAsync(user);
         var primaryRole = roles.FirstOrDefault() ?? user.UserType.ToString();

@@ -15,13 +15,22 @@ public class NotificationService : INotificationService
 {
     private readonly IApplicationDbContext _context;
     private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly IEmailSenderService? _emailSender;
 
     public NotificationService(
         IApplicationDbContext context,
-        IHubContext<NotificationHub> hubContext)
+        IHubContext<NotificationHub> hubContext) : this(context, hubContext, null)
+    {
+    }
+
+    public NotificationService(
+        IApplicationDbContext context,
+        IHubContext<NotificationHub> hubContext,
+        IEmailSenderService? emailSender)
     {
         _context = context;
         _hubContext = hubContext;
+        _emailSender = emailSender;
     }
 
     public async Task SendNotificationAsync(string userId, string title, string message, string? relatedEntityId = null)
@@ -52,6 +61,24 @@ public class NotificationService : INotificationService
 
         // Real-time broadcast to specific user group
         await _hubContext.Clients.Group($"user-{userId}").SendAsync("ReceiveNotification", dto);
+
+        // Dispatch email notification as well
+        if (_emailSender != null)
+        {
+            try
+            {
+                var user = await _context.Users.FindAsync(userId);
+                if (user?.Email != null)
+                {
+                    var htmlBody = $"<h3>{title}</h3><p>{message}</p><br><p><small>FoodBridge Platform Notification</small></p>";
+                    await _emailSender.SendEmailAsync(user.Email, $"[FoodBridge] {title}", htmlBody);
+                }
+            }
+            catch
+            {
+                // Non-blocking email dispatch failure
+            }
+        }
     }
 
     public async Task<List<NotificationDto>> GetUserNotificationsAsync(string userId)

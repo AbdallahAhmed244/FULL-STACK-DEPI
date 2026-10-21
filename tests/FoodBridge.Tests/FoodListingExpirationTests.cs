@@ -69,4 +69,34 @@ public class FoodListingExpirationTests
         Assert.Equal(FoodListingStatus.Available, updated2!.Status);
         Assert.Equal(FoodListingStatus.Completed, updated3!.Status);
     }
+
+    [Fact]
+    public async Task CreateListingAsync_WhenQuantityBelowMinimumKg_ReturnsFailure()
+    {
+        var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
+        var service = new FoodListingService(db, _mockFileStorage.Object, _mockNotification.Object);
+
+        var provider = new ApplicationUser { Id = "p-min", FullName = "Provider", UserType = UserType.FoodProvider, Status = UserStatus.Active };
+        db.Users.Add(provider);
+        await db.SaveChangesAsync();
+
+        var dto = new FoodBridge.Application.DTOs.CreateFoodListingDto
+        {
+            FoodName = "Small Flour",
+            Description = "Leftover flour",
+            FoodCategory = FoodCategory.BakeryAndPastry,
+            Quantity = 0.5m,
+            UnitOfMeasurement = "kg",
+            PreparationDate = DateTime.UtcNow.AddHours(-1),
+            PickupDeadline = DateTime.UtcNow.AddHours(4),
+            PickupAddress = "123 Cairo St",
+            StorageConditions = "Room Temp",
+            Allergens = "Gluten"
+        };
+
+        var result = await service.CreateListingAsync("p-min", dto);
+
+        Assert.False(result.Succeeded);
+        Assert.Contains("Minimum donation quantity", result.Error);
+    }
 }
