@@ -1,0 +1,135 @@
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using FoodBridge.Application.Common.Interfaces;
+using FoodBridge.Application.DTOs;
+using FoodBridge.Application.Services.Interfaces;
+using FoodBridge.Infrastructure.Services;
+
+namespace FoodBridge.Web.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    private readonly IAuthService _authService;
+    private readonly ICurrentUserService _currentUserService;
+
+    public AuthController(IAuthService authService, ICurrentUserService currentUserService)
+    {
+        _authService = authService;
+        _currentUserService = currentUserService;
+    }
+
+    [HttpPost("register-provider")]
+    public async Task<IActionResult> RegisterProvider([FromBody] RegisterProviderDto dto)
+    {
+        var result = await _authService.RegisterProviderAsync(dto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { errors = result.Errors, message = result.Error });
+        }
+        return Ok(result.Data);
+    }
+
+    [HttpPost("register-charity")]
+    public async Task<IActionResult> RegisterCharity([FromBody] RegisterCharityDto dto)
+    {
+        var result = await _authService.RegisterCharityAsync(dto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { errors = result.Errors, message = result.Error });
+        }
+        return Ok(result.Data);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginDto dto)
+    {
+        var result = await _authService.LoginAsync(dto);
+        if (!result.Succeeded)
+        {
+            return Unauthorized(new { message = result.Error });
+        }
+        return Ok(result.Data);
+    }
+
+    [HttpPost("verify-email")]
+    public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailDto dto)
+    {
+        var result = await _authService.VerifyEmailAsync(dto.UserId, dto.Token);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { message = result.Error });
+        }
+        return Ok(new { message = result.Data });
+    }
+
+    [HttpPost("resend-verification")]
+    public async Task<IActionResult> ResendVerification([FromBody] ForgotPasswordDto dto)
+    {
+        var result = await _authService.ResendVerificationEmailAsync(dto.Email);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { message = result.Error });
+        }
+        return Ok(new { message = result.Data });
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+    {
+        var result = await _authService.ForgotPasswordAsync(dto.Email);
+        return Ok(new { message = result.Data });
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        var result = await _authService.ResetPasswordAsync(dto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { message = result.Error });
+        }
+        return Ok(new { message = result.Data });
+    }
+
+    [HttpGet("profile")]
+    [Authorize]
+    public async Task<IActionResult> GetProfile()
+    {
+        var userId = _currentUserService.UserId;
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        var result = await _authService.GetProfileAsync(userId);
+        if (!result.Succeeded)
+        {
+            return NotFound(new { message = result.Error });
+        }
+        return Ok(result.Data);
+    }
+
+    [HttpPut("profile")]
+    [Authorize]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
+    {
+        var userId = _currentUserService.UserId;
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        var result = await _authService.UpdateProfileAsync(userId, dto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { message = result.Error });
+        }
+        return Ok(result.Data);
+    }
+
+    /// <summary>
+    /// Helper endpoint for demonstrations to view dispatched emails & tokens.
+    /// </summary>
+    [HttpGet("recent-emails")]
+    public IActionResult GetRecentEmails()
+    {
+        return Ok(EmailSenderService.RecentEmails);
+    }
+}

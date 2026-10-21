@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBridge Platform — Food Surplus Management & Charity Redistribution</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Cairo', 'sans-serif'],
+                        heading: ['Space Grotesk', 'Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b'
+                        },
+                        amber: {
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SignalR Client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Dark Mode Global Styles */
+        html.dark {
+            color-scheme: dark;
+        }
+        html.dark body {
+            background-color: #0b1120 !important;
+            color: #f1f5f9 !important;
+        }
+        html.dark header {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            border-color: #1e293b !important;
+        }
+        html.dark .bg-white {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+        }
+        html.dark .bg-slate-50, html.dark .bg-slate-100 {
+            background-color: #0f172a !important;
+        }
+        html.dark .text-slate-900, html.dark .text-slate-800 {
+            color: #f8fafc !important;
+        }
+        html.dark .text-slate-700, html.dark .text-slate-600 {
+            color: #cbd5e1 !important;
+        }
+        html.dark .text-slate-500 {
+            color: #94a3b8 !important;
+        }
+        html.dark .border-slate-200, html.dark .border-slate-100, html.dark .border-slate-200\/80 {
+            border-color: #334155 !important;
+        }
+        html.dark input, html.dark select, html.dark textarea {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+        html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+            border-color: #334155 !important;
+        }
+        html.dark .hover\:bg-slate-50:hover,
+        html.dark .hover\:bg-slate-100:hover {
+            background-color: #334155 !important;
+        }
+
+        /* RTL & Arabic Support */
+        html[dir="rtl"] {
+            font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif !important;
+        }
+        html[dir="rtl"] body {
+            text-align: right;
+        }
+        html[dir="rtl"] .font-heading {
+            font-family: 'Cairo', sans-serif !important;
+            font-weight: 700;
+        }
+        html[dir="rtl"] .space-x-1 > :not([hidden]) ~ :not([hidden]),
+        html[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]),
+        html[dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]),
+        html[dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]),
+        html[dir="rtl"] .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1 !important;
+        }
+        html[dir="rtl"] .mr-1, html[dir="rtl"] .mr-2, html[dir="rtl"] .mr-3 {
+            margin-right: 0 !important;
+            margin-left: 0.5rem !important;
+        }
+        html[dir="rtl"] .ml-1, html[dir="rtl"] .ml-2, html[dir="rtl"] .ml-3 {
+            margin-left: 0 !important;
+            margin-right: 0.5rem !important;
+        }
+        html[dir="rtl"] #toastContainer {
+            right: auto !important;
+            left: 1rem !important;
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Main Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('explore')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                        <i class="fa-solid fa-seedling text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="font-heading font-bold text-xl tracking-tight text-slate-900 flex items-center">
+                            Food<span class="text-emerald-600">Bridge</span>
+                        </div>
+                        <p class="text-[10px] font-medium text-slate-500 -mt-1 tracking-wider uppercase">Surplus Redistribution</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="navigateTo('explore')" id="nav-explore" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center">
+                        <i class="fa-solid fa-compass mr-2 text-emerald-600"></i> Browse Donations
+                    </button>
+                    <button onclick="navigateTo('provider')" id="nav-provider" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center">
+                        <i class="fa-solid fa-store mr-2 text-amber-500"></i> Provider Portal
+                    </button>
+                    <button onclick="navigateTo('charity')" id="nav-charity" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center">
+                        <i class="fa-solid fa-hand-holding-heart mr-2 text-emerald-600"></i> Charity Portal
+                    </button>
+                    <button onclick="navigateTo('admin')" id="nav-admin" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center">
+                        <i class="fa-solid fa-gauge-high mr-2 text-indigo-600"></i> Admin Suite
+                    </button>
+                    <button onclick="navigateTo('impact')" id="nav-impact" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center">
+                        <i class="fa-solid fa-chart-pie mr-2 text-blue-500"></i> Impact & Stats
+                    </button>
+                </nav>
+
+                <!-- Right Side Actions & User Menu -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    
+                    <!-- Language Switcher (EN / عربي) -->
+                    <button onclick="toggleLanguage()" id="langToggleBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 hover:bg-slate-100 transition flex items-center shadow-xs" title="تغيير اللغة / Switch Language">
+                        <i class="fa-solid fa-globe text-emerald-600 mr-1.5"></i>
+                        <span id="langBtnText">عربي</span>
+                    </button>
+
+                    <!-- Dark / Light Mode Switcher -->
+                    <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition focus:outline-none" title="الوضع الليلي / Dark Mode">
+                        <i id="themeToggleIcon" class="fa-solid fa-moon text-base text-amber-500"></i>
+                    </button>
+
+                    <!-- Real-Time SignalR Notifications Bell -->
+                    <div class="relative" id="notificationDropdownContainer">
+                        <button onclick="toggleNotificationDropdown()" class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition focus:outline-none" title="Notifications">
+                            <i class="fa-regular fa-bell text-lg"></i>
+                            <span id="unreadBadge" class="hidden absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">0</span>
+                        </button>
+                        
+                        <!-- Notifications Panel Dropdown -->
+                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+                            <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                                <div class="font-semibold text-sm text-slate-800 flex items-center">
+                                    <i class="fa-solid fa-bell mr-2 text-emerald-600"></i> <span data-i18n="liveNotifications">Live Notifications</span>
+                                    <span id="signalrIndicator" class="ml-2 w-2 h-2 rounded-full bg-emerald-500 animate-ping" title="SignalR Live Connected"></span>
+                                </div>
+                                <button onclick="markAllNotificationsRead()" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700" data-i18n="markAllRead">Mark all read</button>
+                            </div>
+                            <div id="notificationList" class="max-h-80 overflow-y-auto divide-y divide-slate-100">
+                                <div class="p-6 text-center text-slate-400 text-xs" data-i18n="noNotifications">No notifications yet.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auth State Container -->
+                    <div id="authContainer" class="flex items-center">
+                        <!-- Populated by JS based on user state -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Wrapper -->
+    <main class="flex-1">
+
+        <!-- ======================================================== -->
+        <!-- VIEW 0: LANDING PAGE                                      -->
+        <!-- ======================================================== -->
+        <section id="view-landing" class="hidden">
+
+            <!-- Hero Section -->
+            <div class="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white overflow-hidden">
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-10 right-10 w-96 h-96 bg-emerald-300 rounded-full blur-3xl"></div>
+                </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 mb-6">
+                                <i class="fa-solid fa-seedling mr-2"></i> <span data-i18n="heroBadge">Connecting Surplus to Need</span>
+                            </span>
+                            <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6" data-i18n="heroTitle">
+                                Bridge the Gap Between <span class="text-emerald-300">Food Waste</span> & <span class="text-teal-300">Hunger</span>
+                            </h1>
+                            <p class="text-emerald-100 text-lg leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">
+                                FoodBridge connects restaurants, hotels, and bakeries with verified charities — turning daily food surplus into life-changing meals for thousands in need.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <button onclick="openAuthModal('reg-provider')" class="px-7 py-3.5 rounded-2xl font-bold bg-white text-emerald-900 hover:bg-emerald-50 shadow-xl transition text-sm flex items-center">
+                                    <i class="fa-solid fa-user-plus mr-2"></i> <span data-i18n="joinFree">Join FoodBridge — Free</span>
+                                </button>
+                                <button onclick="openAuthModal('login')" class="px-7 py-3.5 rounded-2xl font-bold bg-emerald-600/40 hover:bg-emerald-600/60 text-white border border-emerald-400/40 transition text-sm flex items-center">
+                                    <i class="fa-solid fa-right-to-bracket mr-2"></i> <span data-i18n="signIn">Sign In</span>
+                                </button>
+                                <button onclick="navigateTo('explore')" class="px-7 py-3.5 rounded-2xl font-bold bg-transparent hover:bg-white/10 text-emerald-200 border border-emerald-400/30 transition text-sm flex items-center">
+                                    <i class="fa-solid fa-eye mr-2"></i> <span data-i18n="navBrowse">Browse Donations</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Stats Column -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                                <div class="text-4xl font-heading font-extrabold text-emerald-300 mb-1" id="landingStatRedistributed">115+</div>
+                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statRedistributed">Kg of Food Redistributed</div>
+                                <div class="text-emerald-300/60 text-xs mt-1" data-i18n="statRedistributedDesc">From completed donations</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                                <div class="text-4xl font-heading font-extrabold text-teal-300 mb-1" id="landingStatDonations">2+</div>
+                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statCompleted">Completed Donations</div>
+                                <div class="text-emerald-300/60 text-xs mt-1" data-i18n="statCompletedSub">Successfully delivered</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                                <div class="text-4xl font-heading font-extrabold text-amber-300 mb-1" id="landingStatProviders">5+</div>
+                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statProviders">Food Providers</div>
+                                <div class="text-emerald-300/60 text-xs mt-1" data-i18n="statProvidersSub">Restaurants, bakeries & hotels</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                                <div class="text-4xl font-heading font-extrabold text-rose-300 mb-1" id="landingStatCharities">3+</div>
+                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statCharities">Charity Partners</div>
+                                <div class="text-emerald-300/60 text-xs mt-1" data-i18n="statCharitiesSub">Verified & active</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="bg-white py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-14">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 mb-4">
+                            <i class="fa-solid fa-gears mr-2"></i> <span data-i18n="howItWorksTitle">How FoodBridge Works</span>
+                        </span>
+                        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="howItWorksTitle">How FoodBridge Works</h2>
+                        <p class="text-slate-500 text-lg max-w-2xl mx-auto" data-i18n="howItWorksSubtitle">A streamlined, secure, and real-time platform for food redistribution — from posting to pickup in minutes.</p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Step 1 -->
+                        <div class="text-center group">
+                            <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-store"></i>
+                            </div>
+                            <div class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-amber-500 text-white text-xs font-bold mb-4">1</div>
+                            <h3 class="font-heading font-bold text-xl text-slate-900 mb-3" data-i18n="step1Title">Provider Posts Surplus</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed" data-i18n="step1Desc">Restaurants, bakeries, and hotels list available food with details — quantity, pickup time, allergens, storage conditions, and photos.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="text-center group">
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-hand-holding-heart"></i>
+                            </div>
+                            <div class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-500 text-white text-xs font-bold mb-4">2</div>
+                            <h3 class="font-heading font-bold text-xl text-slate-900 mb-3" data-i18n="step2Title">Charity Reserves Food</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed" data-i18n="step2Desc">Verified charities browse available donations, filter by category and date, and submit a reservation request — all in real time.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="text-center group">
+                            <div class="w-16 h-16 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <div class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-teal-500 text-white text-xs font-bold mb-4">3</div>
+                            <h3 class="font-heading font-bold text-xl text-slate-900 mb-3" data-i18n="step3Title">Pickup & Delivery</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed" data-i18n="step3Desc">Provider confirms pickup details. Charity collects the food and marks the donation as completed. Both parties leave mutual reviews.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Who We Serve Section -->
+            <div class="bg-slate-50 py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-14">
+                        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="whoUsesHeading">Who Uses FoodBridge?</h2>
+                        <p class="text-slate-500 text-lg max-w-xl mx-auto" data-i18n="whoUsesSubtitle">Two types of organizations — united by one mission.</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Food Providers Card -->
+                        <div class="bg-white rounded-3xl border border-amber-100 p-8 shadow-sm hover:shadow-lg transition">
+                            <div class="flex items-start space-x-5">
+                                <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl shrink-0">
+                                    <i class="fa-solid fa-utensils"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-heading font-bold text-xl text-slate-900 mb-2" data-i18n="providerCardTitle">Food Providers</h3>
+                                    <p class="text-slate-500 text-sm leading-relaxed mb-5" data-i18n="providerCardDesc">Restaurants, hotels, bakeries, and catering companies with daily food surplus that would otherwise go to waste.</p>
+                                    <ul class="space-y-2 text-sm text-slate-600">
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature1">Post food listings with photos & allergens</span></li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature2">Accept or reject charity reservation requests</span></li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature3">Confirm exact pickup location and time</span></li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature4">Track donation history and impact stats</span></li>
+                                    </ul>
+                                    <button onclick="openAuthModal('register')" class="mt-6 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-semibold text-sm transition">
+                                        <span data-i18n="registerAsProvider">Register as Provider</span> <i class="fa-solid fa-arrow-right ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Charities Card -->
+                        <div class="bg-white rounded-3xl border border-emerald-100 p-8 shadow-sm hover:shadow-lg transition">
+                            <div class="flex items-start space-x-5">
+                                <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-heading font-bold text-xl text-slate-900 mb-2" data-i18n="charityCardTitle">Charities & NGOs</h3>
+                                    <p class="text-slate-500 text-sm leading-relaxed mb-5" data-i18n="charityCardDesc">Food banks, shelters, community centers, and relief organizations serving underprivileged communities.</p>
+                                    <ul class="space-y-2 text-sm text-slate-600">
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature1">Browse available food by category and date</span></li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature2">Reserve donations with one click</span></li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature3">Receive real-time notifications via SignalR</span></li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature4">Track food received and submit partner reviews</span></li>
+                                    </ul>
+                                    <button onclick="openAuthModal('register')" class="mt-6 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition">
+                                        <span data-i18n="registerAsCharity">Register as Charity</span> <i class="fa-solid fa-arrow-right ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="bg-white py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-14">
+                        <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="platformFeaturesHeading">Platform Features</h2>
+                        <p class="text-slate-500 text-lg max-w-xl mx-auto" data-i18n="platformFeaturesSubtitle">Built with enterprise-grade technology to ensure security, reliability, and real-time coordination.</p>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="p-6 rounded-2xl border border-slate-200 hover:border-emerald-200 hover:bg-emerald-50/50 transition">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4"><i class="fa-solid fa-bell"></i></div>
+                            <h4 class="font-bold text-slate-900 mb-2" data-i18n="feat1Title">Real-Time Notifications</h4>
+                            <p class="text-slate-500 text-sm" data-i18n="feat1Desc">Instant SignalR push alerts for reservation updates, acceptances, pickups, and reviews.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-slate-200 hover:border-indigo-200 hover:bg-indigo-50/50 transition">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h4 class="font-bold text-slate-900 mb-2" data-i18n="feat2Title">JWT + Role-Based Auth</h4>
+                            <p class="text-slate-500 text-sm" data-i18n="feat2Desc">Secure JWT authentication with Admin, Provider, and Charity role-based access control.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-slate-200 hover:border-amber-200 hover:bg-amber-50/50 transition">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4"><i class="fa-solid fa-envelope-circle-check"></i></div>
+                            <h4 class="font-bold text-slate-900 mb-2" data-i18n="feat3Title">Email Verification</h4>
+                            <p class="text-slate-500 text-sm" data-i18n="feat3Desc">All new accounts must verify their email before accessing protected features.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-slate-200 hover:border-teal-200 hover:bg-teal-50/50 transition">
+                            <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center mb-4"><i class="fa-solid fa-lock"></i></div>
+                            <h4 class="font-bold text-slate-900 mb-2" data-i18n="feat4Title">Concurrency Protection</h4>
+                            <p class="text-slate-500 text-sm" data-i18n="feat4Desc">Optimistic concurrency (RowVersion) prevents two charities from reserving the same listing simultaneously.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-slate-200 hover:border-rose-200 hover:bg-rose-50/50 transition">
+                            <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                            <h4 class="font-bold text-slate-900 mb-2" data-i18n="feat5Title">Admin Audit Trail</h4>
+                            <p class="text-slate-500 text-sm" data-i18n="feat5Desc">Every admin action is logged immutably — verifications, suspensions, removals, and resolutions.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-slate-200 hover:border-purple-200 hover:bg-purple-50/50 transition">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-4"><i class="fa-solid fa-robot"></i></div>
+                            <h4 class="font-bold text-slate-900 mb-2" data-i18n="feat6Title">Auto-Expiry Background Service</h4>
+                            <p class="text-slate-500 text-sm" data-i18n="feat6Desc">Hosted background service automatically marks listings as Expired when the pickup deadline passes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="bg-gradient-to-r from-emerald-700 to-teal-700 py-16">
+                <div class="max-w-4xl mx-auto text-center px-4">
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mb-4" data-i18n="ctaHeading">Ready to Make an Impact?</h2>
+                    <p class="text-emerald-100 text-lg mb-8" data-i18n="ctaSubtitle">Join FoodBridge today — registration is free, fast, and fully verified.</p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="openAuthModal('register')" class="px-8 py-4 rounded-2xl font-bold bg-white text-emerald-900 hover:bg-emerald-50 shadow-xl transition text-base">
+                            <i class="fa-solid fa-user-plus mr-2"></i> <span data-i18n="createFreeAccount">Create Free Account</span>
+                        </button>
+                        <button onclick="openAuthModal('login')" class="px-8 py-4 rounded-2xl font-bold bg-emerald-600/40 hover:bg-emerald-600/60 text-white border border-emerald-400/40 transition text-base">
+                            <i class="fa-solid fa-right-to-bracket mr-2"></i> <span data-i18n="signIn">Sign In</span>
+                        </button>
+                    </div>
+                    <p class="text-emerald-200/70 text-xs mt-6"><span data-i18n="alreadyHaveAccount">Already have an account?</span> <button onclick="openAuthModal('login')" class="underline hover:text-white transition" data-i18n="signInHere">Sign in here</button></p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="bg-slate-900 text-slate-400 py-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-seedling text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="font-heading font-bold text-white">Food<span class="text-emerald-400">Bridge</span></div>
+                            <div class="text-[10px] text-slate-500" data-i18n="brandSubtitle">Surplus Redistribution Platform</div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-center" data-i18n="footerArch">Built with .NET 10 · Clean Architecture · EF Core · SignalR · JWT Auth</div>
+                    <div class="text-xs" data-i18n="copyright">© 2026 FoodBridge Platform. All rights reserved.</div>
+                </div>
+            </footer>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 1: EXPLORE / DISCOVERY (FR3) -->
+        <!-- ======================================================== -->
+        <section id="view-explore" class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            
+            <!-- Hero Banner -->
+            <div class="rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-8 sm:p-12 mb-8 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+                    <i class="fa-solid fa-apple-whole"></i>
+                </div>
+                <div class="max-w-2xl relative z-10">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-md mb-4 text-emerald-100 border border-white/20">
+                        <i class="fa-solid fa-truck-fast mr-1.5"></i> <span data-i18n="directFrom">Direct From Local Restaurants, Bakeries & Hotels</span>
+                    </span>
+                    <h1 class="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4" data-i18n="exploreBannerTitle">
+                        Turn Food Surplus Into Sustenance.
+                    </h1>
+                    <p class="text-emerald-100 text-sm sm:text-base leading-relaxed mb-6" data-i18n="exploreBannerDesc">
+                        Verified food providers donate wholesome meals, baked goods, and produce. Registered charities reserve surplus donations with zero waste and real-time pickup verification.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="navigateTo('explore')" class="px-5 py-2.5 rounded-xl font-semibold bg-white text-emerald-900 hover:bg-emerald-50 shadow-md transition text-sm flex items-center">
+                            <i class="fa-solid fa-magnifying-glass mr-2"></i> <span data-i18n="navBrowse">Browse Available Food</span>
+                        </button>
+                        <button onclick="openCreateListingModal()" class="px-5 py-2.5 rounded-xl font-semibold bg-emerald-600/80 hover:bg-emerald-600 text-white border border-emerald-400/30 transition text-sm flex items-center">
+                            <i class="fa-solid fa-plus mr-2"></i> <span data-i18n="postDonation">Donate Surplus Food</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Controls (FR3.3, FR3.4, FR3.5) -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-5 mb-8 shadow-sm">
+                
+                <!-- Category Quick Select Pills -->
+                <div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-4 scrollbar-none" id="categoryPillContainer">
+                    <button onclick="setCategoryFilter(null)" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm transition shrink-0" data-category="all">
+                        All Categories
+                    </button>
+                    <button onclick="setCategoryFilter('CookedMeals')" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0" data-category="CookedMeals">
+                        🍲 Cooked Meals
+                    </button>
+                    <button onclick="setCategoryFilter('BakeryAndPastry')" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0" data-category="BakeryAndPastry">
+                        🥐 Bakery & Pastry
+                    </button>
+                    <button onclick="setCategoryFilter('FreshProduce')" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0" data-category="FreshProduce">
+                        🥦 Fresh Produce
+                    </button>
+                    <button onclick="setCategoryFilter('DairyAndEggs')" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0" data-category="DairyAndEggs">
+                        🥛 Dairy & Eggs
+                    </button>
+                    <button onclick="setCategoryFilter('CannedAndPackaged')" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0" data-category="CannedAndPackaged">
+                        🥫 Packaged & Canned
+                    </button>
+                    <button onclick="setCategoryFilter('MeatAndPoultry')" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0" data-category="MeatAndPoultry">
+                        🍗 Meat & Poultry
+                    </button>
+                </div>
+
+                <!-- Search, Provider Type Filter & Sort Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="searchInput" oninput="debounce(loadExploreListings, 300)()" placeholder="Search food, dishes, location..." class="w-full pl-9 pr-4 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <select id="providerTypeFilter" onchange="loadExploreListings()" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
+                            <option value="">All Provider Types</option>
+                            <option value="Restaurant">Restaurants</option>
+                            <option value="Bakery">Bakeries</option>
+                            <option value="Hotel">Hotels</option>
+                            <option value="Catering">Catering Services</option>
+                        </select>
+                    </div>
+                    <div>
+                        <input type="date" id="dateFilter" onchange="loadExploreListings()" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700" title="Filter by Availability Date">
+                    </div>
+                    <div>
+                        <select id="sortByFilter" onchange="loadExploreListings()" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
+                            <option value="newest">Sort: Newest Listings</option>
+                            <option value="deadline">Sort: Nearest Deadline ⏰</option>
+                            <option value="quantity">Sort: Highest Quantity</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Active Status Filter Indicator -->
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+                        <span data-i18n="showingAvailable">Showing available listings for reservation (FR3.5 default).</span>
+                    </div>
+                    <div id="listingCountDisplay" class="font-semibold text-slate-700">Loading listings...</div>
+                </div>
+            </div>
+
+            <!-- Listings Grid -->
+            <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically rendered listing cards -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyListingsState" class="hidden text-center py-16 bg-white rounded-3xl border border-slate-200 p-8">
+                <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-bowl-food"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg text-slate-800 mb-1" data-i18n="noFoodFound">No Available Food Donations Found</h3>
+                <p class="text-slate-500 text-sm max-w-md mx-auto mb-6" data-i18n="noFoodFoundDesc">Try clearing your filters or check back shortly as food providers frequently post fresh surplus batches.</p>
+                <button onclick="resetExploreFilters()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition" data-i18n="resetFilters">
+                    Reset All Filters
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 2: PROVIDER PORTAL (FR2, FR4, FR5, FR9.1) -->
+        <!-- ======================================================== -->
+        <section id="view-provider" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            
+            <!-- Provider Header & Action Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-slate-900" data-i18n="providerPortalHeading">Food Provider Portal</h2>
+                        <span id="providerVerificationBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                            <i class="fa-solid fa-circle-check mr-1"></i> <span data-i18n="verified">Verified</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-500 text-sm mt-1" id="providerOrgSubtitle" data-i18n="providerPortalDesc">Manage food donations, accept charity reservations, and coordinate scheduled pickups.</p>
+                </div>
+                <div>
+                    <button onclick="openCreateListingModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition text-sm flex items-center justify-center">
+                        <i class="fa-solid fa-plus-circle mr-2"></i> <span data-i18n="postDonation">Post New Food Donation</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Provider Performance KPI Cards (FR9.1) -->
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="statTotalListed">Total Listed</div>
+                    <div id="statProviderTotalListed" class="font-heading text-2xl font-bold text-slate-900">0</div>
+                    <div class="text-[11px] text-slate-500 mt-1" data-i18n="statTotalListedDesc">Donation listings created</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1" data-i18n="statCompleted">Completed</div>
+                    <div id="statProviderTotalCompleted" class="font-heading text-2xl font-bold text-emerald-700">0</div>
+                    <div class="text-[11px] text-emerald-600 mt-1" data-i18n="statCompletedDesc">Successfully collected</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1" data-i18n="statActiveNow">Active Now</div>
+                    <div id="statProviderActiveListings" class="font-heading text-2xl font-bold text-amber-600">0</div>
+                    <div class="text-[11px] text-amber-600 mt-1" data-i18n="statActiveNowDesc">Available or Reserved</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1" data-i18n="statRedistributedTitle">Redistributed</div>
+                    <div id="statProviderRedistributed" class="font-heading text-2xl font-bold text-teal-700">0</div>
+                    <div class="text-[11px] text-teal-600 mt-1" data-i18n="statRedistributedDesc2">Total surplus quantity</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm col-span-2 lg:col-span-1">
+                    <div class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1" data-i18n="statProviderRating">Provider Rating</div>
+                    <div class="flex items-center space-x-1.5">
+                        <span id="statProviderRating" class="font-heading text-2xl font-bold text-slate-900">5.0</span>
+                        <div class="text-amber-400 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                    <div id="statProviderReviewsCount" class="text-[11px] text-slate-500 mt-1" data-i18n="basedOnReviews">Based on reviews</div>
+                </div>
+            </div>
+
+            <!-- Provider Sub-Tabs -->
+            <div class="flex border-b border-slate-200 mb-6 space-x-4">
+                <button onclick="switchProviderTab('listings')" id="ptab-listings" class="pb-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-600">
+                    <i class="fa-solid fa-list-check mr-1.5"></i> <span data-i18n="myListings">My Donation Listings</span>
+                </button>
+                <button onclick="switchProviderTab('requests')" id="ptab-requests" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
+                    <i class="fa-solid fa-inbox mr-1.5"></i> <span data-i18n="incomingRequests">Incoming Requests</span> (<span id="providerIncomingCount">0</span>)
+                </button>
+            </div>
+
+            <!-- Sub-Tab Content 1: My Listings -->
+            <div id="providerTabListings">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-semibold text-slate-500" data-i18n="filterByStatus">Filter by Status:</span>
+                        <select id="providerListingsStatusFilter" onchange="loadProviderListings()" class="text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white">
+                            <option value="" data-i18n="allStatuses">All Statuses</option>
+                            <option value="Available" data-i18n="statusAvailable">Available</option>
+                            <option value="Reserved" data-i18n="statusReserved">Reserved</option>
+                            <option value="Completed" data-i18n="statusCompleted">Completed</option>
+                            <option value="Expired" data-i18n="statusExpired">Expired</option>
+                            <option value="Unavailable" data-i18n="statusUnavailable">Unavailable</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-50 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
+                                <tr>
+                                    <th class="px-5 py-3.5" data-i18n="thFoodDonation">Food Donation</th>
+                                    <th class="px-5 py-3.5" data-i18n="thCategory">Category</th>
+                                    <th class="px-5 py-3.5" data-i18n="thQuantity">Quantity</th>
+                                    <th class="px-5 py-3.5" data-i18n="thPickupDeadline">Pickup Deadline</th>
+                                    <th class="px-5 py-3.5" data-i18n="thStatus">Status</th>
+                                    <th class="px-5 py-3.5 text-right" data-i18n="thActions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="providerListingsTableBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-Tab Content 2: Incoming Requests -->
+            <div id="providerTabRequests" class="hidden">
+                <div id="providerRequestsList" class="space-y-4">
+                    <!-- Populated dynamically with requests and accept/reject actions -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 3: CHARITY PORTAL (FR4, FR5, FR7, FR9.2) -->
+        <!-- ======================================================== -->
+        <section id="view-charity" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-slate-900" data-i18n="charityPortalHeading">Charity Redistribution Portal</h2>
+                        <span id="charityVerificationBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                            <i class="fa-solid fa-circle-check mr-1"></i> <span data-i18n="verified">Verified</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-500 text-sm mt-1" id="charityOrgSubtitle" data-i18n="charityPortalDesc">Track active food reservations, coordinate pickup handoffs, and confirm receipt.</p>
+                </div>
+                <div>
+                    <button onclick="navigateTo('explore')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition text-sm flex items-center justify-center">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i> <span data-i18n="browseMoreFood">Browse & Reserve More Food</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Charity KPI Cards (FR9.2) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1" data-i18n="donationsReceived">Donations Received</div>
+                    <div id="statCharityTotalReceived" class="font-heading text-2xl font-bold text-emerald-700">0</div>
+                    <div class="text-[11px] text-emerald-600 mt-1" data-i18n="successfullyCollected">Successfully collected</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1" data-i18n="activeReservations">Active Reservations</div>
+                    <div id="statCharityActive" class="font-heading text-2xl font-bold text-amber-600">0</div>
+                    <div class="text-[11px] text-amber-600 mt-1" data-i18n="pendingAcceptedReady">Pending, Accepted or Ready</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1" data-i18n="totalQtyReceived">Total Quantity Received</div>
+                    <div id="statCharityQuantity" class="font-heading text-2xl font-bold text-teal-700">0</div>
+                    <div class="text-[11px] text-teal-600 mt-1" data-i18n="foodRedistributedCommunity">Food redistributed to community</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="partnerReviews">Partner Reviews</div>
+                    <div id="statCharityReviewsGiven" class="font-heading text-2xl font-bold text-slate-900">0</div>
+                    <div class="text-[11px] text-slate-500 mt-1" data-i18n="reviewsSubmittedProviders">Reviews submitted for providers</div>
+                </div>
+            </div>
+
+            <!-- Charity Reservations List (FR4.7, FR5.2, FR5.4, FR5.5, FR5.6) -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm p-5">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+                    <h3 class="font-heading font-bold text-lg text-slate-800" data-i18n="myReservations">My Food Reservations</h3>
+                    <div class="flex items-center space-x-2">
+                        <select id="charityReservationsStatusFilter" onchange="loadCharityReservations()" class="text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white">
+                            <option value="" data-i18n="allStatuses">All Statuses</option>
+                            <option value="Pending" data-i18n="statusPendingApproval">Pending Approval</option>
+                            <option value="Accepted" data-i18n="statusAcceptedScheduled">Accepted & Scheduled</option>
+                            <option value="ReadyForPickup" data-i18n="statusReadyPickup">Ready for Pickup</option>
+                            <option value="Completed" data-i18n="statusCompleted">Completed</option>
+                            <option value="Cancelled" data-i18n="statusCancelled">Cancelled</option>
+                            <option value="ProblemReported" data-i18n="statusProblemReported">Problem Reported</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="charityReservationsContainer" class="space-y-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 4: ADMIN SUITE (FR8.1 - FR8.9) -->
+        <!-- ======================================================== -->
+        <section id="view-admin" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            
+            <div class="mb-8">
+                <div class="flex items-center space-x-2">
+                    <h2 class="font-heading font-bold text-2xl sm:text-3xl text-slate-900" data-i18n="adminSuiteHeading">Platform Administration Suite</h2>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> <span data-i18n="adminSuperuser">Admin Superuser</span>
+                    </span>
+                </div>
+                <p class="text-slate-500 text-sm mt-1" data-i18n="adminSuiteDesc">Verify food provider and charity organizations, moderate platform content, resolve problem reports, and audit administrative events.</p>
+            </div>
+
+            <!-- Admin Activity Summaries (FR8.8) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1" data-i18n="registeredUsers">Registered Users</div>
+                    <div id="adminStatUsers" class="font-heading text-2xl font-bold text-indigo-900">0</div>
+                    <div class="text-[11px] text-slate-500 mt-1"><span id="adminStatProviders">0</span> <span data-i18n="providersLabel">Providers</span> • <span id="adminStatCharities">0</span> <span data-i18n="charitiesLabel">Charities</span></div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1" data-i18n="pendingVerifications">Pending Verifications</div>
+                    <div id="adminStatPendingVerifications" class="font-heading text-2xl font-bold text-amber-600">0</div>
+                    <div class="text-[11px] text-amber-600 mt-1" data-i18n="awaitingAdminReview">Awaiting admin review</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1" data-i18n="completedDonations">Completed Donations</div>
+                    <div id="adminStatCompleted" class="font-heading text-2xl font-bold text-emerald-700">0</div>
+                    <div class="text-[11px] text-emerald-600 mt-1"><span id="adminStatRedistributed">0</span> <span data-i18n="totalRedistributedLabel">Total redistributed</span></div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1" data-i18n="reportedModerations">Reported Moderations</div>
+                    <div id="adminStatReports" class="font-heading text-2xl font-bold text-rose-600">0</div>
+                    <div class="text-[11px] text-rose-500 mt-1" data-i18n="moderationIssuesDesc">Listings, reviews, and pickup issues</div>
+                </div>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="flex border-b border-slate-200 mb-6 space-x-4 overflow-x-auto">
+                <button onclick="switchAdminTab('verifications')" id="atab-verifications" class="pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0">
+                    <i class="fa-solid fa-stamp mr-1.5"></i> <span data-i18n="tabVerifications">Organization Verifications</span> (<span id="adminBadgeVerifications">0</span>)
+                </button>
+                <button onclick="switchAdminTab('users')" id="atab-users" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0">
+                    <i class="fa-solid fa-users-gear mr-1.5"></i> <span data-i18n="tabUsers">User Directory & Access</span>
+                </button>
+                <button onclick="switchAdminTab('moderation')" id="atab-moderation" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation mr-1.5"></i> <span data-i18n="tabModeration">Moderation & Complaints</span>
+                </button>
+                <button onclick="switchAdminTab('audit')" id="atab-audit" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0">
+                    <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> <span data-i18n="tabAudit">Administrative Audit Trail</span>
+                </button>
+            </div>
+
+            <!-- Admin Sub-Tab 1: Verification Queue (FR8.3) -->
+            <div id="adminTabVerifications">
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-heading font-bold text-base text-slate-900 mb-2" data-i18n="pendingVerificationsTitle">Pending Organization Verification Requests</h3>
+                    <p class="text-slate-500 text-xs mb-4" data-i18n="pendingVerificationsDesc">Review organizational mission, address, and credentials before approving access to protected features.</p>
+                    <div id="adminVerificationList" class="space-y-3">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Sub-Tab 2: User Directory & Suspension (FR8.2, FR8.4) -->
+            <div id="adminTabUsers" class="hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <input type="text" id="adminUserSearch" oninput="debounce(loadAdminUsers, 300)()" placeholder="Search users by name, email, organization..." data-i18n-placeholder="searchUsersPlaceholder" class="px-3.5 py-2 rounded-xl text-sm border border-slate-200 w-full sm:w-72">
+                        <div class="flex items-center space-x-2 flex-wrap gap-2">
+                            <select id="adminUserTypeFilter" onchange="loadAdminUsers()" class="px-3 py-2 rounded-xl text-xs border border-slate-200 bg-white">
+                                <option value="" data-i18n="allAccountTypes">All Account Types</option>
+                                <option value="FoodProvider" data-i18n="foodProviders">Food Providers</option>
+                                <option value="Charity" data-i18n="charities">Charities</option>
+                                <option value="Administrator" data-i18n="administrators">Administrators</option>
+                            </select>
+                            <select id="adminUserStatusFilter" onchange="loadAdminUsers()" class="px-3 py-2 rounded-xl text-xs border border-slate-200 bg-white">
+                                <option value="" data-i18n="allStatuses">All Statuses</option>
+                                <option value="Active" data-i18n="statusActive">Active</option>
+                                <option value="Suspended" data-i18n="statusSuspended">Suspended</option>
+                            </select>
+                            <button onclick="openCreateAdminModal()" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center shadow-sm shrink-0 transition">
+                                <i class="fa-solid fa-user-shield mr-1.5"></i> <span data-i18n="btnAddAdmin">+ Add Admin</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-50 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
+                                <tr>
+                                    <th class="px-4 py-3" data-i18n="thUserOrg">User & Organization</th>
+                                    <th class="px-4 py-3" data-i18n="thRoleType">Role / Type</th>
+                                    <th class="px-4 py-3" data-i18n="thVerification">Verification</th>
+                                    <th class="px-4 py-3" data-i18n="thStatus">Status</th>
+                                    <th class="px-4 py-3 text-right" data-i18n="thActions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersTableBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Sub-Tab 3: Moderation & Reports (FR8.5, FR8.6, FR8.7) -->
+            <div id="adminTabModeration" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Reported Listings -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h4 class="font-heading font-bold text-sm text-slate-800 mb-3 flex items-center text-rose-600">
+                            <i class="fa-solid fa-flag mr-2"></i> <span data-i18n="reportedListings">Reported Listings</span>
+                        </h4>
+                        <div id="adminReportedListingsContainer" class="space-y-3 text-xs">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <!-- Reported Reviews -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h4 class="font-heading font-bold text-sm text-slate-800 mb-3 flex items-center text-amber-600">
+                            <i class="fa-solid fa-star-half-stroke mr-2"></i> <span data-i18n="reportedReviews">Reported Reviews</span>
+                        </h4>
+                        <div id="adminReportedReviewsContainer" class="space-y-3 text-xs">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <!-- Problem Reports from Pickups -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h4 class="font-heading font-bold text-sm text-slate-800 mb-3 flex items-center text-indigo-600">
+                            <i class="fa-solid fa-circle-exclamation mr-2"></i> <span data-i18n="pickupDisputes">Pickup Disputes</span>
+                        </h4>
+                        <div id="adminProblemReportsContainer" class="space-y-3 text-xs">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Sub-Tab 4: Audit Logs (FR8.9) -->
+            <div id="adminTabAudit" class="hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-heading font-bold text-base text-slate-900 mb-2" data-i18n="auditRecordsTitle">Administrative Audit Records</h3>
+                    <p class="text-slate-500 text-xs mb-4" data-i18n="auditRecordsDesc">Immutable log of security actions, user verifications, account suspensions, and content removals.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-50 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
+                                <tr>
+                                    <th class="px-4 py-3" data-i18n="thTimestamp">Timestamp</th>
+                                    <th class="px-4 py-3" data-i18n="thAdmin">Admin</th>
+                                    <th class="px-4 py-3" data-i18n="thAction">Action</th>
+                                    <th class="px-4 py-3" data-i18n="thTargetEntity">Target Entity</th>
+                                    <th class="px-4 py-3" data-i18n="thDetails">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminAuditTableBody" class="divide-y divide-slate-100 text-xs">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 5: PLATFORM IMPACT & STATISTICS (FR9.3, FR9.5) -->
+        <!-- ======================================================== -->
+        <section id="view-impact" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            
+            <div class="mb-8 text-center max-w-2xl mx-auto">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-3">
+                    <i class="fa-solid fa-earth-americas mr-1.5"></i> <span data-i18n="impactBadge">Real-Time Redistribution Statistics</span>
+                </span>
+                <h2 class="font-heading font-bold text-3xl sm:text-4xl text-slate-900" data-i18n="impactHeading">Platform Environmental & Community Impact</h2>
+                <p class="text-slate-500 text-sm mt-2" data-i18n="impactDesc">
+                    Pursuant to FR9.5 specifications, platform-wide statistics are strictly calculated using <strong>completed donations only</strong>, excluding cancelled, rejected, and expired items.
+                </p>
+            </div>
+
+            <!-- Big Impact Numbers -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+                    <div class="text-xs font-bold uppercase tracking-wider text-emerald-200 mb-2" data-i18n="impactCardQty">Redistributed Food Quantity</div>
+                    <div class="font-heading text-4xl sm:text-5xl font-extrabold mb-1" id="impactRedistributedQuantity">0</div>
+                    <p class="text-emerald-100 text-xs" data-i18n="impactCardQtyDesc">Units/kg diverted directly from landfills to families in need.</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+                    <div class="text-xs font-bold uppercase tracking-wider text-indigo-200 mb-2" data-i18n="impactCardCompleted">Completed Food Donations</div>
+                    <div class="font-heading text-4xl sm:text-5xl font-extrabold mb-1" id="impactCompletedDonations">0</div>
+                    <p class="text-indigo-100 text-xs" data-i18n="impactCardCompletedDesc">Full end-to-end completed donation cycles.</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+                    <div class="text-xs font-bold uppercase tracking-wider text-amber-200 mb-2" data-i18n="impactCardNetwork">Active Food Network</div>
+                    <div class="font-heading text-4xl sm:text-5xl font-extrabold mb-1" id="impactActiveNetwork">0</div>
+                    <p class="text-amber-100 text-xs" data-i18n="impactCardNetworkDesc">Combined participating food providers and charities.</p>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-heading font-bold text-base text-slate-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-chart-pie mr-2 text-emerald-600"></i> <span data-i18n="chartCategory">Redistribution by Food Category</span>
+                    </h3>
+                    <div class="h-64 flex items-center justify-center">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-heading font-bold text-base text-slate-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-chart-line mr-2 text-indigo-600"></i> <span data-i18n="chartMonthly">Monthly Redistribution Momentum</span>
+                    </h3>
+                    <div class="h-64 flex items-center justify-center">
+                        <canvas id="monthlyTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+                <span class="font-bold text-slate-700" data-i18n="footerBrand">FoodBridge Platform</span>
+                <span data-i18n="footerTagline">— Connecting Food Providers with Charities</span>
+            </div>
+            <div data-i18n="footerArch">
+                Built with ASP.NET Core &amp; Clean Architecture (Domain, Application, Infrastructure, Web API)
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================== -->
+    <!-- MODALS & DIALOGS -->
+    <!-- ======================================================== -->
+
+    <!-- Modal 1: Food Listing Detail & Reserve Dialog (FR3.6, FR4.1) -->
+    <div id="listingDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+            <div class="relative h-56 bg-slate-100">
+                <img id="detailModalImage" src="" alt="Food" class="w-full h-full object-cover">
+                <button onclick="closeListingDetailModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 text-white hover:bg-black/75 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div id="detailModalCategoryBadge" class="absolute bottom-4 left-4 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-slate-900 shadow">
+                    Category
+                </div>
+            </div>
+            <div class="p-6 sm:p-8">
+                <div class="flex items-start justify-between gap-4 mb-3">
+                    <div>
+                        <h3 id="detailModalFoodName" class="font-heading font-bold text-2xl text-slate-900">Food Title</h3>
+                        <p id="detailModalProviderInfo" class="text-xs text-slate-500 mt-0.5">By Restaurant Name • ⭐ 5.0 (12 reviews)</p>
+                    </div>
+                    <div class="text-right">
+                        <span id="detailModalQuantity" class="font-heading font-bold text-xl text-emerald-600">35 portions</span>
+                        <div class="text-[11px] text-slate-400" data-i18n="availableSurplus">Available Surplus</div>
+                    </div>
+                </div>
+
+                <p id="detailModalDescription" class="text-sm text-slate-600 mb-6 leading-relaxed">
+                    Food description details...
+                </p>
+
+                <!-- Food Safety, Storage, and Allergen Info (FR2.3, FR3.2) -->
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <span class="font-bold text-slate-500 uppercase tracking-wider text-[10px] block mb-1">
+                            <i class="fa-solid fa-snowflake text-blue-500 mr-1"></i> <span data-i18n="storageConditions">Storage Conditions</span>
+                        </span>
+                        <div id="detailModalStorage" class="font-medium text-slate-800">Refrigerated (0-4°C)</div>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-500 uppercase tracking-wider text-[10px] block mb-1">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500 mr-1"></i> <span data-i18n="knownAllergens">Known Allergens</span>
+                        </span>
+                        <div id="detailModalAllergens" class="font-medium text-slate-800">Gluten, Dairy</div>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-500 uppercase tracking-wider text-[10px] block mb-1">
+                            <i class="fa-regular fa-clock text-rose-500 mr-1"></i> <span data-i18n="pickupDeadline">Pickup Deadline</span>
+                        </span>
+                        <div id="detailModalDeadline" class="font-medium text-rose-600 font-bold">Today, 8:00 PM</div>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-500 uppercase tracking-wider text-[10px] block mb-1">
+                            <i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i> <span data-i18n="pickupLocation">Pickup Location</span>
+                        </span>
+                        <div id="detailModalAddress" class="font-medium text-slate-800 line-clamp-2">42 Nile Corniche, Cairo</div>
+                    </div>
+                </div>
+
+                <!-- Reserve Action Container -->
+                <div id="detailModalActionContainer" class="flex items-center justify-end space-x-3">
+                    <button onclick="closeListingDetailModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition" data-i18n="close">
+                        Close
+                    </button>
+                    <button id="detailModalReserveBtn" onclick="requestReservationFromModal()" class="px-6 py-2.5 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center">
+                        <i class="fa-solid fa-hand-holding-heart mr-2"></i> <span data-i18n="requestReservation">Request Reservation</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Create Donation Listing Modal (FR2.1 - FR2.4) -->
+    <div id="createListingModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="font-heading font-bold text-xl text-slate-900" data-i18n="postDonationModalTitle">Post Food Donation</h3>
+                    <p class="text-xs text-slate-500 mt-0.5" data-i18n="postDonationModalSubtitle">List available surplus food for registered charities to reserve.</p>
+                </div>
+                <button onclick="closeCreateListingModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="createListingForm" onsubmit="handleCreateListing(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelFoodName">Food Name *</label>
+                    <input type="text" id="createFoodName" required placeholder="e.g. Fresh Baked Baguettes & Rolls" data-i18n-placeholder="foodNamePlaceholder" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCategory">Category *</label>
+                        <select id="createFoodCategory" required class="w-full px-3 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="CookedMeals" data-i18n="catCookedMeals">Cooked Meals</option>
+                            <option value="BakeryAndPastry" data-i18n="catBakery">Bakery & Pastry</option>
+                            <option value="FreshProduce" data-i18n="catProduce">Fresh Produce</option>
+                            <option value="DairyAndEggs" data-i18n="catDairy">Dairy & Eggs</option>
+                            <option value="CannedAndPackaged" data-i18n="catPackaged">Packaged & Canned</option>
+                            <option value="MeatAndPoultry" data-i18n="catMeat">Meat & Poultry</option>
+                            <option value="Beverages" data-i18n="catBeverages">Beverages</option>
+                            <option value="Other" data-i18n="catOther">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelQuantityUnit">Quantity & Unit *</label>
+                        <div class="flex space-x-1.5">
+                            <input type="number" step="0.5" id="createQuantity" required min="1" placeholder="Qty" data-i18n-placeholder="qtyPlaceholder" class="w-24 px-3 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <input type="text" id="createUnit" required placeholder="portions, kg, boxes" data-i18n-placeholder="unitPlaceholder" class="flex-1 px-3 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelDescription">Description *</label>
+                    <textarea id="createDescription" required rows="2" placeholder="Describe the ingredients, condition, packaging, and recommended serving..." data-i18n-placeholder="descPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPrepDate">Preparation Date *</label>
+                        <input type="datetime-local" id="createPrepDate" required class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPickupDeadline">Pickup Deadline *</label>
+                        <input type="datetime-local" id="createPickupDeadline" required class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelStorageConditions">Storage Conditions *</label>
+                        <select id="createStorage" required class="w-full px-3 py-2 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="Refrigerated (0-4°C)" data-i18n="optRefrigerated">Refrigerated (0-4°C)</option>
+                            <option value="Room Temperature" data-i18n="optRoomTemp">Room Temperature</option>
+                            <option value="Frozen (< -18°C)" data-i18n="optFrozen">Frozen (&lt; -18°C)</option>
+                            <option value="Keep Warm (> 63°C)" data-i18n="optKeepWarm">Keep Warm (&gt; 63°C)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelKnownAllergens">Known Allergens *</label>
+                        <input type="text" id="createAllergens" required placeholder="e.g. Gluten, Dairy, or None" data-i18n-placeholder="allergensPlaceholder" value="None" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPickupAddress">Pickup Address & Instructions *</label>
+                    <input type="text" id="createAddress" required placeholder="Full street address and kitchen door / dock notes..." data-i18n-placeholder="addressPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelFoodPhoto">Food Photo (File or Web Image URL)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="file" id="createImageFile" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                        <input type="url" id="createImageUrl" placeholder="Or paste Unsplash / image URL" data-i18n-placeholder="imageUrlPlaceholder" class="px-3 py-1.5 rounded-xl text-xs border border-slate-200">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeCreateListingModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition" data-i18n="cancel">
+                        Cancel
+                    </button>
+                    <button type="submit" id="createListingSubmitBtn" class="px-5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition" data-i18n="publishDonation">
+                        Publish Donation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Accept Reservation & Set Pickup (FR5.1) -->
+    <div id="acceptReservationModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 class="font-heading font-bold text-lg text-slate-900 mb-1" data-i18n="acceptModalTitle">Confirm & Schedule Pickup</h3>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="acceptModalSubtitle">Set the agreed pickup date, time, and confirmed collection address for the charity.</p>
+            
+            <form onsubmit="handleAcceptReservationSubmit(event)" class="space-y-3">
+                <input type="hidden" id="acceptReservationId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelConfirmedPickupDateTime">Confirmed Pickup Date & Time *</label>
+                    <input type="datetime-local" id="acceptPickupDateTime" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelConfirmedLocation">Confirmed Pickup Location / Dock *</label>
+                    <input type="text" id="acceptLocation" required placeholder="e.g. 42 Nile Corniche, Kitchen back door" data-i18n-placeholder="acceptLocationPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeAcceptReservationModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow" data-i18n="confirmAcceptance">Confirm Acceptance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 4: Leave Mutual Review (FR7.1, FR7.2) -->
+    <div id="reviewModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 class="font-heading font-bold text-lg text-slate-900 mb-1" data-i18n="reviewModalTitle">Submit Partner Review</h3>
+            <p class="text-xs text-slate-500 mb-4" id="reviewModalSubtitle" data-i18n="reviewModalSubtitle">Rate your donation pickup partner.</p>
+
+            <form onsubmit="handleReviewSubmit(event)" class="space-y-4">
+                <input type="hidden" id="reviewReservationId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2" data-i18n="labelRating">Rating (1 to 5 Stars) *</label>
+                    <div class="flex items-center space-x-2 text-2xl text-slate-300 cursor-pointer" id="starRatingContainer">
+                        <i class="fa-solid fa-star star-btn hover:text-amber-400 text-amber-400" data-value="1" onclick="setReviewRating(1)"></i>
+                        <i class="fa-solid fa-star star-btn hover:text-amber-400 text-amber-400" data-value="2" onclick="setReviewRating(2)"></i>
+                        <i class="fa-solid fa-star star-btn hover:text-amber-400 text-amber-400" data-value="3" onclick="setReviewRating(3)"></i>
+                        <i class="fa-solid fa-star star-btn hover:text-amber-400 text-amber-400" data-value="4" onclick="setReviewRating(4)"></i>
+                        <i class="fa-solid fa-star star-btn hover:text-amber-400 text-amber-400" data-value="5" onclick="setReviewRating(5)"></i>
+                    </div>
+                    <input type="hidden" id="reviewRatingValue" value="5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelReviewComment">Optional Feedback / Comment</label>
+                    <textarea id="reviewComment" rows="3" placeholder="Share how the pickup went, food condition, hygiene, timeliness..." data-i18n-placeholder="reviewCommentPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+                <div class="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeReviewModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow" data-i18n="postReview">Post Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 5: Report Problem (FR5.5) -->
+    <div id="reportProblemModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 class="font-heading font-bold text-lg text-slate-900 mb-1 text-rose-600 flex items-center">
+                <i class="fa-solid fa-triangle-exclamation mr-2"></i> <span data-i18n="reportProblemTitle">Report Pickup Problem</span>
+            </h3>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="reportProblemSubtitle">Report an issue such as unavailable food, closed provider premises, or incorrect quantity.</p>
+
+            <form onsubmit="handleReportProblemSubmit(event)" class="space-y-4">
+                <input type="hidden" id="reportProblemReservationId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelProblemDescription">Problem Description *</label>
+                    <textarea id="reportProblemText" required rows="3" placeholder="Explain the problem encountered during the pickup attempt..." data-i18n-placeholder="problemDescriptionPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
+                </div>
+                <div class="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeReportProblemModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow" data-i18n="submitReport">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 6: Auth & Registration Modal (FR1.1 - FR1.4, FR1.6) -->
+    <div id="authModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 id="authModalTitle" class="font-heading font-bold text-xl text-slate-900" data-i18n="authSignInTitle">Sign In to FoodBridge</h3>
+                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Mode Selector -->
+            <div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl text-xs font-semibold mb-6">
+                <button onclick="setAuthTab('login')" id="atab-login" class="py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition" data-i18n="signInTab">Sign In</button>
+                <button onclick="setAuthTab('reg-provider')" id="atab-reg-provider" class="py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition" data-i18n="providerTab">Provider</button>
+                <button onclick="setAuthTab('reg-charity')" id="atab-reg-charity" class="py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition" data-i18n="charityTab">Charity</button>
+            </div>
+
+            <!-- Form: Login -->
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPassword">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow text-sm transition flex items-center justify-center"><i class="fa-solid fa-right-to-bracket mr-2"></i> <span data-i18n="signIn">Sign In</span></button>
+            </form>
+
+            <!-- Form: Register Provider (FR1.1, FR1.3) -->
+            <form id="regProviderForm" onsubmit="handleRegisterProviderSubmit(event)" class="hidden space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPContactName">Contact Full Name *</label>
+                    <input type="text" id="regPFullName" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPBusinessName">Business / Restaurant Name *</label>
+                    <input type="text" id="regPOrgName" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPProviderType">Provider Type *</label>
+                        <select id="regPSpecificType" required class="w-full px-2.5 py-1.5 rounded-xl text-xs border border-slate-200">
+                            <option value="Restaurant" data-i18n="provRestaurant">Restaurant</option>
+                            <option value="Bakery" data-i18n="provBakery">Bakery</option>
+                            <option value="Hotel" data-i18n="provHotel">Hotel</option>
+                            <option value="Catering Company" data-i18n="provCatering">Catering Company</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPWorkEmail">Work Email *</label>
+                        <input type="email" id="regPEmail" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPBusinessAddress">Business Address *</label>
+                    <input type="text" id="regPAddress" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPasswordMin">Password *</label>
+                    <input type="password" id="regPPassword" required minlength="8" placeholder="Min. 8 characters" data-i18n-placeholder="passwordMinPlaceholder" class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelConfirmPassword">Confirm Password *</label>
+                    <input type="password" id="regPConfirmPassword" required minlength="8" placeholder="Re-enter password" data-i18n-placeholder="confirmPasswordPlaceholder" class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow text-sm transition flex items-center justify-center"><i class="fa-solid fa-user-plus mr-2"></i> <span data-i18n="createProviderBtn">Create Provider Account</span></button>
+            </form>
+
+            <!-- Form: Register Charity (FR1.1, FR1.4) -->
+            <form id="regCharityForm" onsubmit="handleRegisterCharitySubmit(event)" class="hidden space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCDirectorName">Director Full Name *</label>
+                    <input type="text" id="regCFullName" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCCharityName">Charity Organization Name *</label>
+                    <input type="text" id="regCOrgName" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCCharityType">Charity Type *</label>
+                        <select id="regCSpecificType" required class="w-full px-2.5 py-1.5 rounded-xl text-xs border border-slate-200">
+                            <option value="Food Bank" data-i18n="charityFoodBank">Food Bank</option>
+                            <option value="Shelter" data-i18n="charityShelter">Shelter</option>
+                            <option value="Community Kitchen" data-i18n="charityCommunityKitchen">Community Kitchen</option>
+                            <option value="Youth Center" data-i18n="charityYouthCenter">Youth Center</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCOfficialEmail">Official Email *</label>
+                        <input type="email" id="regCEmail" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCCommunitiesServed">Target Communities Served (FR1.4) *</label>
+                    <textarea id="regCCommunity" required rows="2" placeholder="e.g. Underprivileged families, refugees, and elderly..." data-i18n-placeholder="communitiesPlaceholder" class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCHqAddress">Headquarters Address *</label>
+                    <input type="text" id="regCAddress" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPasswordMin">Password *</label>
+                    <input type="password" id="regCPassword" required minlength="8" placeholder="Min. 8 characters" data-i18n-placeholder="passwordMinPlaceholder" class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelConfirmPassword">Confirm Password *</label>
+                    <input type="password" id="regCConfirmPassword" required minlength="8" placeholder="Re-enter password" data-i18n-placeholder="confirmPasswordPlaceholder" class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow text-sm transition flex items-center justify-center"><i class="fa-solid fa-heart mr-2"></i> <span data-i18n="createCharityBtn">Create Charity Account</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 7: Add New Platform Administrator -->
+    <div id="createAdminModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white" data-i18n="createAdminModalTitle">Add Platform Administrator</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="createAdminModalSubtitle">Provision a new administrator account with system oversight rights.</p>
+                    </div>
+                </div>
+                <button onclick="closeCreateAdminModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form onsubmit="handleCreateAdminSubmit(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelAdminFullName">Full Name *</label>
+                    <input type="text" id="newAdminFullName" required placeholder="e.g. Sara Ahmed" data-i18n-placeholder="adminNamePlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelAdminEmail">Official Admin Email *</label>
+                    <input type="email" id="newAdminEmail" required placeholder="admin@foodbridge.com" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelAdminDepartment">Department / Role Title</label>
+                    <input type="text" id="newAdminDepartment" placeholder="e.g. Compliance & Moderation" data-i18n-placeholder="adminDeptPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelAdminPhone">Phone Number</label>
+                    <input type="tel" id="newAdminPhone" placeholder="+20 100 000 0000" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelAdminPassword">Initial Password *</label>
+                    <input type="password" id="newAdminPassword" required minlength="6" placeholder="Min. 6 characters" data-i18n-placeholder="passwordMinPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <button type="button" onclick="closeCreateAdminModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">Cancel</button>
+                    <button type="submit" id="btnSubmitNewAdmin" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow transition flex items-center">
+                        <i class="fa-solid fa-user-shield mr-1.5"></i> <span data-i18n="btnCreateAdminSubmit">Create Administrator</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Toast Notification Container (Fixed Bottom-Right) -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Application Script -->
+    <script src="/app.js"></script>
+</body>
+</html>
+
+
