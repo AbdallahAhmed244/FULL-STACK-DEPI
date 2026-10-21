@@ -1134,12 +1134,19 @@ function navigateTo(viewName) {
     // Hide all view sections
     ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'].forEach(v => {
         const section = document.getElementById(`view-${v}`);
-        if (section) section.classList.add('hidden');
+        if (section) {
+            section.classList.add('hidden');
+            section.classList.remove('fade-in-section');
+        }
     });
 
-    // Show target section
+    // Show target section with smooth fade-in
     const targetSection = document.getElementById(`view-${viewName}`);
-    if (targetSection) targetSection.classList.remove('hidden');
+    if (targetSection) {
+        targetSection.classList.remove('hidden');
+        void targetSection.offsetWidth;
+        targetSection.classList.add('fade-in-section');
+    }
 
     // Trigger load
     if (viewName === 'explore') loadExploreListings();
@@ -1227,13 +1234,13 @@ function renderListingCard(item) {
     const deadlineStr = deadline.toLocaleTimeString(isAr ? 'ar-EG' : [], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
 
     return `
-        <div class="bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-200 flex flex-col">
-            <div class="relative h-48 bg-slate-100 overflow-hidden group">
-                <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.foodName)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute top-3 ${isAr ? 'right-3' : 'left-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 text-slate-800 shadow-sm backdrop-blur-md">
+        <div class="interactive-card bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/90 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-2xl hover:border-emerald-400 dark:hover:border-emerald-500/50 transition-all duration-300 flex flex-col group">
+            <div class="relative h-48 bg-slate-100 dark:bg-slate-900 overflow-hidden">
+                <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.foodName)}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out">
+                <div class="absolute top-3 ${isAr ? 'right-3' : 'left-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 shadow-sm backdrop-blur-md group-hover:scale-105 transition-transform duration-300">
                     ${formatCategory(item.foodCategory)}
                 </div>
-                <div class="absolute top-3 ${isAr ? 'left-3' : 'right-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-600 text-white shadow-sm">
+                <div class="absolute top-3 ${isAr ? 'left-3' : 'right-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-600 text-white shadow-sm group-hover:scale-105 transition-transform duration-300">
                     ${escapeHtml(item.quantity)} ${escapeHtml(item.unitOfMeasurement)}
                 </div>
             </div>
@@ -1241,37 +1248,37 @@ function renderListingCard(item) {
             <div class="p-5 flex-1 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
-                        <span class="font-semibold text-slate-700 truncate max-w-[180px]">${escapeHtml(item.providerOrganization)}</span>
+                        <span class="font-semibold text-slate-700 dark:text-slate-200 truncate max-w-[180px]">${escapeHtml(item.providerOrganization)}</span>
                         ${ratingDisplay}
                     </div>
 
-                    <h3 class="font-heading font-bold text-lg text-slate-900 mb-2 leading-snug line-clamp-2">
+                    <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white mb-2 leading-snug line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">
                         ${escapeHtml(item.foodName)}
                     </h3>
 
-                    <p class="text-xs text-slate-500 line-clamp-2 mb-4 leading-relaxed">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
                         ${escapeHtml(item.description)}
                     </p>
 
                     <!-- Key disclosures (FR2.3, FR3.2) -->
                     <div class="flex flex-wrap gap-1.5 mb-4 text-[11px]">
-                        <span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100 flex items-center">
+                        <span class="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50 flex items-center">
                             <i class="fa-solid fa-snowflake text-[10px] ${isAr ? 'ml-1' : 'mr-1'} text-blue-500"></i> ${escapeHtml(item.storageConditions)}
                         </span>
-                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-100 flex items-center">
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-100 dark:border-amber-900/50 flex items-center">
                             <i class="fa-solid fa-triangle-exclamation text-[10px] ${isAr ? 'ml-1' : 'mr-1'} text-amber-500"></i> ${dict.allergens}: ${escapeHtml(item.allergens)}
                         </span>
                     </div>
                 </div>
 
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
                     <div>
                         <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">${dict.pickupBefore}</div>
                         <div class="text-xs font-bold text-rose-600 flex items-center">
                             <i class="fa-regular fa-clock ${isAr ? 'ml-1' : 'mr-1'} text-[11px]"></i> ${deadlineStr}
                         </div>
                     </div>
-                    <button onclick="openListingDetailModal(${item.id})" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white transition shadow-xs">
+                    <button onclick="openListingDetailModal(${item.id})" class="btn-glow px-4 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-xs group-hover:shadow-md">
                         ${dict.viewAndReserve}
                     </button>
                 </div>
@@ -2829,22 +2836,28 @@ function showToast(title, message, type = 'info') {
                  type === 'warning' ? 'fa-triangle-exclamation text-amber-500' : 'fa-bell text-blue-500';
 
     const toast = document.createElement('div');
-    toast.className = `pointer-events-auto max-w-sm w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200/90 dark:border-slate-700 p-4 flex items-start space-x-3 ${isAr ? 'space-x-reverse' : ''} animate-in slide-in-from-bottom-2 duration-200`;
+    toast.className = `pointer-events-auto max-w-sm w-full bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200/90 dark:border-slate-700 p-4 flex items-start space-x-3 ${isAr ? 'space-x-reverse' : ''} toast-animate-in`;
+    
+    const dismiss = () => {
+        toast.classList.remove('toast-animate-in');
+        toast.classList.add('toast-animate-out');
+        setTimeout(() => { if (toast.parentElement) toast.remove(); }, 240);
+    };
+
     toast.innerHTML = `
         <i class="fa-solid ${icon} text-lg shrink-0 mt-0.5"></i>
         <div class="flex-1">
             <h5 class="text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHtml(finalTitle)}</h5>
             <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">${escapeHtml(finalMsg)}</p>
         </div>
-        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
             <i class="fa-solid fa-xmark text-xs"></i>
         </button>
     `;
 
+    toast.querySelector('button').onclick = dismiss;
     container.appendChild(toast);
-    setTimeout(() => {
-        toast.remove();
-    }, 5000);
+    setTimeout(dismiss, 5000);
 }
 
 function debounce(func, wait) {
