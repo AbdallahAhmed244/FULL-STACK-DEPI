@@ -34,6 +34,47 @@
                             500: '#f59e0b',
                             600: '#d97706'
                         }
+                    },
+                    animation: {
+                        'bounce-subtle': 'bounceSubtle 3s ease-in-out infinite',
+                        'float-slow': 'floatSlow 8s ease-in-out infinite',
+                        'float-delayed': 'floatReverse 9s ease-in-out 1.5s infinite',
+                        'pulse-slow': 'pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 20s linear infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'gradient-flow': 'gradientFlow 6s ease infinite',
+                        'scale-in': 'scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'glow-pulse': 'glowPulse 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        },
+                        floatSlow: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(2deg)' }
+                        },
+                        floatReverse: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(12px) rotate(-2deg)' }
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(4deg)' }
+                        },
+                        gradientFlow: {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' }
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.94)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' }
+                        },
+                        glowPulse: {
+                            '0%': { 'box-shadow': '0 0 10px rgba(16, 185, 129, 0.2)' },
+                            '100%': { 'box-shadow': '0 0 25px rgba(16, 185, 129, 0.5), 0 0 45px rgba(20, 184, 166, 0.3)' }
+                        }
                     }
                 }
             }
@@ -351,15 +392,15 @@
             <div class="flex items-center justify-between h-16">
                 
                 <!-- Logo & Brand -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('explore')">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
-                        <i class="fa-solid fa-seedling text-lg"></i>
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('explore')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-emerald-500/40 transition-all duration-300">
+                        <i class="fa-solid fa-seedling text-lg group-hover:animate-wiggle"></i>
                     </div>
                     <div>
-                        <div class="font-heading font-bold text-xl tracking-tight text-slate-900 flex items-center">
-                            Food<span class="text-emerald-600">Bridge</span>
+                        <div class="font-heading font-bold text-xl tracking-tight text-slate-900 dark:text-white flex items-center">
+                            Food<span class="text-emerald-600 dark:text-emerald-400 group-hover:animate-pulse">Bridge</span>
                         </div>
-                        <p class="text-[10px] font-medium text-slate-500 -mt-1 tracking-wider uppercase">Surplus Redistribution</p>
+                        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 -mt-1 tracking-wider uppercase">Surplus Redistribution</p>
                     </div>
                 </div>
 
@@ -386,21 +427,21 @@
                 <div class="flex items-center space-x-2 sm:space-x-3">
                     
                     <!-- Language Switcher (EN / عربي) -->
-                    <button onclick="toggleLanguage()" id="langToggleBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 hover:bg-slate-100 transition flex items-center shadow-xs" title="تغيير اللغة / Switch Language">
+                    <button onclick="toggleLanguage()" id="langToggleBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center shadow-xs" title="تغيير اللغة / Switch Language">
                         <i class="fa-solid fa-globe text-emerald-600 mr-1.5"></i>
                         <span id="langBtnText">عربي</span>
                     </button>
 
                     <!-- Dark / Light Mode Switcher -->
-                    <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition focus:outline-none" title="الوضع الليلي / Dark Mode">
-                        <i id="themeToggleIcon" class="fa-solid fa-moon text-base text-amber-500"></i>
+                    <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none" title="الوضع الليلي / Dark Mode">
+                        <i id="themeToggleIcon" class="fa-solid fa-moon text-base text-amber-500 transition-transform duration-300"></i>
                     </button>
 
                     <!-- Real-Time SignalR Notifications Bell -->
-                    <div class="relative" id="notificationDropdownContainer">
-                        <button onclick="toggleNotificationDropdown()" class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition focus:outline-none" title="Notifications">
-                            <i class="fa-regular fa-bell text-lg"></i>
-                            <span id="unreadBadge" class="hidden absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">0</span>
+                    <div class="relative group" id="notificationDropdownContainer">
+                        <button onclick="toggleNotificationDropdown()" class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none" title="Notifications">
+                            <i class="fa-regular fa-bell text-lg group-hover:animate-wiggle"></i>
+                            <span id="unreadBadge" class="hidden absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce shadow-md">0</span>
                         </button>
                         
                         <!-- Notifications Panel Dropdown -->
@@ -447,7 +488,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10">
                     <div class="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 mb-6 backdrop-blur-md shadow-sm hover:scale-105 transition duration-300 cursor-default">
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 mb-6 backdrop-blur-md shadow-sm animate-bounce-subtle cursor-default">
                                 <span class="relative flex h-2 w-2 mr-2">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-300"></span>
@@ -455,7 +496,7 @@
                                 <span data-i18n="heroBadge">Connecting Surplus to Need</span>
                             </span>
                             <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6" data-i18n="heroTitle">
-                                Bridge the Gap Between <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">Food Waste</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-amber-200">Hunger</span>
+                                Bridge the Gap Between <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-200 animate-gradient-flow">Food Waste</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-amber-200 to-emerald-200 animate-gradient-flow">Hunger</span>
                             </h1>
                             <p class="text-emerald-100/90 text-lg leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">
                                 FoodBridge connects restaurants, hotels, and bakeries with verified charities — turning daily food surplus into life-changing meals for thousands in need.
@@ -472,27 +513,38 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- Stats Column with Glassmorphic Interactive Cards -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group">
-                                <div class="text-4xl font-heading font-extrabold text-emerald-300 mb-1 group-hover:scale-105 group-hover:text-emerald-200 transition-all duration-300" id="landingStatRedistributed">115+</div>
-                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statRedistributed">Kg of Food Redistributed</div>
-                                <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statRedistributedDesc">From completed donations</div>
+                        <!-- Stats Column with Glassmorphic Interactive Cards & Tailwind Floating Badges -->
+                        <div class="relative">
+                            <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-bold animate-float-slow absolute -top-5 right-2 shadow-xl z-20">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                <span>Live Surplus Matching</span>
                             </div>
-                            <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group">
-                                <div class="text-4xl font-heading font-extrabold text-teal-300 mb-1 group-hover:scale-105 group-hover:text-teal-200 transition-all duration-300" id="landingStatDonations">2+</div>
-                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statCompleted">Completed Donations</div>
-                                <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statCompletedSub">Successfully delivered</div>
+                            <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 text-teal-200 text-xs font-bold animate-float-delayed absolute -bottom-5 left-2 shadow-xl z-20">
+                                <i class="fa-solid fa-bolt text-amber-400 animate-wiggle"></i>
+                                <span>SignalR Instant Alerts</span>
                             </div>
-                            <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group">
-                                <div class="text-4xl font-heading font-extrabold text-amber-300 mb-1 group-hover:scale-105 group-hover:text-amber-200 transition-all duration-300" id="landingStatProviders">5+</div>
-                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statProviders">Food Providers</div>
-                                <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statProvidersSub">Restaurants, bakeries & hotels</div>
-                            </div>
-                            <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group">
-                                <div class="text-4xl font-heading font-extrabold text-rose-300 mb-1 group-hover:scale-105 group-hover:text-rose-200 transition-all duration-300" id="landingStatCharities">3+</div>
-                                <div class="text-emerald-100 text-sm font-medium" data-i18n="statCharities">Charity Partners</div>
-                                <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statCharitiesSub">Verified & active</div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
+                                    <div class="text-4xl font-heading font-extrabold text-emerald-300 mb-1 group-hover:scale-105 group-hover:text-emerald-200 transition-all duration-300" id="landingStatRedistributed">115+</div>
+                                    <div class="text-emerald-100 text-sm font-medium" data-i18n="statRedistributed">Kg of Food Redistributed</div>
+                                    <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statRedistributedDesc">From completed donations</div>
+                                </div>
+                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
+                                    <div class="text-4xl font-heading font-extrabold text-teal-300 mb-1 group-hover:scale-105 group-hover:text-teal-200 transition-all duration-300" id="landingStatDonations">2+</div>
+                                    <div class="text-emerald-100 text-sm font-medium" data-i18n="statCompleted">Completed Donations</div>
+                                    <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statCompletedSub">Successfully delivered</div>
+                                </div>
+                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
+                                    <div class="text-4xl font-heading font-extrabold text-amber-300 mb-1 group-hover:scale-105 group-hover:text-amber-200 transition-all duration-300" id="landingStatProviders">5+</div>
+                                    <div class="text-emerald-100 text-sm font-medium" data-i18n="statProviders">Food Providers</div>
+                                    <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statProvidersSub">Restaurants, bakeries & hotels</div>
+                                </div>
+                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
+                                    <div class="text-4xl font-heading font-extrabold text-rose-300 mb-1 group-hover:scale-105 group-hover:text-rose-200 transition-all duration-300" id="landingStatCharities">3+</div>
+                                    <div class="text-emerald-100 text-sm font-medium" data-i18n="statCharities">Charity Partners</div>
+                                    <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statCharitiesSub">Verified & active</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -682,26 +734,28 @@
         <section id="view-explore" class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             
             <!-- Hero Banner -->
-            <div class="rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-8 sm:p-12 mb-8 shadow-xl relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+            <div class="rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-8 sm:p-12 mb-8 shadow-2xl relative overflow-hidden">
+                <div class="floating-orb-1 absolute -top-10 -right-10 w-64 h-64 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="floating-orb-2 absolute -bottom-10 -left-10 w-72 h-72 bg-teal-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl animate-spin-slow pointer-events-none">
                     <i class="fa-solid fa-apple-whole"></i>
                 </div>
                 <div class="max-w-2xl relative z-10">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-md mb-4 text-emerald-100 border border-white/20">
-                        <i class="fa-solid fa-truck-fast mr-1.5"></i> <span data-i18n="directFrom">Direct From Local Restaurants, Bakeries & Hotels</span>
+                    <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-md mb-4 text-emerald-100 border border-white/20 animate-bounce-subtle">
+                        <i class="fa-solid fa-truck-fast mr-1.5 animate-wiggle"></i> <span data-i18n="directFrom">Direct From Local Restaurants, Bakeries & Hotels</span>
                     </span>
                     <h1 class="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4" data-i18n="exploreBannerTitle">
                         Turn Food Surplus Into Sustenance.
                     </h1>
-                    <p class="text-emerald-100 text-sm sm:text-base leading-relaxed mb-6" data-i18n="exploreBannerDesc">
+                    <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed mb-6" data-i18n="exploreBannerDesc">
                         Verified food providers donate wholesome meals, baked goods, and produce. Registered charities reserve surplus donations with zero waste and real-time pickup verification.
                     </p>
                     <div class="flex flex-wrap gap-3">
-                        <button onclick="navigateTo('explore')" class="px-5 py-2.5 rounded-xl font-semibold bg-white text-emerald-900 hover:bg-emerald-50 shadow-md transition text-sm flex items-center">
-                            <i class="fa-solid fa-magnifying-glass mr-2"></i> <span data-i18n="navBrowse">Browse Available Food</span>
+                        <button onclick="navigateTo('explore')" class="btn-glow px-5 py-2.5 rounded-xl font-bold bg-white text-emerald-900 hover:bg-emerald-50 shadow-md transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center">
+                            <i class="fa-solid fa-magnifying-glass mr-2 text-emerald-600"></i> <span data-i18n="navBrowse">Browse Available Food</span>
                         </button>
-                        <button onclick="openCreateListingModal()" class="px-5 py-2.5 rounded-xl font-semibold bg-emerald-600/80 hover:bg-emerald-600 text-white border border-emerald-400/30 transition text-sm flex items-center">
-                            <i class="fa-solid fa-plus mr-2"></i> <span data-i18n="postDonation">Donate Surplus Food</span>
+                        <button onclick="openCreateListingModal()" class="btn-glow px-5 py-2.5 rounded-xl font-bold bg-emerald-600/80 hover:bg-emerald-600 text-white border border-emerald-400/30 transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center shadow-lg">
+                            <i class="fa-solid fa-plus mr-2 text-emerald-200"></i> <span data-i18n="postDonation">Donate Surplus Food</span>
                         </button>
                     </div>
                 </div>

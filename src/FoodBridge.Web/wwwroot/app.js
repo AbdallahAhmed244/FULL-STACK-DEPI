@@ -1237,10 +1237,10 @@ function renderListingCard(item) {
         <div class="interactive-card bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/90 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-2xl hover:border-emerald-400 dark:hover:border-emerald-500/50 transition-all duration-300 flex flex-col group">
             <div class="relative h-48 bg-slate-100 dark:bg-slate-900 overflow-hidden">
                 <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.foodName)}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out">
-                <div class="absolute top-3 ${isAr ? 'right-3' : 'left-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 shadow-sm backdrop-blur-md group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute top-3 ${isAr ? 'right-3' : 'left-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 shadow-md backdrop-blur-md group-hover:scale-105 group-hover:shadow-emerald-500/20 transition-all duration-300">
                     ${formatCategory(item.foodCategory)}
                 </div>
-                <div class="absolute top-3 ${isAr ? 'left-3' : 'right-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-600 text-white shadow-sm group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute top-3 ${isAr ? 'left-3' : 'right-3'} px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-600 text-white shadow-md group-hover:scale-105 group-hover:bg-emerald-500 transition-all duration-300">
                     ${escapeHtml(item.quantity)} ${escapeHtml(item.unitOfMeasurement)}
                 </div>
             </div>
@@ -1252,7 +1252,7 @@ function renderListingCard(item) {
                         ${ratingDisplay}
                     </div>
 
-                    <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white mb-2 leading-snug line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">
+                    <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white mb-2 leading-snug line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all duration-200">
                         ${escapeHtml(item.foodName)}
                     </h3>
 
@@ -1275,10 +1275,10 @@ function renderListingCard(item) {
                     <div>
                         <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">${dict.pickupBefore}</div>
                         <div class="text-xs font-bold text-rose-600 flex items-center">
-                            <i class="fa-regular fa-clock ${isAr ? 'ml-1' : 'mr-1'} text-[11px]"></i> ${deadlineStr}
+                            <i class="fa-regular fa-clock ${isAr ? 'ml-1' : 'mr-1'} text-[11px] animate-pulse"></i> ${deadlineStr}
                         </div>
                     </div>
-                    <button onclick="openListingDetailModal(${item.id})" class="btn-glow px-4 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-xs group-hover:shadow-md">
+                    <button onclick="openListingDetailModal(${item.id})" class="btn-glow px-4 py-2 rounded-xl text-xs font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-xs group-hover:shadow-lg group-hover:scale-105 active:scale-95">
                         ${dict.viewAndReserve}
                     </button>
                 </div>
