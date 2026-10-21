@@ -157,12 +157,35 @@ public class AuthService : IAuthService
         if (!passwordValid)
         {
             await _userManager.AccessFailedAsync(user);
+            var failedCount = await _userManager.GetAccessFailedCountAsync(user);
+
+            // Progressive Security Ban: If persistent attempts reach 10, automatically suspend the account
+            if (failedCount >= 10)
+            {
+                user.Status = UserStatus.Suspended;
+                await _userManager.UpdateAsync(user);
+
+                var securityAudit = new AuditLog
+                {
+                    AdminId = user.Id,
+                    Action = "AutoSecuritySuspension",
+                    TargetEntity = "ApplicationUser",
+                    TargetId = user.Id,
+                    Details = $"Account '{user.Email}' was automatically suspended after 10 failed login attempts (Potential Brute-force attack). Requires Administrator review to reactivate.",
+                    Timestamp = DateTimeOffset.UtcNow
+                };
+                _context.AuditLogs.Add(securityAudit);
+                await _context.SaveChangesAsync();
+
+                return Result<AuthResponseDto>.Failure("Security Alert: Your account has been suspended due to persistent failed login attempts. Please contact a platform administrator to unlock your account.");
+            }
+
             if (await _userManager.IsLockedOutAsync(user))
             {
                 return Result<AuthResponseDto>.Failure("Account has been locked for 15 minutes due to 5 consecutive failed login attempts.");
             }
-            var failedCount = await _userManager.GetAccessFailedCountAsync(user);
-            var remaining = Math.Max(0, 5 - failedCount);
+
+            var remaining = Math.Max(0, 5 - (failedCount % 5 == 0 ? 5 : failedCount % 5));
             return Result<AuthResponseDto>.Failure($"Invalid email or password. ({remaining} attempts remaining before temporary account lockout)");
         }
 

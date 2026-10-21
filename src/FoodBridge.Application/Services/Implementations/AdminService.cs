@@ -175,6 +175,11 @@ public class AdminService : IAdminService
         }
 
         user.Status = suspend ? UserStatus.Suspended : UserStatus.Active;
+        if (!suspend && _userManager != null)
+        {
+            await _userManager.ResetAccessFailedCountAsync(user);
+            await _userManager.SetLockoutEndDateAsync(user, null);
+        }
 
         var audit = new AuditLog
         {
