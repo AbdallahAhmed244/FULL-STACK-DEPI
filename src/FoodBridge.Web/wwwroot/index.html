@@ -6,12 +6,13 @@
     <title>FoodBridge Platform — Food Surplus Management & Charity Redistribution</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
@@ -473,6 +474,30 @@ html[dir="rtl"] {
                 radial-gradient(at 100% 100%, rgba(5, 150, 105, 0.2) 0px, transparent 50%),
                 radial-gradient(at 0% 100%, rgba(13, 148, 136, 0.25) 0px, transparent 50%);
         }
+
+        /* RTL: flip direction */
+        html[dir="rtl"] .scroll-hidden.scroll-reveal-left  { transform: translateX(35px); }
+        html[dir="rtl"] .scroll-hidden.scroll-reveal-right { transform: translateX(-35px); }
+
+        /* Cards: make opacity fade together with transform */
+        .card-tilt-hover.scroll-reveal-scale,
+        .interactive-card.scroll-reveal-scale {
+          transition: opacity .75s cubic-bezier(0.16,1,0.3,1),
+                      transform .35s cubic-bezier(0.16,1,0.3,1),
+                      box-shadow .35s ease, border-color .35s ease;
+        }
+
+        /* Restore hover lift after reveal (.revealed uses !important on transform) */
+        .scroll-hidden.revealed.interactive-card:hover { transform: translateY(-5px) !important; }
+        .scroll-hidden.revealed.card-tilt-hover:hover  { transform: translateY(-8px) scale(1.02) !important; }
+        .interactive-card:hover, .card-tilt-hover:hover { transition-delay: 0ms !important; }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .scroll-hidden { opacity: 1 !important; transform: none !important; transition: none !important; }
+          .floating-orb-1, .floating-orb-2, .floating-orb-3,
+          .animate-bounce-subtle, .animate-float-slow, .animate-float-delayed { animation: none !important; }
+        }
     </style>
 </head>
 <body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
@@ -665,7 +690,7 @@ html[dir="rtl"] {
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-14 scroll-reveal">
                         <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 mb-4 shadow-xs">
-                            <i class="fa-solid fa-gears mr-2 animate-spin-slow"></i> <span data-i18n="howItWorksTitle">How FoodBridge Works</span>
+                            <i class="fa-solid fa-gears mr-2 animate-spin-slow"></i> <span data-i18n="howItWorksBadge">How It Works</span>
                         </span>
                         <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="howItWorksTitle">How FoodBridge Works</h2>
                         <p class="text-slate-500 text-lg max-w-2xl mx-auto" data-i18n="howItWorksSubtitle">A streamlined, secure, and real-time platform for food redistribution — from posting to pickup in minutes.</p>
@@ -1616,7 +1641,7 @@ html[dir="rtl"] {
         </div>
     </div>
 
-<div id="authModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="authModal" class="hidden fixed inset-0 z-[70] overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-700">
             <div class="flex items-center justify-between mb-4">
                 <h3 id="authModalTitle" class="font-heading font-bold text-xl text-slate-900" data-i18n="authSignInTitle">Sign In to FoodBridge</h3>
@@ -1762,7 +1787,7 @@ html[dir="rtl"] {
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelAdminPassword">Initial Password *</label>
-                    <input type="password" id="newAdminPassword" required minlength="6" placeholder="Min. 6 characters" data-i18n-placeholder="passwordMinPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <input type="password" id="newAdminPassword" required minlength="8" placeholder="Min. 8 characters" data-i18n-placeholder="passwordMinPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100 dark:border-slate-800">
                     <button type="button" onclick="closeCreateAdminModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">Cancel</button>
@@ -1830,7 +1855,7 @@ html[dir="rtl"] {
     
     
     <!-- Admin Maintenance Control Modal -->
-    <div id="adminMaintenanceModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div id="adminMaintenanceModal" class="hidden fixed inset-0 z-[70] overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
             <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div class="flex items-center space-x-2 rtl:space-x-reverse">
@@ -2012,9 +2037,22 @@ html[dir="rtl"] {
         </div>
     </div>
 
-<div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+<div id="toastContainer" class="fixed bottom-4 right-4 z-[90] flex flex-col space-y-2 pointer-events-none"></div>
 
-<script src="/app.js?v=2.4"></script>
+<script src="/js/config.js?v=3.0"></script>
+<script src="/js/i18n.js?v=3.0"></script>
+<script src="/js/theme.js?v=3.0"></script>
+<script src="/js/animations.js?v=3.0"></script>
+<script src="/js/ui.js?v=3.0"></script>
+<script src="/js/auth.js?v=3.0"></script>
+<script src="/js/signalr-client.js?v=3.0"></script>
+<script src="/js/maintenance.js?v=3.0"></script>
+<script src="/js/portals/explore.js?v=3.0"></script>
+<script src="/js/portals/provider.js?v=3.0"></script>
+<script src="/js/portals/charity.js?v=3.0"></script>
+<script src="/js/portals/admin.js?v=3.0"></script>
+<script src="/js/portals/impact.js?v=3.0"></script>
+<script src="/js/app.js?v=3.0"></script>
 </body>
 </html>
 

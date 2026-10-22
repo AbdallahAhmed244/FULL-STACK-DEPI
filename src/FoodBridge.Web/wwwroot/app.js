@@ -1,5 +1,5 @@
-
 const API_BASE = '/api';
+
 let currentUser = JSON.parse(localStorage.getItem('foodbridge_user')) || null;
 let currentView = 'landing';
 let currentCategoryFilter = null;
@@ -7,6 +7,8 @@ let currentDetailListing = null;
 let signalrConnection = null;
 let categoryChartInstance = null;
 let monthlyChartInstance = null;
+let reviewActiveRating = 5;
+
 let maintenanceStatus = {
     isMaintenanceActive: false,
     reason: '',
@@ -16,7 +18,19 @@ let maintenanceStatus = {
     activatedByAdminName: null
 };
 
-let currentLang = localStorage.getItem('foodbridge_lang') || 'en';
+let currentLang = localStorage.getItem('foodbridge_lang') || 'ar';
+
+function getAuthHeaders(includeJson = true) {
+    const headers = {};
+    if (includeJson) {
+        headers['Content-Type'] = 'application/json';
+    }
+    if (currentUser && currentUser.token) {
+        headers['Authorization'] = `Bearer ${currentUser.token}`;
+    }
+    return headers;
+}
+
 
 const i18nDict = {
     en: {
@@ -47,6 +61,7 @@ const i18nDict = {
         statCharities: 'Charity Partners',
         statCharitiesSub: 'Verified & active',
         howItWorksTitle: 'How FoodBridge Works',
+        howItWorksBadge: 'How It Works',
         howItWorksSubtitle: 'A streamlined, secure, and real-time platform for food redistribution — from posting to pickup in minutes.',
         step1Title: 'Provider Posts Surplus',
         step1Desc: 'Restaurants, bakeries, and hotels list available food with details — quantity, pickup time, allergens, storage conditions, and photos.',
@@ -405,6 +420,7 @@ const i18nDict = {
         statCharities: 'شريك من الجمعيات',
         statCharitiesSub: 'موثقة ونشطة بالمنصة',
         howItWorksTitle: 'كيف تعمل منصة FoodBridge؟',
+        howItWorksBadge: 'آلية العمل',
         howItWorksSubtitle: 'منظومة سريعة وآمنة وفورية لإعادة توزيع فائض الطعام — من النشر حتى الاستلام في دقائق.',
         step1Title: '1. نشر الفائض من المزود',
         step1Desc: 'تقوم المطاعم والفنادق والمخابز بإضافة الفائض مع تفاصيل الكمية، الموعد، شروط الحفظ، والحساسية مع الصور.',
@@ -783,31 +799,9 @@ function formatStatus(status) {
     return isAr ? (arMap[status] || status) : status;
 }
 
-function initTheme() {
-    const savedTheme = localStorage.getItem('foodbridge_theme') || 'light';
-    if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        const icon = document.getElementById('themeToggleIcon');
-        if (icon) icon.className = 'fa-solid fa-sun text-base text-amber-400';
-    } else {
-        document.documentElement.classList.remove('dark');
-        const icon = document.getElementById('themeToggleIcon');
-        if (icon) icon.className = 'fa-solid fa-moon text-base text-slate-600';
-    }
-}
-
-function toggleTheme() {
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('foodbridge_theme', isDark ? 'dark' : 'light');
-    const icon = document.getElementById('themeToggleIcon');
-    if (icon) {
-        icon.className = isDark ? 'fa-solid fa-sun text-base text-amber-400' : 'fa-solid fa-moon text-base text-slate-600';
-    }
-    showToast(isDark ? 'Dark Mode' : 'Light Mode', isDark ? (currentLang === 'ar' ? 'تم تفعيل الوضع الليلي' : 'Dark mode enabled') : (currentLang === 'ar' ? 'تم تفعيل الوضع النهاري' : 'Light mode enabled'), 'info');
-}
 
 function initLanguage() {
-    currentLang = localStorage.getItem('foodbridge_lang') || 'en';
+    currentLang = localStorage.getItem('foodbridge_lang') || 'ar';
     applyLanguage(currentLang);
 }
 
@@ -829,7 +823,6 @@ function applyLanguage(lang) {
     if (langBtn) langBtn.textContent = dict.langBtnText;
     const navLanding = document.getElementById('nav-landing');
     if (navLanding) navLanding.innerHTML = `<i class="fa-solid fa-house ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navHome}`;
-
 
     const navExplore = document.getElementById('nav-explore');
     if (navExplore) navExplore.innerHTML = `<i class="fa-solid fa-compass ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navBrowse}`;
@@ -895,6 +888,8 @@ function applyLanguage(lang) {
     const maintLangBtn = document.getElementById('maintenanceLangBtnText');
     if (maintLangBtn) maintLangBtn.textContent = isAr ? 'English' : 'عربي';
 
+    if (typeof initScrollReveal === 'function') initScrollReveal();
+
     if (currentView === 'explore') loadExploreListings();
     else if (currentView === 'provider') loadProviderPortal();
     else if (currentView === 'charity') loadCharityPortal();
@@ -903,16 +898,625 @@ function applyLanguage(lang) {
     else if (currentView === 'landing') loadLandingStats();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    initLanguage();
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('foodbridge_theme') || 'light';
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        const icon = document.getElementById('themeToggleIcon');
+        if (icon) icon.className = 'fa-solid fa-sun text-base text-amber-400';
+    } else {
+        document.documentElement.classList.remove('dark');
+        const icon = document.getElementById('themeToggleIcon');
+        if (icon) icon.className = 'fa-solid fa-moon text-base text-slate-600';
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('foodbridge_theme', isDark ? 'dark' : 'light');
+    const icon = document.getElementById('themeToggleIcon');
+    if (icon) {
+        icon.className = isDark ? 'fa-solid fa-sun text-base text-amber-400' : 'fa-solid fa-moon text-base text-slate-600';
+    }
+    showToast(isDark ? 'Dark Mode' : 'Light Mode', isDark ? (currentLang === 'ar' ? 'تم تفعيل الوضع الليلي' : 'Dark mode enabled') : (currentLang === 'ar' ? 'تم تفعيل الوضع النهاري' : 'Light mode enabled'), 'info');
+}
+
+
+let scrollRevealObserver = null;
+let scrollMutationObserver = null;
+
+function observeScrollElement(el) {
+    if (!el || el.classList.contains('revealed')) return;
+
+    if (!('IntersectionObserver' in window)) {
+        el.classList.add('revealed');
+        return;
+    }
+
+    el.classList.add('scroll-hidden');
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('revealed');
+        return;
+    }
+
+    if (scrollRevealObserver) {
+        scrollRevealObserver.observe(el);
+    }
+}
+
+function initScrollReveal() {
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale').forEach(el => {
+            el.classList.add('revealed');
+        });
+        return;
+    }
+
+    if (!scrollRevealObserver) {
+        scrollRevealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -40px 0px'
+        });
+    }
+
+    const revealElements = document.querySelectorAll(
+        '.scroll-reveal:not(.revealed), .scroll-reveal-left:not(.revealed), .scroll-reveal-right:not(.revealed), .scroll-reveal-scale:not(.revealed)'
+    );
+
+    revealElements.forEach(el => observeScrollElement(el));
+
+    if (!scrollMutationObserver && 'MutationObserver' in window) {
+        scrollMutationObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        if (node.matches && node.matches('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale')) {
+                            observeScrollElement(node);
+                        }
+                        if (node.querySelectorAll) {
+                            node.querySelectorAll('.scroll-reveal:not(.revealed), .scroll-reveal-left:not(.revealed), .scroll-reveal-right:not(.revealed), .scroll-reveal-scale:not(.revealed)').forEach(child => {
+                                observeScrollElement(child);
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        scrollMutationObserver.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+}
+
+function init3DTilt() {
+    document.querySelectorAll('.card-tilt-hover, .glass-stat-card').forEach(card => {
+        if (card.dataset.tiltInitialized) return;
+        card.dataset.tiltInitialized = 'true';
+
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -6;
+            const rotateY = ((x - centerX) / centerX) * 6;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-8px) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+}
+
+
+function animateCounter(elementId, targetValue, duration = 1400) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const end = parseInt(targetValue, 10);
+    if (isNaN(end)) {
+        el.textContent = targetValue;
+        return;
+    }
+
+    let start = 0;
+    const startTime = performance.now();
+
+    function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(2, -10 * progress);
+        const current = Math.floor(start + (end - start) * easeOut);
+
+        el.textContent = `${current}+`;
+
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            el.textContent = `${end}+`;
+        }
+    }
+
+    requestAnimationFrame(updateCounter);
+}
+
+
+
+function showToast(title, message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    const isAr = currentLang === 'ar';
+    let finalTitle = title;
+    let finalMsg = message;
+
+    if (isAr) {
+        if (toastArDict[title]) finalTitle = toastArDict[title];
+        if (toastArDict[message]) finalMsg = toastArDict[message];
+        else if (typeof message === 'string' && message.startsWith('Signed in as ')) {
+            finalMsg = 'تم تسجيل الدخول باسم ' + message.replace('Signed in as ', '');
+        }
+    }
+
+    const icon = type === 'success' ? 'fa-circle-check text-emerald-500' :
+                 type === 'error' ? 'fa-circle-xmark text-rose-500' :
+                 type === 'warning' ? 'fa-triangle-exclamation text-amber-500' : 'fa-bell text-blue-500';
+
+    const toast = document.createElement('div');
+    toast.className = `pointer-events-auto max-w-sm w-full bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200/90 dark:border-slate-700 p-4 flex items-start space-x-3 ${isAr ? 'space-x-reverse' : ''} toast-animate-in`;
+    
+    const dismiss = () => {
+        toast.classList.remove('toast-animate-in');
+        toast.classList.add('toast-animate-out');
+        setTimeout(() => { if (toast.parentElement) toast.remove(); }, 240);
+    };
+
+    toast.innerHTML = `
+        <i class="fa-solid ${icon} text-lg shrink-0 mt-0.5"></i>
+        <div class="flex-1">
+            <h5 class="text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHtml(finalTitle)}</h5>
+            <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">${escapeHtml(finalMsg)}</p>
+        </div>
+        <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    `;
+
+    toast.querySelector('button').onclick = dismiss;
+    container.appendChild(toast);
+    setTimeout(dismiss, 5000);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function clearCachedViews() {
+    const idsToClear = [
+        'adminVerificationList',
+        'adminUsersTableBody',
+        'adminReportedListings',
+        'adminReportedReviews',
+        'adminProblemReports',
+        'adminAuditLogsTableBody',
+        'providerListingsTableBody',
+        'providerIncomingRequestsList',
+        'charityActiveReservationsList',
+        'notificationList'
+    ];
+    idsToClear.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
+
+    const statIds = [
+        'adminStatUsers', 'adminStatProviders', 'adminStatCharities',
+        'adminStatPendingVerifications', 'adminBadgeVerifications',
+        'adminStatCompleted', 'adminStatRedistributed', 'adminStatReports',
+        'providerStatActive', 'providerStatCompleted', 'providerStatPending', 'providerStatSaved',
+        'charityStatActive', 'charityStatCompleted', 'charityStatPeople'
+    ];
+    statIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '0';
+    });
+}
+
+function updateNavLinks() {
+    const navProvider = document.getElementById('nav-provider');
+    const navCharity = document.getElementById('nav-charity');
+    const navAdmin = document.getElementById('nav-admin');
+
+    if (!currentUser) {
+        if (navAdmin) navAdmin.classList.add('hidden');
+        if (navProvider) navProvider.classList.add('hidden');
+        if (navCharity) navCharity.classList.add('hidden');
+    } else {
+        if (currentUser.role === 'Admin') {
+            if (navAdmin) navAdmin.classList.remove('hidden');
+            if (navProvider) navProvider.classList.remove('hidden');
+            if (navCharity) navCharity.classList.remove('hidden');
+        } else if (currentUser.role === 'Provider') {
+            if (navAdmin) navAdmin.classList.add('hidden');
+            if (navProvider) navProvider.classList.remove('hidden');
+            if (navCharity) navCharity.classList.add('hidden');
+        } else if (currentUser.role === 'Charity') {
+            if (navAdmin) navAdmin.classList.add('hidden');
+            if (navProvider) navProvider.classList.add('hidden');
+            if (navCharity) navCharity.classList.remove('hidden');
+        }
+    }
+}
+
+function navigateTo(viewName) {
+    const isAr = currentLang === 'ar';
+
+    if (viewName === 'admin' && (!currentUser || currentUser.role !== 'Admin')) {
+        showToast(isAr ? 'تنبيه أمني' : 'Access Restricted', isAr ? 'لوحة المشرف مخصصة للمسؤولين فقط. يرجى تسجيل الدخول بحساب المشرف.' : 'Please sign in with an Administrator account.', 'warning');
+        openAuthModal('login');
+        return;
+    }
+    if (viewName === 'provider' && (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin'))) {
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة المزودين مخصصة لمزودي الطعام المعتمدين.' : 'Please sign in with a Provider account.', 'warning');
+        openAuthModal('login');
+        return;
+    }
+    if (viewName === 'charity' && (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin'))) {
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة الجمعيات مخصصة للجمعيات الخيرية المسجلة.' : 'Please sign in with a Charity account.', 'warning');
+        openAuthModal('login');
+        return;
+    }
+
+    currentView = viewName;
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.className = 'nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition';
+    });
+    const activeNav = document.getElementById(`nav-${viewName}`);
+    if (activeNav) {
+        activeNav.className = 'nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center shadow-xs';
+    }
+
+    ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'].forEach(v => {
+        const section = document.getElementById(`view-${v}`);
+        if (section) {
+            section.classList.add('hidden');
+            section.classList.remove('fade-in-section');
+        }
+    });
+
+    const targetSection = document.getElementById(`view-${viewName}`);
+    if (targetSection) {
+        targetSection.classList.remove('hidden');
+        void targetSection.offsetWidth;
+        targetSection.classList.add('fade-in-section');
+    }
+
+    if (viewName === 'explore') loadExploreListings();
+    else if (viewName === 'provider') loadProviderPortal();
+    else if (viewName === 'charity') loadCharityPortal();
+    else if (viewName === 'admin') loadAdminPortal();
+    else if (viewName === 'impact') loadImpactStats();
+    else if (typeof initScrollReveal === 'function') { setTimeout(initScrollReveal, 50); }
+    if (viewName === 'landing') {
+        loadLandingStats();
+        setTimeout(initScrollReveal, 60);
+    }
+}
+
+
+
+function openAuthModal(tab = 'login') {
+    document.getElementById('authModal').classList.remove('hidden');
+    setAuthTab(tab);
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').classList.add('hidden');
+}
+
+function setAuthTab(tab) {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('regProviderForm').classList.add('hidden');
+    document.getElementById('regCharityForm').classList.add('hidden');
+
+    ['login', 'reg-provider', 'reg-charity'].forEach(t => {
+        document.getElementById(`atab-${t}`).className = 'py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+    });
+
+    if (tab === 'login') {
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('atab-login').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
+        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل الدخول إلى FoodBridge' : 'Sign In to FoodBridge';
+    } else if (tab === 'reg-provider') {
+        document.getElementById('regProviderForm').classList.remove('hidden');
+        document.getElementById('atab-reg-provider').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
+        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل مزود طعام جديد' : 'Register Food Provider';
+    } else if (tab === 'reg-charity') {
+        document.getElementById('regCharityForm').classList.remove('hidden');
+        document.getElementById('atab-reg-charity').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
+        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل جمعية خيرية جديدة' : 'Register Charitable Organization';
+    }
+}
+
+function showSignInModal() { openAuthModal('login'); }
+async function handleLoginSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+        showToast('Missing Fields', 'Please enter your email and password.', 'warning');
+        return;
+    }
+
+    if (btn) { btn.disabled = true; btn.textContent = 'Signing in...'; }
+    const success = await performLogin(email, password);
+    if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
+    if (success) closeAuthModal();
+}
+
+async function performLogin(email, password) {
+    const isAr = currentLang === 'ar';
+    try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            showToast(isAr ? 'فشل تسجيل الدخول' : 'Login Failed', data.message || (isAr ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة.' : 'Invalid email or password.'), 'error');
+            return false;
+        }
+
+        currentUser = data;
+        localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
+        closeAuthModal();
+        updateAuthUI();
+        showToast(isAr ? 'أهلاً بك مجدداً!' : 'Welcome back!', isAr ? `تم تسجيل الدخول بنجاح بصفتك ${currentUser.fullName}` : `Signed in as ${currentUser.fullName}`, 'success');
+
+        if (typeof handleMaintenanceModeChanged === 'function') {
+            handleMaintenanceModeChanged(maintenanceStatus);
+        }
+
+        if (signalrConnection) await signalrConnection.stop();
+        await initSignalR();
+
+        if (maintenanceStatus.isMaintenanceActive && currentUser.role !== 'Admin') {
+            showToast(isAr ? 'وضع الصيانة مفعّل' : 'Maintenance Mode Active', isAr ? 'المنصة متوقفة حالياً للصيانة. يرجى الانتظار لحين انتهاء التحديثات.' : 'Platform is paused for maintenance. Operations will resume shortly.', 'info');
+            return true;
+        }
+
+        if (currentUser.role === 'Admin') navigateTo('admin');
+        else if (currentUser.role === 'Provider') navigateTo('provider');
+        else if (currentUser.role === 'Charity') navigateTo('charity');
+        else navigateTo('explore');
+
+        return true;
+    } catch (err) {
+        showToast(isAr ? 'خطأ' : 'Error', isAr ? 'تعذر الاتصال بالخادم. يرجى المحاولة لاحقاً.' : 'Unable to connect. Please try again.', 'error');
+        return false;
+    }
+}
+
+async function handleRegisterProviderSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    const password = document.getElementById('regPPassword').value;
+    const confirmPassword = document.getElementById('regPConfirmPassword')?.value;
+
+    if (confirmPassword !== undefined && password !== confirmPassword) {
+        showToast('Password Mismatch', 'Passwords do not match.', 'error');
+        return;
+    }
+
+    const payload = {
+        fullName: document.getElementById('regPFullName').value.trim(),
+        organizationName: document.getElementById('regPOrgName').value.trim(),
+        specificType: document.getElementById('regPSpecificType').value,
+        email: document.getElementById('regPEmail').value.trim(),
+        organizationAddress: document.getElementById('regPAddress').value.trim(),
+        password
+    };
+
+    if (!payload.fullName || !payload.organizationName || !payload.email || !payload.password || !payload.organizationAddress) {
+        showToast('Missing Fields', 'Please fill in all required fields.', 'warning');
+        return;
+    }
+
+    try {
+        if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
+        const res = await fetch(`${API_BASE}/auth/register-provider`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            showToast('Registration Error', data.message || 'Registration failed. Please try again.', 'error');
+            return;
+        }
+
+        currentUser = data;
+        localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
+        updateAuthUI();
+        closeAuthModal();
+        if (signalrConnection) await signalrConnection.stop();
+        await initSignalR();
+        showToast('Account Created! 🎉', 'Welcome to FoodBridge! Please check your email to verify your account, then await admin approval.', 'success');
+        navigateTo('provider');
+    } catch (err) {
+        showToast('Error', 'Unable to connect. Please try again.', 'error');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Create Provider Account'; }
+    }
+}
+
+async function handleRegisterCharitySubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    const password = document.getElementById('regCPassword').value;
+    const confirmPassword = document.getElementById('regCConfirmPassword')?.value;
+
+    if (confirmPassword !== undefined && password !== confirmPassword) {
+        showToast('Password Mismatch', 'Passwords do not match.', 'error');
+        return;
+    }
+
+    const payload = {
+        fullName: document.getElementById('regCFullName').value.trim(),
+        organizationName: document.getElementById('regCOrgName').value.trim(),
+        specificType: document.getElementById('regCSpecificType').value,
+        email: document.getElementById('regCEmail').value.trim(),
+        targetCommunityDescription: document.getElementById('regCCommunity').value.trim(),
+        organizationAddress: document.getElementById('regCAddress').value.trim(),
+        password
+    };
+
+    if (!payload.fullName || !payload.organizationName || !payload.email || !payload.password || !payload.organizationAddress) {
+        showToast('Missing Fields', 'Please fill in all required fields.', 'warning');
+        return;
+    }
+
+    try {
+        if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
+        const res = await fetch(`${API_BASE}/auth/register-charity`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            showToast('Registration Error', data.message || 'Registration failed. Please try again.', 'error');
+            return;
+        }
+
+        currentUser = data;
+        localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
+        updateAuthUI();
+        closeAuthModal();
+        if (signalrConnection) await signalrConnection.stop();
+        await initSignalR();
+        showToast('Account Created! 🎉', 'Welcome to FoodBridge! You can now browse and reserve surplus food donations.', 'success');
+        navigateTo('charity');
+    } catch (err) {
+        showToast('Error', 'Unable to connect. Please try again.', 'error');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Create Charity Account'; }
+    }
+}
+
+function updateAuthUI() {
+    const container = document.getElementById('authContainer');
+    if (!container) return;
+
+    const dict = i18nDict[currentLang] || i18nDict.en;
+    const isAr = currentLang === 'ar';
+
+    if (currentUser) {
+        const roleColor = currentUser.role === 'Admin' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200' :
+                          currentUser.role === 'Provider' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200';
+
+        const roleText = isAr ? (currentUser.role === 'Admin' ? 'مشرف' : currentUser.role === 'Provider' ? 'مزود طعام' : 'جمعية خيرية') : currentUser.role;
+
+        container.innerHTML = `
+            <div class="flex items-center space-x-2.5">
+                <div class="${isAr ? 'text-left' : 'text-right'} hidden sm:block">
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHtml(currentUser.fullName)}</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400">${escapeHtml(currentUser.organizationName || roleText)}</div>
+                </div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${roleColor}">
+                    ${roleText}
+                </span>
+                <button onclick="logout()" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="${dict.signOut}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+        `;
+
+        const pBadge = document.getElementById('providerVerificationBadge');
+        if (pBadge) {
+            pBadge.className = currentUser.isVerified 
+                ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800'
+                : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800';
+            pBadge.innerHTML = currentUser.isVerified 
+                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'منظمة موثقة ومعتمدة' : 'Verified Organization'}`
+                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'بانتظار موافقة المشرف' : 'Verification Pending Admin Approval'}`;
+        }
+
+        const cBadge = document.getElementById('charityVerificationBadge');
+        if (cBadge) {
+            cBadge.className = currentUser.isVerified 
+                ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800'
+                : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800';
+            cBadge.innerHTML = currentUser.isVerified 
+                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'منظمة موثقة ومعتمدة' : 'Verified Organization'}`
+                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'بانتظار موافقة المشرف' : 'Verification Pending Admin Approval'}`;
+        }
+
+    } else {
+        container.innerHTML = `
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <button onclick="openAuthModal('login')" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    ${dict.signIn}
+                </button>
+                <button onclick="openAuthModal('reg-provider')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
+                    ${dict.register}
+                </button>
+            </div>
+        `;
+    }
+    updateNavLinks();
+}
+
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('foodbridge_user');
+    clearCachedViews();
     updateAuthUI();
-    initSignalR();
+    const isAr = currentLang === 'ar';
+    showToast(isAr ? 'تم تسجيل الخروج' : 'Signed Out', isAr ? 'تم تسجيل الخروج بنجاح وتأمين الجلسة.' : 'You have been signed out successfully.', 'info');
     navigateTo('landing');
-    initScrollReveal();
-    init3DTilt();
-    checkMaintenanceStatus();
-});
+    if (signalrConnection) {
+        signalrConnection.stop();
+    }
+}
+
+
 
 async function initSignalR() {
     try {
@@ -1002,265 +1606,295 @@ function handleIncomingNotification(notification) {
     }
 }
 
-function updateAuthUI() {
-    const container = document.getElementById('authContainer');
-    if (!container) return;
-
-    const dict = i18nDict[currentLang] || i18nDict.en;
-    const isAr = currentLang === 'ar';
-
-    if (currentUser) {
-        const roleColor = currentUser.role === 'Admin' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200' :
-                          currentUser.role === 'Provider' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200';
-
-        const roleText = isAr ? (currentUser.role === 'Admin' ? 'مشرف' : currentUser.role === 'Provider' ? 'مزود طعام' : 'جمعية خيرية') : currentUser.role;
-
-        container.innerHTML = `
-            <div class="flex items-center space-x-2.5">
-                <div class="${isAr ? 'text-left' : 'text-right'} hidden sm:block">
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHtml(currentUser.fullName)}</div>
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400">${escapeHtml(currentUser.organizationName || roleText)}</div>
-                </div>
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${roleColor}">
-                    ${roleText}
-                </span>
-                <button onclick="logout()" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="${dict.signOut}">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                </button>
-            </div>
-        `;
-
-        const pBadge = document.getElementById('providerVerificationBadge');
-        if (pBadge) {
-            pBadge.className = currentUser.isVerified 
-                ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800'
-                : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800';
-            pBadge.innerHTML = currentUser.isVerified 
-                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'منظمة موثقة ومعتمدة' : 'Verified Organization'}`
-                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'بانتظار موافقة المشرف' : 'Verification Pending Admin Approval'}`;
-        }
-
-        const cBadge = document.getElementById('charityVerificationBadge');
-        if (cBadge) {
-            cBadge.className = currentUser.isVerified 
-                ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800'
-                : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800';
-            cBadge.innerHTML = currentUser.isVerified 
-                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'منظمة موثقة ومعتمدة' : 'Verified Organization'}`
-                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'بانتظار موافقة المشرف' : 'Verification Pending Admin Approval'}`;
-        }
-
-    } else {
-        container.innerHTML = `
-            <div class="flex items-center space-x-1.5 sm:space-x-2">
-                <button onclick="openAuthModal('login')" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                    ${dict.signIn}
-                </button>
-                <button onclick="openAuthModal('reg-provider')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
-                    ${dict.register}
-                </button>
-            </div>
-        `;
-    }
-    updateNavLinks();
-}
-
-function updateNavLinks() {
-    const navProvider = document.getElementById('nav-provider');
-    const navCharity = document.getElementById('nav-charity');
-    const navAdmin = document.getElementById('nav-admin');
-
-    if (!currentUser) {
-        if (navAdmin) navAdmin.classList.add('hidden');
-        if (navProvider) navProvider.classList.add('hidden');
-        if (navCharity) navCharity.classList.add('hidden');
-    } else {
-        if (currentUser.role === 'Admin') {
-            if (navAdmin) navAdmin.classList.remove('hidden');
-            if (navProvider) navProvider.classList.remove('hidden');
-            if (navCharity) navCharity.classList.remove('hidden');
-        } else if (currentUser.role === 'Provider') {
-            if (navAdmin) navAdmin.classList.add('hidden');
-            if (navProvider) navProvider.classList.remove('hidden');
-            if (navCharity) navCharity.classList.add('hidden');
-        } else if (currentUser.role === 'Charity') {
-            if (navAdmin) navAdmin.classList.add('hidden');
-            if (navProvider) navProvider.classList.add('hidden');
-            if (navCharity) navCharity.classList.remove('hidden');
-        }
+function toggleNotificationDropdown() {
+    const d = document.getElementById('notificationDropdown');
+    d.classList.toggle('hidden');
+    if (!d.classList.contains('hidden')) {
+        loadNotifications();
     }
 }
 
-function clearCachedViews() {
-    const idsToClear = [
-        'adminVerificationList',
-        'adminUsersTableBody',
-        'adminReportedListings',
-        'adminReportedReviews',
-        'adminProblemReports',
-        'adminAuditLogsTableBody',
-        'providerListingsTableBody',
-        'providerIncomingRequestsList',
-        'charityActiveReservationsList',
-        'notificationList'
-    ];
-    idsToClear.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = '';
-    });
+async function loadNotifications() {
+    if (!currentUser) return;
+    const listContainer = document.getElementById('notificationList');
+    const badge = document.getElementById('unreadBadge');
 
-    const statIds = [
-        'adminStatUsers', 'adminStatProviders', 'adminStatCharities',
-        'adminStatPendingVerifications', 'adminBadgeVerifications',
-        'adminStatCompleted', 'adminStatRedistributed', 'adminStatReports',
-        'providerStatActive', 'providerStatCompleted', 'providerStatPending', 'providerStatSaved',
-        'charityStatActive', 'charityStatCompleted', 'charityStatPeople'
-    ];
-    statIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = '0';
-    });
-}
-
-function logout() {
-    currentUser = null;
-    localStorage.removeItem('foodbridge_user');
-    clearCachedViews();
-    updateAuthUI();
-    const isAr = currentLang === 'ar';
-    showToast(isAr ? 'تم تسجيل الخروج' : 'Signed Out', isAr ? 'تم تسجيل الخروج بنجاح وتأمين الجلسة.' : 'You have been signed out successfully.', 'info');
-    navigateTo('landing');
-    if (signalrConnection) {
-        signalrConnection.stop();
-    }
-}
-
-async function performLogin(email, password) {
     try {
-        const res = await fetch(`${API_BASE}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            showToast('Login Failed', data.message || 'Invalid email or password.', 'error');
-            return false;
+        const [listRes, countRes] = await Promise.all([
+            fetch(`${API_BASE}/notifications`, { headers: { 'Authorization': `Bearer ${currentUser.token}` } }),
+            fetch(`${API_BASE}/notifications/unread-count`, { headers: { 'Authorization': `Bearer ${currentUser.token}` } })
+        ]);
+
+        const notifications = await listRes.json();
+        const { count } = await countRes.json();
+
+        if (count > 0) {
+            badge.textContent = count;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
         }
 
-        currentUser = data;
-        localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
-        updateAuthUI();
-        showToast('Welcome back!', `Signed in as ${currentUser.fullName}`, 'success');
+        if (!notifications || notifications.length === 0) {
+            listContainer.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">No notifications yet.</div>`;
+            return;
+        }
 
-        if (signalrConnection) await signalrConnection.stop();
-        await initSignalR();
+        listContainer.innerHTML = notifications.map(n => `
+            <div class="p-3.5 hover:bg-slate-50 transition flex items-start space-x-3 cursor-pointer ${!n.isRead ? 'bg-emerald-50/40' : ''}" onclick="markNotificationRead(${n.id})">
+                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0 ${!n.isRead ? 'bg-emerald-500' : 'bg-transparent'}"></div>
+                <div class="flex-1">
+                    <div class="font-bold text-xs text-slate-800">${escapeHtml(n.title)}</div>
+                    <div class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">${escapeHtml(n.message)}</div>
+                    <div class="text-[10px] text-slate-400 mt-1">${new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                </div>
+            </div>
+        `).join('');
 
-        if (currentUser.role === 'Admin') navigateTo('admin');
-        else if (currentUser.role === 'Provider') navigateTo('provider');
-        else if (currentUser.role === 'Charity') navigateTo('charity');
-        else navigateTo('explore');
-
-        return true;
     } catch (err) {
-        showToast('Error', 'Unable to connect. Please try again.', 'error');
-        return false;
+        console.error('Error fetching notifications:', err);
     }
 }
 
-let scrollRevealObserver = null;
-
-
-function init3DTilt() {
-    document.querySelectorAll('.card-tilt-hover, .glass-stat-card').forEach(card => {
-        if (card.dataset.tiltInitialized) return;
-        card.dataset.tiltInitialized = 'true';
-
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -6;
-            const rotateY = ((x - centerX) / centerX) * 6;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-8px) scale3d(1.02, 1.02, 1.02)`;
+async function markNotificationRead(id) {
+    if (!currentUser) return;
+    try {
+        await fetch(`${API_BASE}/notifications/${id}/read`, {
+            method: 'PATCH',
+            headers: { 'Authorization': `Bearer ${currentUser.token}` }
         });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = '';
-        });
-    });
+        loadNotifications();
+    } catch (err) {}
 }
 
-function initScrollReveal() {
-    const revealElements = document.querySelectorAll(
-        '.scroll-reveal:not(.revealed), .scroll-reveal-left:not(.revealed), .scroll-reveal-right:not(.revealed), .scroll-reveal-scale:not(.revealed)'
-    );
+async function markAllNotificationsRead() {
+    if (!currentUser) return;
+    try {
+        await fetch(`${API_BASE}/notifications/mark-all-read`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${currentUser.token}` }
+        });
+        loadNotifications();
+    } catch (err) {}
+}
 
-    if (!revealElements.length) return;
+function prependNotificationItem(n) {
+    const listContainer = document.getElementById('notificationList');
+    if (!listContainer) return;
 
-    if (!('IntersectionObserver' in window)) {
-        revealElements.forEach(el => el.classList.add('revealed'));
-        return;
-    }
+    const itemHtml = `
+        <div class="p-3.5 hover:bg-slate-50 transition flex items-start space-x-3 cursor-pointer bg-emerald-50/60" onclick="markNotificationRead(${n.id})">
+            <div class="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-emerald-500 animate-ping"></div>
+            <div class="flex-1">
+                <div class="font-bold text-xs text-slate-800">${escapeHtml(n.title)}</div>
+                <div class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">${escapeHtml(n.message)}</div>
+                <div class="text-[10px] text-slate-400 mt-1">Just now</div>
+            </div>
+        </div>
+    `;
+    listContainer.insertAdjacentHTML('afterbegin', itemHtml);
+}
 
-    if (scrollRevealObserver) {
-        scrollRevealObserver.disconnect();
-    }
 
-    scrollRevealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                observer.unobserve(entry.target);
+
+async function checkMaintenanceStatus(manualCheck = false) {
+    try {
+        const res = await fetch(`${API_BASE}/admin/maintenance/status`);
+        if (res.ok) {
+            const data = await res.json();
+            handleMaintenanceModeChanged(data);
+            if (manualCheck) {
+                const isAr = currentLang === 'ar';
+                if (data.isMaintenanceActive) {
+                    showToast(
+                        isAr ? 'الصيانة لا تزال جارية' : 'Maintenance Ongoing',
+                        isAr ? 'يجري العمل حالياً على التحديثات وسنعود في أقرب وقت.' : 'System updates are still in progress. Please check again soon.',
+                        'info'
+                    );
+                } else {
+                    showToast(
+                        isAr ? 'النظام متاح الآن!' : 'System Online!',
+                        isAr ? 'عادت المنصة للعمل بصورة طبيعية.' : 'Platform services have been fully restored.',
+                        'success'
+                    );
+                }
             }
+        }
+    } catch (err) {
+        console.error('Error checking maintenance status:', err);
+    }
+}
+
+function handleMaintenanceModeChanged(status) {
+    if (!status) return;
+    maintenanceStatus = status;
+
+    const isAr = currentLang === 'ar';
+    const dict = i18nDict[currentLang] || i18nDict.en;
+
+    const dot = document.getElementById('adminMaintenanceStatusDot');
+    const title = document.getElementById('adminMaintenanceStatusTitle');
+    const subtitle = document.getElementById('adminMaintenanceStatusSubtitle');
+    const toggleBtn = document.getElementById('btnAdminMaintenanceToggle');
+    const toggleText = document.getElementById('btnAdminMaintenanceToggleText');
+
+    if (dot && title && subtitle && toggleBtn && toggleText) {
+        if (status.isMaintenanceActive) {
+            dot.className = 'w-3 h-3 rounded-full bg-rose-500 animate-ping';
+            title.textContent = dict.systemMaintenanceStatus;
+            subtitle.textContent = dict.systemMaintenanceDesc;
+            toggleBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-emerald-600 text-white hover:bg-emerald-700';
+            toggleText.textContent = dict.btnUnlockMaintenance;
+        } else {
+            dot.className = 'w-3 h-3 rounded-full bg-emerald-500 animate-pulse';
+            title.textContent = dict.systemOnlineStatus;
+            subtitle.textContent = dict.systemOnlineDesc;
+            toggleBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300';
+            toggleText.textContent = dict.btnLockMaintenance;
+        }
+    }
+
+    const adminBanner = document.getElementById('adminMaintenanceBanner');
+    if (adminBanner) {
+        if (status.isMaintenanceActive && currentUser && currentUser.role === 'Admin') {
+            adminBanner.classList.remove('hidden');
+        } else {
+            adminBanner.classList.add('hidden');
+        }
+    }
+
+    const overlay = document.getElementById('maintenanceOverlay');
+    if (overlay) {
+        if (status.isMaintenanceActive) {
+            if (currentUser && currentUser.role === 'Admin') {
+                overlay.classList.add('hidden');
+            } else {
+                overlay.classList.remove('hidden');
+                renderMaintenanceScreen();
+            }
+        } else {
+            overlay.classList.add('hidden');
+        }
+    }
+}
+
+function renderMaintenanceScreen() {
+    const isAr = currentLang === 'ar';
+    const reasonDisplay = document.getElementById('maintenanceReasonDisplay');
+    const durationDisplay = document.getElementById('maintenanceDurationDisplay');
+    const startedDisplay = document.getElementById('maintenanceStartedDisplay');
+
+    if (reasonDisplay) {
+        let text = isAr 
+            ? (maintenanceStatus.reasonAr || maintenanceStatus.reason || 'تحديثات أمنية وترقية قاعدة البيانات')
+            : (maintenanceStatus.reason || maintenanceStatus.reasonAr || 'Security upgrades and database optimization');
+        reasonDisplay.textContent = text;
+    }
+
+    if (durationDisplay) {
+        let dur = maintenanceStatus.estimatedDuration || '';
+        if (dur.includes(' / ')) {
+            const parts = dur.split(' / ');
+            dur = isAr ? parts[0] : parts[1];
+        } else if (!dur) {
+            dur = isAr ? '30-45 دقيقة' : '30-45 Minutes';
+        }
+        durationDisplay.textContent = dur;
+    }
+
+    if (startedDisplay) {
+        if (maintenanceStatus.activatedAt) {
+            const date = new Date(maintenanceStatus.activatedAt);
+            startedDisplay.textContent = date.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }) + ' (' + date.toLocaleDateString(isAr ? 'ar-EG' : 'en-US') + ')';
+        } else {
+            startedDisplay.textContent = '-';
+        }
+    }
+}
+
+function openAdminMaintenanceModal() {
+    if (!currentUser || currentUser.role !== 'Admin') return;
+    const isAr = currentLang === 'ar';
+
+    const radioEnable = document.getElementById('radioEnableMaintenance');
+    const radioDisable = document.getElementById('radioDisableMaintenance');
+    const reasonArInput = document.getElementById('maintenanceReasonAr');
+    const reasonEnInput = document.getElementById('maintenanceReasonEn');
+    const durationInput = document.getElementById('maintenanceDuration');
+
+    if (maintenanceStatus.isMaintenanceActive) {
+        if (radioDisable) radioDisable.checked = true;
+    } else {
+        if (radioEnable) radioEnable.checked = true;
+    }
+
+    if (reasonArInput) reasonArInput.value = maintenanceStatus.reasonAr || 'تحديثات أمنية وترقية قاعدة البيانات';
+    if (reasonEnInput) reasonEnInput.value = maintenanceStatus.reason || 'Database server upgrade & security enhancements';
+    if (durationInput && maintenanceStatus.estimatedDuration) durationInput.value = maintenanceStatus.estimatedDuration;
+
+    const modal = document.getElementById('adminMaintenanceModal');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function closeAdminMaintenanceModal() {
+    const modal = document.getElementById('adminMaintenanceModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+async function handleAdminMaintenanceSubmit(event) {
+    event.preventDefault();
+    if (!currentUser || currentUser.role !== 'Admin') return;
+
+    const isAr = currentLang === 'ar';
+    const actionVal = document.querySelector('input[name="maintenanceAction"]:checked')?.value;
+    const enable = actionVal === 'enable';
+
+    const reasonAr = document.getElementById('maintenanceReasonAr')?.value.trim() || '';
+    const reasonEn = document.getElementById('maintenanceReasonEn')?.value.trim() || '';
+    const duration = document.getElementById('maintenanceDuration')?.value || '';
+
+    const btn = document.getElementById('btnSubmitAdminMaintenance');
+    if (btn) btn.disabled = true;
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/maintenance/toggle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentUser.token}`
+            },
+            body: JSON.stringify({
+                enable,
+                reason: reasonEn,
+                reasonAr: reasonAr,
+                estimatedDuration: duration
+            })
         });
-    }, {
-        threshold: 0.12,
-        rootMargin: '0px 0px -40px 0px'
-    });
 
-    revealElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            el.classList.add('revealed');
+        if (res.ok) {
+            const data = await res.json();
+            handleMaintenanceModeChanged(data);
+            closeAdminMaintenanceModal();
+            showToast(
+                isAr ? 'تم تحديث حالة النظام' : 'System Status Updated',
+                enable
+                    ? (isAr ? 'تم تفعيل وضع الصيانة بنجاح وإيقاف العمليات مؤقتاً.' : 'Maintenance mode successfully enabled.')
+                    : (isAr ? 'تم فتح المنصة وعادت جميع الخدمات للعمل.' : 'Platform restored to live online status.'),
+                'success'
+            );
+            await loadAdminAuditLogs();
         } else {
-            scrollRevealObserver.observe(el);
+            const err = await res.json();
+            showToast(isAr ? 'خطأ' : 'Error', err.message || (isAr ? 'تعذر تغيير حالة النظام' : 'Failed to update system status'), 'error');
         }
-    });
+    } catch (err) {
+        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
+    } finally {
+        if (btn) btn.disabled = false;
+    }
 }
 
-function animateCounter(elementId, targetValue, duration = 1400) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
 
-    const end = parseInt(targetValue, 10);
-    if (isNaN(end)) {
-        el.textContent = targetValue;
-        return;
-    }
-
-    let start = 0;
-    const startTime = performance.now();
-
-    function updateCounter(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeOut = 1 - Math.pow(2, -10 * progress);
-        const current = Math.floor(start + (end - start) * easeOut);
-
-        el.textContent = `${current}+`;
-
-        if (progress < 1) {
-            requestAnimationFrame(updateCounter);
-        } else {
-            el.textContent = `${end}+`;
-        }
-    }
-
-    requestAnimationFrame(updateCounter);
-}
 
 async function loadLandingStats() {
     try {
@@ -1287,61 +1921,6 @@ async function loadLandingStats() {
         initScrollReveal();
         init3DTilt();
     }, 60);
-}
-
-function navigateTo(viewName) {
-    const isAr = currentLang === 'ar';
-
-    if (viewName === 'admin' && (!currentUser || currentUser.role !== 'Admin')) {
-        showToast(isAr ? 'تنبيه أمني' : 'Access Restricted', isAr ? 'لوحة المشرف مخصصة للمسؤولين فقط. يرجى تسجيل الدخول بحساب المشرف.' : 'Please sign in with an Administrator account.', 'warning');
-        openAuthModal('login');
-        return;
-    }
-    if (viewName === 'provider' && (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin'))) {
-        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة المزودين مخصصة لمزودي الطعام المعتمدين.' : 'Please sign in with a Provider account.', 'warning');
-        openAuthModal('login');
-        return;
-    }
-    if (viewName === 'charity' && (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin'))) {
-        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة الجمعيات مخصصة للجمعيات الخيرية المسجلة.' : 'Please sign in with a Charity account.', 'warning');
-        openAuthModal('login');
-        return;
-    }
-
-    currentView = viewName;
-
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.className = 'nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition';
-    });
-    const activeNav = document.getElementById(`nav-${viewName}`);
-    if (activeNav) {
-        activeNav.className = 'nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center shadow-xs';
-    }
-
-    ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'].forEach(v => {
-        const section = document.getElementById(`view-${v}`);
-        if (section) {
-            section.classList.add('hidden');
-            section.classList.remove('fade-in-section');
-        }
-    });
-
-    const targetSection = document.getElementById(`view-${viewName}`);
-    if (targetSection) {
-        targetSection.classList.remove('hidden');
-        void targetSection.offsetWidth;
-        targetSection.classList.add('fade-in-section');
-    }
-
-    if (viewName === 'explore') loadExploreListings();
-    else if (viewName === 'provider') loadProviderPortal();
-    else if (viewName === 'charity') loadCharityPortal();
-    else if (viewName === 'admin') loadAdminPortal();
-    else if (viewName === 'impact') loadImpactStats();
-    else if (viewName === 'landing') {
-        loadLandingStats();
-        setTimeout(initScrollReveal, 60);
-    }
 }
 
 function setCategoryFilter(category) {
@@ -1536,6 +2115,8 @@ async function requestReservationFromModal() {
         showToast('Error', err.message, 'error');
     }
 }
+
+
 
 async function loadProviderPortal() {
     if (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin')) {
@@ -1918,6 +2499,8 @@ async function markReadyForPickup(id) {
     }
 }
 
+
+
 async function loadCharityPortal() {
     if (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin')) {
         const isAr = currentLang === 'ar';
@@ -2178,6 +2761,8 @@ async function handleReviewSubmit(e) {
         showToast('Error', err.message, 'error');
     }
 }
+
+
 
 async function loadAdminPortal() {
     if (!currentUser || currentUser.role !== 'Admin') {
@@ -2609,444 +3194,6 @@ function switchAdminTab(tab) {
     document.getElementById(`atab-${tab}`).className = 'pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0';
 }
 
-async function loadImpactStats() {
-    try {
-        const res = await fetch(`${API_BASE}/reports/platform`);
-        const stats = await res.json();
-
-        document.getElementById('impactRedistributedQuantity').textContent = stats.totalFoodRedistributedQuantity;
-        document.getElementById('impactCompletedDonations').textContent = stats.totalCompletedDonations;
-        document.getElementById('impactActiveNetwork').textContent = stats.totalRegisteredProviders + stats.totalRegisteredCharities;
-
-        const catLabels = Object.keys(stats.redistributionByCategory || {});
-        const catValues = Object.values(stats.redistributionByCategory || {});
-
-        const ctxCat = document.getElementById('categoryChart').getContext('2d');
-        if (categoryChartInstance) categoryChartInstance.destroy();
-
-        categoryChartInstance = new Chart(ctxCat, {
-            type: 'doughnut',
-            data: {
-                labels: catLabels.map(formatCategory),
-                datasets: [{
-                    data: catValues.length ? catValues : [40, 25, 35],
-                    backgroundColor: ['#10b981', '#f59e0b', '#3b82f6', '#ec4899', '#8b5cf6', '#14b8a6']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } }
-            }
-        });
-
-        const months = (stats.monthlyTrends || []).map(m => m.monthName);
-        const quantities = (stats.monthlyTrends || []).map(m => m.redistributedQuantity);
-
-        const ctxTrend = document.getElementById('monthlyTrendChart').getContext('2d');
-        if (monthlyChartInstance) monthlyChartInstance.destroy();
-
-        monthlyChartInstance = new Chart(ctxTrend, {
-            type: 'bar',
-            data: {
-                labels: months.length ? months : ['Past Month', 'Current Month'],
-                datasets: [{
-                    label: 'Redistributed Food Quantity (Units)',
-                    data: quantities.length ? quantities : [60, stats.totalFoodRedistributedQuantity],
-                    backgroundColor: '#10b981',
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-
-    } catch (err) {
-        console.error('Error fetching impact stats:', err);
-    }
-}
-
-function toggleNotificationDropdown() {
-    const d = document.getElementById('notificationDropdown');
-    d.classList.toggle('hidden');
-    if (!d.classList.contains('hidden')) {
-        loadNotifications();
-    }
-}
-
-async function loadNotifications() {
-    if (!currentUser) return;
-    const listContainer = document.getElementById('notificationList');
-    const badge = document.getElementById('unreadBadge');
-
-    try {
-        const [listRes, countRes] = await Promise.all([
-            fetch(`${API_BASE}/notifications`, { headers: { 'Authorization': `Bearer ${currentUser.token}` } }),
-            fetch(`${API_BASE}/notifications/unread-count`, { headers: { 'Authorization': `Bearer ${currentUser.token}` } })
-        ]);
-
-        const notifications = await listRes.json();
-        const { count } = await countRes.json();
-
-        if (count > 0) {
-            badge.textContent = count;
-            badge.classList.remove('hidden');
-        } else {
-            badge.classList.add('hidden');
-        }
-
-        if (!notifications || notifications.length === 0) {
-            listContainer.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">No notifications yet.</div>`;
-            return;
-        }
-
-        listContainer.innerHTML = notifications.map(n => `
-            <div class="p-3.5 hover:bg-slate-50 transition flex items-start space-x-3 cursor-pointer ${!n.isRead ? 'bg-emerald-50/40' : ''}" onclick="markNotificationRead(${n.id})">
-                <div class="w-2 h-2 rounded-full mt-1.5 shrink-0 ${!n.isRead ? 'bg-emerald-500' : 'bg-transparent'}"></div>
-                <div class="flex-1">
-                    <div class="font-bold text-xs text-slate-800">${escapeHtml(n.title)}</div>
-                    <div class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">${escapeHtml(n.message)}</div>
-                    <div class="text-[10px] text-slate-400 mt-1">${new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                </div>
-            </div>
-        `).join('');
-
-    } catch (err) {
-        console.error('Error fetching notifications:', err);
-    }
-}
-
-async function markNotificationRead(id) {
-    if (!currentUser) return;
-    try {
-        await fetch(`${API_BASE}/notifications/${id}/read`, {
-            method: 'PATCH',
-            headers: { 'Authorization': `Bearer ${currentUser.token}` }
-        });
-        loadNotifications();
-    } catch (err) {}
-}
-
-async function markAllNotificationsRead() {
-    if (!currentUser) return;
-    try {
-        await fetch(`${API_BASE}/notifications/mark-all-read`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${currentUser.token}` }
-        });
-        loadNotifications();
-    } catch (err) {}
-}
-
-function prependNotificationItem(n) {
-    const listContainer = document.getElementById('notificationList');
-    if (!listContainer) return;
-
-    const itemHtml = `
-        <div class="p-3.5 hover:bg-slate-50 transition flex items-start space-x-3 cursor-pointer bg-emerald-50/60" onclick="markNotificationRead(${n.id})">
-            <div class="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-emerald-500 animate-ping"></div>
-            <div class="flex-1">
-                <div class="font-bold text-xs text-slate-800">${escapeHtml(n.title)}</div>
-                <div class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">${escapeHtml(n.message)}</div>
-                <div class="text-[10px] text-slate-400 mt-1">Just now</div>
-            </div>
-        </div>
-    `;
-    listContainer.insertAdjacentHTML('afterbegin', itemHtml);
-}
-
-function openAuthModal(tab = 'login') {
-    document.getElementById('authModal').classList.remove('hidden');
-    setAuthTab(tab);
-}
-
-function closeAuthModal() {
-    document.getElementById('authModal').classList.add('hidden');
-}
-
-function setAuthTab(tab) {
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('regProviderForm').classList.add('hidden');
-    document.getElementById('regCharityForm').classList.add('hidden');
-
-    ['login', 'reg-provider', 'reg-charity'].forEach(t => {
-        document.getElementById(`atab-${t}`).className = 'py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
-    });
-
-    if (tab === 'login') {
-        document.getElementById('loginForm').classList.remove('hidden');
-        document.getElementById('atab-login').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل الدخول إلى FoodBridge' : 'Sign In to FoodBridge';
-    } else if (tab === 'reg-provider') {
-        document.getElementById('regProviderForm').classList.remove('hidden');
-        document.getElementById('atab-reg-provider').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل مزود طعام جديد' : 'Register Food Provider';
-    } else if (tab === 'reg-charity') {
-        document.getElementById('regCharityForm').classList.remove('hidden');
-        document.getElementById('atab-reg-charity').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل جمعية خيرية جديدة' : 'Register Charitable Organization';
-    }
-}
-
-async function handleLoginSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type=submit]');
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-
-    if (!email || !password) {
-        showToast('Missing Fields', 'Please enter your email and password.', 'warning');
-        return;
-    }
-
-    if (btn) { btn.disabled = true; btn.textContent = 'Signing in...'; }
-    const success = await performLogin(email, password);
-    if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
-    if (success) closeAuthModal();
-}
-
-async function handleRegisterProviderSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type=submit]');
-    const password = document.getElementById('regPPassword').value;
-    const confirmPassword = document.getElementById('regPConfirmPassword')?.value;
-
-    if (confirmPassword !== undefined && password !== confirmPassword) {
-        showToast('Password Mismatch', 'Passwords do not match.', 'error');
-        return;
-    }
-
-    const payload = {
-        fullName: document.getElementById('regPFullName').value.trim(),
-        organizationName: document.getElementById('regPOrgName').value.trim(),
-        specificType: document.getElementById('regPSpecificType').value,
-        email: document.getElementById('regPEmail').value.trim(),
-        organizationAddress: document.getElementById('regPAddress').value.trim(),
-        password
-    };
-
-    if (!payload.fullName || !payload.organizationName || !payload.email || !payload.password || !payload.organizationAddress) {
-        showToast('Missing Fields', 'Please fill in all required fields.', 'warning');
-        return;
-    }
-
-    try {
-        if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
-        const res = await fetch(`${API_BASE}/auth/register-provider`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            showToast('Registration Error', data.message || 'Registration failed. Please try again.', 'error');
-            return;
-        }
-
-        currentUser = data;
-        localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
-        updateAuthUI();
-        closeAuthModal();
-        if (signalrConnection) await signalrConnection.stop();
-        await initSignalR();
-        showToast('Account Created! 🎉', 'Welcome to FoodBridge! Please check your email to verify your account, then await admin approval.', 'success');
-        navigateTo('provider');
-    } catch (err) {
-        showToast('Error', 'Unable to connect. Please try again.', 'error');
-    } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'Create Provider Account'; }
-    }
-}
-
-async function handleRegisterCharitySubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button[type=submit]');
-    const password = document.getElementById('regCPassword').value;
-    const confirmPassword = document.getElementById('regCConfirmPassword')?.value;
-
-    if (confirmPassword !== undefined && password !== confirmPassword) {
-        showToast('Password Mismatch', 'Passwords do not match.', 'error');
-        return;
-    }
-
-    const payload = {
-        fullName: document.getElementById('regCFullName').value.trim(),
-        organizationName: document.getElementById('regCOrgName').value.trim(),
-        specificType: document.getElementById('regCSpecificType').value,
-        email: document.getElementById('regCEmail').value.trim(),
-        targetCommunityDescription: document.getElementById('regCCommunity').value.trim(),
-        organizationAddress: document.getElementById('regCAddress').value.trim(),
-        password
-    };
-
-    if (!payload.fullName || !payload.organizationName || !payload.email || !payload.password || !payload.organizationAddress) {
-        showToast('Missing Fields', 'Please fill in all required fields.', 'warning');
-        return;
-    }
-
-    try {
-        if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
-        const res = await fetch(`${API_BASE}/auth/register-charity`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            showToast('Registration Error', data.message || 'Registration failed. Please try again.', 'error');
-            return;
-        }
-
-        currentUser = data;
-        localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
-        updateAuthUI();
-        closeAuthModal();
-        if (signalrConnection) await signalrConnection.stop();
-        await initSignalR();
-        showToast('Account Created! 🎉', 'Welcome to FoodBridge! You can now browse and reserve surplus food donations.', 'success');
-        navigateTo('charity');
-    } catch (err) {
-        showToast('Error', 'Unable to connect. Please try again.', 'error');
-    } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'Create Charity Account'; }
-    }
-}
-
-const toastArDict = {
-    'Signed Out': 'تسجيل الخروج',
-    'You have been signed out successfully.': 'تم تسجيل الخروج بنجاح.',
-    'Login Failed': 'فشل تسجيل الدخول',
-    'Invalid email or password.': 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
-    'Welcome back!': 'مرحباً بك مجدداً!',
-    'Error': 'خطأ',
-    'Unable to connect. Please try again.': 'تعذر الاتصال بالخادم. يرجى المحاولة مرة أخرى.',
-    'Unable to fetch listing details.': 'تعذر جلب تفاصيل التبرع.',
-    'Charity Required': 'مطلوب حساب جمعية خيرية',
-    'Please switch to a Charity account to request food reservations.': 'يرجى تسجيل الدخول بحساب جمعية خيرية لطلب حجز الطعام.',
-    'Reservation Request Blocked': 'تعذر إرسال طلب الحجز',
-    'Reservation Requested!': 'تم طلب الحجز بنجاح!',
-    'Your reservation request was dispatched to the food provider.': 'تم إرسال طلب الحجز إلى مزود الطعام وسيتلقى إشعاراً فورياً.',
-    'Provider Access Only': 'متاح للمزودين فقط',
-    'Please sign in or switch to a Provider profile.': 'يرجى تسجيل الدخول بحساب مزود طعام.',
-    'Provider Login Required': 'مطلوب حساب مزود طعام',
-    'Please switch to a Provider profile to create donation listings.': 'يرجى تسجيل الدخول بحساب مزود طعام لنشر التبرعات.',
-    'Submission Failed': 'فشلت العملية',
-    'Donation Published!': 'تم نشر التبرع بنجاح!',
-    'Your surplus food donation is now discoverable by charities.': 'أصبح تبرعك متاحاً الآن للجمعيات الخيرية لحجزه.',
-    'Updated': 'تم التحديث',
-    'Listing marked as unavailable.': 'تم تحديد التبرع كغير متاح.',
-    'Action Failed': 'فشلت العملية',
-    'Reservation Accepted': 'تم قبول الحجز',
-    'Confirmed pickup details transmitted to charity via SignalR.': 'تم إرسال تفاصيل وموعد الاستلام المعتمد للجمعية فوراً.',
-    'Declined': 'تم الرفض',
-    'Reservation request declined.': 'تم رفض طلب الحجز.',
-    'Status Updated': 'تم تحديث الحالة',
-    'Food donation marked as ready for pickup.': 'تم تحديد التبرع كجاهز للاستلام من قبل الجمعية.',
-    'Success': 'نجاح',
-    'Food donation marked as completed & collected!': 'تم تأكيد استلام التبرع بنجاح وتحديث الإحصائيات.',
-    'Reservation Cancelled': 'تم إلغاء الحجز',
-    'Problem Reported': 'تم الإبلاغ عن مشكلة',
-    'Your pickup problem report has been submitted to platform admins.': 'تم إرسال تقرير المشكلة إلى مشرفي المنصة للتدقيق والحل.',
-    'Review Submitted': 'تم إرسال التقييم',
-    'Thank you for your partner feedback!': 'شكراً لك على مشاركة تقييمك للشريك.',
-    'Registration Failed': 'فشل إنشاء الحساب',
-    'Registration Successful!': 'تم إنشاء الحساب بنجاح!',
-    'Account Created! 🎉': 'تم إنشاء الحساب بنجاح! 🎉',
-    'Welcome to FoodBridge! You can now browse and reserve surplus food donations.': 'أهلاً بك في FoodBridge! يمكنك الآن تصفح وحجز تبرعات الطعام.',
-    'Your provider account was created. Please sign in to verify credentials.': 'تم إنشاء حساب المزود بنجاح. يرجى تسجيل الدخول.',
-    'Your charity account was created. Please sign in to proceed with verification.': 'تم إنشاء حساب الجمعية بنجاح. يرجى تسجيل الدخول.',
-    'User Suspended': 'تم تجميد الحساب',
-    'User Reactivated': 'تم تفعيل الحساب',
-    'Organization Verified': 'تم توثيق المؤسسة',
-    'Organization verification approved successfully.': 'تم اعتماد وتوثيق المؤسسة بنجاح.',
-    'Organization Rejected': 'تم رفض التوثيق',
-    'Organization verification rejected.': 'تم رفض طلب توثيق المؤسسة.',
-    'Content Removed': 'تم حذف المحتوى',
-    'Listing Removed': 'تم حذف التبرع',
-    'Item removed and reason logged to AuditLog.': 'تم حذف التبرع وتوثيق السبب في سجل التدقيق.',
-    'Review Removed': 'تم حذف التقييم',
-    'Review deleted and reason logged.': 'تم حذف التقييم وتوثيق السبب في سجل التدقيق.',
-    'Report Resolved': 'تم حل البلاغ',
-    'Pickup problem report marked as resolved.': 'تم حل بلاغ مشكلة الاستلام بنجاح.',
-    'Dark Mode': 'الوضع الليلي',
-    'Light Mode': 'الوضع النهاري',
-    'اللغة العربية': 'اللغة العربية',
-    'Language Changed': 'تغيير اللغة'
-};
-
-function showToast(title, message, type = 'info') {
-    const container = document.getElementById('toastContainer');
-    if (!container) return;
-
-    const isAr = currentLang === 'ar';
-    let finalTitle = title;
-    let finalMsg = message;
-
-    if (isAr) {
-        if (toastArDict[title]) finalTitle = toastArDict[title];
-        if (toastArDict[message]) finalMsg = toastArDict[message];
-        else if (typeof message === 'string' && message.startsWith('Signed in as ')) {
-            finalMsg = 'تم تسجيل الدخول باسم ' + message.replace('Signed in as ', '');
-        }
-    }
-
-    const icon = type === 'success' ? 'fa-circle-check text-emerald-500' :
-                 type === 'error' ? 'fa-circle-xmark text-rose-500' :
-                 type === 'warning' ? 'fa-triangle-exclamation text-amber-500' : 'fa-bell text-blue-500';
-
-    const toast = document.createElement('div');
-    toast.className = `pointer-events-auto max-w-sm w-full bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200/90 dark:border-slate-700 p-4 flex items-start space-x-3 ${isAr ? 'space-x-reverse' : ''} toast-animate-in`;
-    
-    const dismiss = () => {
-        toast.classList.remove('toast-animate-in');
-        toast.classList.add('toast-animate-out');
-        setTimeout(() => { if (toast.parentElement) toast.remove(); }, 240);
-    };
-
-    toast.innerHTML = `
-        <i class="fa-solid ${icon} text-lg shrink-0 mt-0.5"></i>
-        <div class="flex-1">
-            <h5 class="text-xs font-bold text-slate-800 dark:text-slate-100">${escapeHtml(finalTitle)}</h5>
-            <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">${escapeHtml(finalMsg)}</p>
-        </div>
-        <button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
-            <i class="fa-solid fa-xmark text-xs"></i>
-        </button>
-    `;
-
-    toast.querySelector('button').onclick = dismiss;
-    container.appendChild(toast);
-    setTimeout(dismiss, 5000);
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-
-
 async function loadAdminExpiredListings() {
     if (!currentUser) return;
     const isAr = currentLang === 'ar';
@@ -3161,194 +3308,76 @@ async function handleWasteActionSubmit(event) {
 }
 
 
-async function checkMaintenanceStatus(manualCheck = false) {
+
+async function loadImpactStats() {
     try {
-        const res = await fetch(`${API_BASE}/admin/maintenance/status`);
-        if (res.ok) {
-            const data = await res.json();
-            handleMaintenanceModeChanged(data);
-            if (manualCheck) {
-                const isAr = currentLang === 'ar';
-                if (data.isMaintenanceActive) {
-                    showToast(
-                        isAr ? 'الصيانة لا تزال جارية' : 'Maintenance Ongoing',
-                        isAr ? 'يجري العمل حالياً على التحديثات وسنعود في أقرب وقت.' : 'System updates are still in progress. Please check again soon.',
-                        'info'
-                    );
-                } else {
-                    showToast(
-                        isAr ? 'النظام متاح الآن!' : 'System Online!',
-                        isAr ? 'عادت المنصة للعمل بصورة طبيعية.' : 'Platform services have been fully restored.',
-                        'success'
-                    );
-                }
-            }
-        }
-    } catch (err) {
-        console.error('Error checking maintenance status:', err);
-    }
-}
+        const res = await fetch(`${API_BASE}/reports/platform`);
+        const stats = await res.json();
 
-function handleMaintenanceModeChanged(status) {
-    if (!status) return;
-    maintenanceStatus = status;
+        document.getElementById('impactRedistributedQuantity').textContent = stats.totalFoodRedistributedQuantity;
+        document.getElementById('impactCompletedDonations').textContent = stats.totalCompletedDonations;
+        document.getElementById('impactActiveNetwork').textContent = stats.totalRegisteredProviders + stats.totalRegisteredCharities;
 
-    const isAr = currentLang === 'ar';
-    const dict = i18nDict[currentLang] || i18nDict.en;
+        const catLabels = Object.keys(stats.redistributionByCategory || {});
+        const catValues = Object.values(stats.redistributionByCategory || {});
 
-    const dot = document.getElementById('adminMaintenanceStatusDot');
-    const title = document.getElementById('adminMaintenanceStatusTitle');
-    const subtitle = document.getElementById('adminMaintenanceStatusSubtitle');
-    const toggleBtn = document.getElementById('btnAdminMaintenanceToggle');
-    const toggleText = document.getElementById('btnAdminMaintenanceToggleText');
+        const ctxCat = document.getElementById('categoryChart').getContext('2d');
+        if (categoryChartInstance) categoryChartInstance.destroy();
 
-    if (dot && title && subtitle && toggleBtn && toggleText) {
-        if (status.isMaintenanceActive) {
-            dot.className = 'w-3 h-3 rounded-full bg-rose-500 animate-ping';
-            title.textContent = dict.systemMaintenanceStatus;
-            subtitle.textContent = dict.systemMaintenanceDesc;
-            toggleBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-emerald-600 text-white hover:bg-emerald-700';
-            toggleText.textContent = dict.btnUnlockMaintenance;
-        } else {
-            dot.className = 'w-3 h-3 rounded-full bg-emerald-500 animate-pulse';
-            title.textContent = dict.systemOnlineStatus;
-            subtitle.textContent = dict.systemOnlineDesc;
-            toggleBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300';
-            toggleText.textContent = dict.btnLockMaintenance;
-        }
-    }
-
-    const adminBanner = document.getElementById('adminMaintenanceBanner');
-    if (adminBanner) {
-        if (status.isMaintenanceActive && currentUser && currentUser.role === 'Admin') {
-            adminBanner.classList.remove('hidden');
-        } else {
-            adminBanner.classList.add('hidden');
-        }
-    }
-
-    const overlay = document.getElementById('maintenanceOverlay');
-    if (overlay) {
-        if (status.isMaintenanceActive) {
-            if (currentUser && currentUser.role === 'Admin') {
-                overlay.classList.add('hidden');
-            } else {
-                overlay.classList.remove('hidden');
-                renderMaintenanceScreen();
-            }
-        } else {
-            overlay.classList.add('hidden');
-        }
-    }
-}
-
-function renderMaintenanceScreen() {
-    const isAr = currentLang === 'ar';
-    const reasonDisplay = document.getElementById('maintenanceReasonDisplay');
-    const durationDisplay = document.getElementById('maintenanceDurationDisplay');
-    const startedDisplay = document.getElementById('maintenanceStartedDisplay');
-
-    if (reasonDisplay) {
-        const text = isAr 
-            ? (maintenanceStatus.reasonAr || maintenanceStatus.reason || 'تحديثات أمنية وترقية قاعدة البيانات')
-            : (maintenanceStatus.reason || maintenanceStatus.reasonAr || 'Security upgrades and database optimization');
-        reasonDisplay.textContent = text;
-    }
-
-    if (durationDisplay) {
-        durationDisplay.textContent = maintenanceStatus.estimatedDuration || (isAr ? '30-45 دقيقة' : '30-45 Minutes');
-    }
-
-    if (startedDisplay) {
-        if (maintenanceStatus.activatedAt) {
-            const date = new Date(maintenanceStatus.activatedAt);
-            startedDisplay.textContent = date.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }) + ' (' + date.toLocaleDateString(isAr ? 'ar-EG' : 'en-US') + ')';
-        } else {
-            startedDisplay.textContent = '-';
-        }
-    }
-}
-
-function openAdminMaintenanceModal() {
-    if (!currentUser || currentUser.role !== 'Admin') return;
-    const isAr = currentLang === 'ar';
-
-    const radioEnable = document.getElementById('radioEnableMaintenance');
-    const radioDisable = document.getElementById('radioDisableMaintenance');
-    const reasonArInput = document.getElementById('maintenanceReasonAr');
-    const reasonEnInput = document.getElementById('maintenanceReasonEn');
-    const durationInput = document.getElementById('maintenanceDuration');
-
-    if (maintenanceStatus.isMaintenanceActive) {
-        if (radioDisable) radioDisable.checked = true;
-    } else {
-        if (radioEnable) radioEnable.checked = true;
-    }
-
-    if (reasonArInput) reasonArInput.value = maintenanceStatus.reasonAr || 'تحديثات أمنية وترقية قاعدة البيانات';
-    if (reasonEnInput) reasonEnInput.value = maintenanceStatus.reason || 'Database server upgrade & security enhancements';
-    if (durationInput && maintenanceStatus.estimatedDuration) durationInput.value = maintenanceStatus.estimatedDuration;
-
-    const modal = document.getElementById('adminMaintenanceModal');
-    if (modal) modal.classList.remove('hidden');
-}
-
-function closeAdminMaintenanceModal() {
-    const modal = document.getElementById('adminMaintenanceModal');
-    if (modal) modal.classList.add('hidden');
-}
-
-async function handleAdminMaintenanceSubmit(event) {
-    event.preventDefault();
-    if (!currentUser || currentUser.role !== 'Admin') return;
-
-    const isAr = currentLang === 'ar';
-    const actionVal = document.querySelector('input[name="maintenanceAction"]:checked')?.value;
-    const enable = actionVal === 'enable';
-
-    const reasonAr = document.getElementById('maintenanceReasonAr')?.value.trim() || '';
-    const reasonEn = document.getElementById('maintenanceReasonEn')?.value.trim() || '';
-    const duration = document.getElementById('maintenanceDuration')?.value || '';
-
-    const btn = document.getElementById('btnSubmitAdminMaintenance');
-    if (btn) btn.disabled = true;
-
-    try {
-        const res = await fetch(`${API_BASE}/admin/maintenance/toggle`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentUser.token}`
+        categoryChartInstance = new Chart(ctxCat, {
+            type: 'doughnut',
+            data: {
+                labels: catLabels.map(formatCategory),
+                datasets: [{
+                    data: catValues.length ? catValues : [40, 25, 35],
+                    backgroundColor: ['#10b981', '#f59e0b', '#3b82f6', '#ec4899', '#8b5cf6', '#14b8a6']
+                }]
             },
-            body: JSON.stringify({
-                enable,
-                reason: reasonEn,
-                reasonAr: reasonAr,
-                estimatedDuration: duration
-            })
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
         });
 
-        if (res.ok) {
-            const data = await res.json();
-            handleMaintenanceModeChanged(data);
-            closeAdminMaintenanceModal();
-            showToast(
-                isAr ? 'تم تحديث حالة النظام' : 'System Status Updated',
-                enable
-                    ? (isAr ? 'تم تفعيل وضع الصيانة بنجاح وإيقاف العمليات مؤقتاً.' : 'Maintenance mode successfully enabled.')
-                    : (isAr ? 'تم فتح المنصة وعادت جميع الخدمات للعمل.' : 'Platform restored to live online status.'),
-                'success'
-            );
-            await loadAdminAuditLogs();
-        } else {
-            const err = await res.json();
-            showToast(isAr ? 'خطأ' : 'Error', err.message || (isAr ? 'تعذر تغيير حالة النظام' : 'Failed to update system status'), 'error');
-        }
+        const months = (stats.monthlyTrends || []).map(m => m.monthName);
+        const quantities = (stats.monthlyTrends || []).map(m => m.redistributedQuantity);
+
+        const ctxTrend = document.getElementById('monthlyTrendChart').getContext('2d');
+        if (monthlyChartInstance) monthlyChartInstance.destroy();
+
+        monthlyChartInstance = new Chart(ctxTrend, {
+            type: 'bar',
+            data: {
+                labels: months.length ? months : ['Past Month', 'Current Month'],
+                datasets: [{
+                    label: 'Redistributed Food Quantity (Units)',
+                    data: quantities.length ? quantities : [60, stats.totalFoodRedistributedQuantity],
+                    backgroundColor: '#10b981',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
     } catch (err) {
-        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
-    } finally {
-        if (btn) btn.disabled = false;
+        console.error('Error fetching impact stats:', err);
     }
 }
 
-function showSignInModal() { openAuthModal('login'); }
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initLanguage();
+    updateAuthUI();
+    initSignalR();
+    navigateTo('landing');
+    initScrollReveal();
+    init3DTilt();
+    checkMaintenanceStatus();
+});
