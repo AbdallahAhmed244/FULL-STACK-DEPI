@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,22 +41,18 @@ public class ReviewService : IReviewService
             return Result<ReviewDto>.Failure("Reservation not found.");
         }
 
-        // FR7.1: Only after donation is marked as completed
         if (reservation.Status != ReservationStatus.Completed)
         {
             return Result<ReviewDto>.Failure("Reviews can only be submitted for completed donations.");
         }
 
-        // Determine if reviewer is Charity or Provider
         string revieweeId;
         if (reservation.CharityId == reviewerId)
         {
-            // Charity reviewing Provider
             revieweeId = reservation.FoodListing?.ProviderId ?? string.Empty;
         }
         else if (reservation.FoodListing?.ProviderId == reviewerId)
         {
-            // Provider reviewing Charity
             revieweeId = reservation.CharityId;
         }
         else
@@ -69,7 +65,6 @@ public class ReviewService : IReviewService
             return Result<ReviewDto>.Failure("Invalid review recipient.");
         }
 
-        // FR7.3: Prevent users from submitting more than one review for the same completed donation reservation
         var alreadyReviewed = await _context.Reviews
             .AnyAsync(r => r.ReservationId == dto.ReservationId && r.ReviewerId == reviewerId);
 
@@ -93,7 +88,6 @@ public class ReviewService : IReviewService
         _context.Reviews.Add(review);
         await _context.SaveChangesAsync();
 
-        // Notify reviewee
         await _notificationService.SendNotificationAsync(
             revieweeId,
             "New Review Received",
@@ -132,7 +126,6 @@ public class ReviewService : IReviewService
             return Result<ProviderReviewsSummaryDto>.Failure("Provider not found.");
         }
 
-        // FR7.4: Display Provider's average rating and eligible (non-reported) reviews on public profile
         var reviews = await _context.Reviews
             .Include(r => r.Reviewer)
             .Include(r => r.Reviewee)

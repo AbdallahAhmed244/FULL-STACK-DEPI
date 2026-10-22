@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +46,6 @@ public class AdminService : IAdminService
         var completedDonations = await _context.FoodListings.CountAsync(l => l.Status == FoodListingStatus.Completed);
         var outstandingRequests = await _context.Reservations.CountAsync(r => r.Status == ReservationStatus.Pending);
 
-        // FR9.5: Platform-wide statistics using completed donations only
         var totalRedistributed = await _context.FoodListings
             .Where(l => l.Status == FoodListingStatus.Completed)
             .SumAsync(l => (decimal?)l.Quantity) ?? 0m;
@@ -136,7 +135,6 @@ public class AdminService : IAdminService
 
         user.IsVerified = isApproved;
 
-        // Record Audit Log
         var audit = new AuditLog
         {
             AdminId = adminId,

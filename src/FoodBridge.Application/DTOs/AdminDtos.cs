@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using FoodBridge.Domain.Enums;
@@ -35,7 +35,7 @@ public class AdminUserListItemDto
     public UserStatus Status { get; set; }
     public string StatusName => Status.ToString();
     public DateTimeOffset CreatedAt { get; set; }
-    public int ActiveItemsCount { get; set; } // Listings or Reservations
+    public int ActiveItemsCount { get; set; }
     public int CompletedItemsCount { get; set; }
 }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Moq;
 using Xunit;
@@ -97,11 +97,9 @@ public class ReservationConcurrencyTests
         Assert.True(result.Succeeded);
         Assert.Equal(ReservationStatus.Accepted, result.Data!.Status);
 
-        // Verify listing status locked to Reserved
         var updatedListing = await db.FoodListings.FindAsync(10);
         Assert.Equal(FoodListingStatus.Reserved, updatedListing!.Status);
 
-        // Verify other pending request was auto-rejected per FR4.2
         var otherRes = await db.Reservations.FindAsync(102);
         Assert.Equal(ReservationStatus.Rejected, otherRes!.Status);
     }
@@ -143,7 +141,6 @@ public class ReservationConcurrencyTests
         Assert.True(result.Succeeded);
         Assert.Equal(ReservationStatus.Cancelled, result.Data!.Status);
 
-        // FR4.9: Verify listing returned to Available
         var updatedListing = await db.FoodListings.FindAsync(20);
         Assert.Equal(FoodListingStatus.Available, updatedListing!.Status);
     }
@@ -211,7 +208,7 @@ public class ReservationConcurrencyTests
             FoodListingId = 50,
             CharityId = "charity-cutoff",
             Status = ReservationStatus.Accepted,
-            PickupDateTime = DateTime.UtcNow.AddMinutes(45) // Scheduled in 45 mins (imminent!)
+            PickupDateTime = DateTime.UtcNow.AddMinutes(45)
         };
 
         db.Users.AddRange(charity, provider);

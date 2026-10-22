@@ -1,4 +1,4 @@
-namespace FoodBridge.Domain.Enums;
+﻿namespace FoodBridge.Domain.Enums;
 
 public enum UserType
 {

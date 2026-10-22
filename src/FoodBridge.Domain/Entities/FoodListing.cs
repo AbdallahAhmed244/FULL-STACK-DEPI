@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FoodBridge.Domain.Enums;
 
@@ -15,14 +15,14 @@ public class FoodListing
     public string Description { get; set; } = string.Empty;
     public FoodCategory FoodCategory { get; set; }
     public decimal Quantity { get; set; }
-    public string UnitOfMeasurement { get; set; } = "portions"; // kg, portions, boxes, meals, etc.
+    public string UnitOfMeasurement { get; set; } = "portions";
 
     public DateTime PreparationDate { get; set; }
     public DateTime PickupDeadline { get; set; }
     public string PickupAddress { get; set; } = string.Empty;
 
-    public string StorageConditions { get; set; } = string.Empty; // e.g. "Refrigerated (0-4°C)", "Room Temperature", etc.
-    public string Allergens { get; set; } = "None"; // e.g. "Gluten, Dairy", "Nuts"
+    public string StorageConditions { get; set; } = string.Empty;
+    public string Allergens { get; set; } = "None";
 
     public string? ImageUrl { get; set; }
     public FoodListingStatus Status { get; set; } = FoodListingStatus.Available;
@@ -35,6 +35,5 @@ public class FoodListing
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? UpdatedAt { get; set; }
 
-    // Navigation Properties
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

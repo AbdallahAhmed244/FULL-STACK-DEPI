@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +25,6 @@ public static class DependencyInjection
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<FoodBridgeDbContext>());
 
-        // Identity Configuration
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         {
             options.Password.RequireDigit = true;
@@ -34,9 +33,8 @@ public static class DependencyInjection
             options.Password.RequireUppercase = false;
             options.Password.RequireLowercase = false;
             options.User.RequireUniqueEmail = true;
-            options.SignIn.RequireConfirmedEmail = true; // Email verification required per FR1.5
+            options.SignIn.RequireConfirmedEmail = true;
 
-            // Lockout Configuration against brute-force attacks
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
@@ -44,13 +42,11 @@ public static class DependencyInjection
         .AddEntityFrameworkStores<FoodBridgeDbContext>()
         .AddDefaultTokenProviders();
 
-        // Infrastructure Services
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
         services.AddSingleton<IEmailSenderService, EmailSenderService>();
         services.AddScoped<INotificationService, NotificationService>();
 
-        // Application Services
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IFoodListingService, FoodListingService>();
         services.AddScoped<IReservationService, ReservationService>();
@@ -58,7 +54,6 @@ public static class DependencyInjection
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IReportingService, ReportingService>();
 
-        // Hosted Services
         services.AddHostedService<ListingExpirationHostedService>();
         services.AddHostedService<PickupReminderHostedService>();
 

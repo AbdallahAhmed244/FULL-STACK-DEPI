@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +16,8 @@ public static class DbInitializer
         UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager)
     {
-        // Apply migrations or ensure created
         await context.Database.EnsureCreatedAsync();
 
-        // 1. Roles
         string[] roles = { "Admin", "Provider", "Charity" };
         foreach (var role in roles)
         {
@@ -29,7 +27,6 @@ public static class DbInitializer
             }
         }
 
-        // 2. Admin User
         var adminEmail = "admin@foodbridge.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -62,7 +59,6 @@ public static class DbInitializer
             });
         }
 
-        // 3. Provider 1 (Bella Italia Restaurant - Verified)
         var provider1Email = "chef.mario@bellaitalia.com";
         var provider1 = await userManager.FindByEmailAsync(provider1Email);
         if (provider1 == null)
@@ -86,7 +82,6 @@ public static class DbInitializer
             await userManager.AddToRoleAsync(provider1, "Provider");
         }
 
-        // 4. Provider 2 (Artisan Bread - Verified)
         var provider2Email = "sarah@lebreadcraft.com";
         var provider2 = await userManager.FindByEmailAsync(provider2Email);
         if (provider2 == null)
@@ -110,7 +105,6 @@ public static class DbInitializer
             await userManager.AddToRoleAsync(provider2, "Provider");
         }
 
-        // 5. Provider 3 (Grand Palace Hotel - Unverified)
         var provider3Email = "banquets@grandpalace.com";
         var provider3 = await userManager.FindByEmailAsync(provider3Email);
         if (provider3 == null)
@@ -126,7 +120,7 @@ public static class DbInitializer
                 PhoneNumber = "+20 102 555 1234",
                 UserType = UserType.FoodProvider,
                 SpecificType = "Hotel",
-                IsVerified = false, // Pending admin approval
+                IsVerified = false,
                 Status = UserStatus.Active,
                 CreatedAt = DateTimeOffset.UtcNow.AddDays(-3)
             };
@@ -134,7 +128,6 @@ public static class DbInitializer
             await userManager.AddToRoleAsync(provider3, "Provider");
         }
 
-        // 6. Charity 1 (Hope Food Bank - Verified)
         var charity1Email = "coordinator@hopefoodbank.org";
         var charity1 = await userManager.FindByEmailAsync(charity1Email);
         if (charity1 == null)
@@ -159,7 +152,6 @@ public static class DbInitializer
             await userManager.AddToRoleAsync(charity1, "Charity");
         }
 
-        // 7. Charity 2 (St. Jude Shelter - Verified)
         var charity2Email = "shelter@stjude-care.org";
         var charity2 = await userManager.FindByEmailAsync(charity2Email);
         if (charity2 == null)
@@ -184,7 +176,6 @@ public static class DbInitializer
             await userManager.AddToRoleAsync(charity2, "Charity");
         }
 
-        // 8. Charity 3 (Al-Noor Community Initiative - Unverified)
         var charity3Email = "youth@alnoor-foundation.org";
         var charity3 = await userManager.FindByEmailAsync(charity3Email);
         if (charity3 == null)
@@ -201,7 +192,7 @@ public static class DbInitializer
                 UserType = UserType.Charity,
                 SpecificType = "Community Center",
                 TargetCommunityDescription = "Distributing meal packages and dietary aid to displaced families and international students.",
-                IsVerified = false, // Pending admin approval
+                IsVerified = false,
                 Status = UserStatus.Active,
                 CreatedAt = DateTimeOffset.UtcNow.AddDays(-2)
             };
@@ -211,7 +202,6 @@ public static class DbInitializer
 
         await context.SaveChangesAsync();
 
-        // 9. Sample Food Listings & Completed Reservations
         if (!context.FoodListings.Any())
         {
             var now = DateTime.UtcNow;
@@ -220,14 +210,14 @@ public static class DbInitializer
             {
                 ProviderId = provider1.Id,
                 FoodName = "Fresh Mediterranean Lasagna & Penne Trays",
-                Description = "Prepared with Italian beef ragù, béchamel, and mozzarella. Freshly cooked at noon in individual catering trays, ready for immediate distribution.",
+                Description = "Prepared with Italian beef ragÃ¹, bÃ©chamel, and mozzarella. Freshly cooked at noon in individual catering trays, ready for immediate distribution.",
                 FoodCategory = FoodCategory.CookedMeals,
                 Quantity = 35,
                 UnitOfMeasurement = "portions",
                 PreparationDate = now.AddHours(-2),
                 PickupDeadline = now.AddHours(10),
                 PickupAddress = "42 Nile Corniche, Zamalek, Cairo (Kitchen entrance rear alley)",
-                StorageConditions = "Refrigerated (0-4°C) or Keep Warm (>63°C)",
+                StorageConditions = "Refrigerated (0-4Â°C) or Keep Warm (>63Â°C)",
                 Allergens = "Gluten, Dairy, Celery",
                 ImageUrl = "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&auto=format&fit=crop&q=80",
                 Status = FoodListingStatus.Available,
@@ -245,7 +235,7 @@ public static class DbInitializer
                 PreparationDate = now.AddHours(-6),
                 PickupDeadline = now.AddHours(14),
                 PickupAddress = "15 El-Horreya St, Heliopolis, Cairo",
-                StorageConditions = "Dry & Room Temperature (20-22°C)",
+                StorageConditions = "Dry & Room Temperature (20-22Â°C)",
                 Allergens = "Gluten, Dairy, Eggs",
                 ImageUrl = "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop&q=80",
                 Status = FoodListingStatus.Available,
@@ -263,7 +253,7 @@ public static class DbInitializer
                 PreparationDate = now.AddHours(-3),
                 PickupDeadline = now.AddHours(8),
                 PickupAddress = "42 Nile Corniche, Zamalek, Cairo",
-                StorageConditions = "Refrigerated (0-4°C)",
+                StorageConditions = "Refrigerated (0-4Â°C)",
                 Allergens = "Dairy",
                 ImageUrl = "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80",
                 Status = FoodListingStatus.Available,
@@ -281,14 +271,13 @@ public static class DbInitializer
                 PreparationDate = now.AddDays(-1),
                 PickupDeadline = now.AddDays(2),
                 PickupAddress = "15 El-Horreya St, Heliopolis, Cairo",
-                StorageConditions = "Refrigerated (0-4°C)",
+                StorageConditions = "Refrigerated (0-4Â°C)",
                 Allergens = "Dairy",
                 ImageUrl = "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&auto=format&fit=crop&q=80",
                 Status = FoodListingStatus.Available,
                 CreatedAt = DateTimeOffset.UtcNow.AddHours(-12)
             };
 
-            // Completed Listing for historical stats & reviews
             var listing5 = new FoodListing
             {
                 ProviderId = provider1.Id,
@@ -300,7 +289,7 @@ public static class DbInitializer
                 PreparationDate = now.AddDays(-5),
                 PickupDeadline = now.AddDays(-4),
                 PickupAddress = "42 Nile Corniche, Zamalek, Cairo",
-                StorageConditions = "Refrigerated (0-4°C)",
+                StorageConditions = "Refrigerated (0-4Â°C)",
                 Allergens = "Nuts (Pine nuts in rice garnish)",
                 ImageUrl = "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=800&auto=format&fit=crop&q=80",
                 Status = FoodListingStatus.Completed,
@@ -310,7 +299,6 @@ public static class DbInitializer
             context.FoodListings.AddRange(listing1, listing2, listing3, listing4, listing5);
             await context.SaveChangesAsync();
 
-            // Completed Reservation for Listing 5
             var completedReservation = new Reservation
             {
                 FoodListingId = listing5.Id,
@@ -322,7 +310,6 @@ public static class DbInitializer
                 CompletedAt = DateTimeOffset.UtcNow.AddDays(-4)
             };
 
-            // Active Pending Reservation for Listing 1 (Charity 2 requested)
             var pendingReservation = new Reservation
             {
                 FoodListingId = listing1.Id,
@@ -334,7 +321,6 @@ public static class DbInitializer
             context.Reservations.AddRange(completedReservation, pendingReservation);
             await context.SaveChangesAsync();
 
-            // Mutual Reviews on the completed reservation
             var reviewFromCharity = new Review
             {
                 ReservationId = completedReservation.Id,
@@ -357,7 +343,6 @@ public static class DbInitializer
 
             context.Reviews.AddRange(reviewFromCharity, reviewFromProvider);
 
-            // Sample Notifications
             context.Notifications.AddRange(
                 new Notification
                 {

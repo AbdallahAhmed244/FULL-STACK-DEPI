@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Xunit;
 using FoodBridge.Application.Services.Implementations;
@@ -16,7 +16,6 @@ public class ReportingStatisticsTests
         var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
         var reportingService = new ReportingService(db);
 
-        // 1. Completed Donation (Quantity = 50) -> MUST be included
         db.FoodListings.Add(new FoodListing
         {
             Id = 1,
@@ -27,7 +26,6 @@ public class ReportingStatisticsTests
             Status = FoodListingStatus.Completed
         });
 
-        // 2. Another Completed Donation (Quantity = 30) -> MUST be included
         db.FoodListings.Add(new FoodListing
         {
             Id = 2,
@@ -38,7 +36,6 @@ public class ReportingStatisticsTests
             Status = FoodListingStatus.Completed
         });
 
-        // 3. Expired Donation (Quantity = 40) -> MUST be excluded
         db.FoodListings.Add(new FoodListing
         {
             Id = 3,
@@ -49,7 +46,6 @@ public class ReportingStatisticsTests
             Status = FoodListingStatus.Expired
         });
 
-        // 4. Cancelled Donation (Quantity = 25) -> MUST be excluded
         db.FoodListings.Add(new FoodListing
         {
             Id = 4,
@@ -60,7 +56,6 @@ public class ReportingStatisticsTests
             Status = FoodListingStatus.Cancelled
         });
 
-        // 5. Available Donation (Quantity = 15) -> Active, not completed yet
         db.FoodListings.Add(new FoodListing
         {
             Id = 5,
@@ -75,7 +70,6 @@ public class ReportingStatisticsTests
 
         var stats = await reportingService.GetPlatformStatsAsync();
 
-        // 50 + 30 = 80 completed quantity only!
         Assert.Equal(80m, stats.TotalFoodRedistributedQuantity);
         Assert.Equal(2, stats.TotalCompletedDonations);
         Assert.Equal(1, stats.TotalActiveListings);

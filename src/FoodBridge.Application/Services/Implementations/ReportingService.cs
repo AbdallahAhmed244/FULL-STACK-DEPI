@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +27,6 @@ public class ReportingService : IReportingService
         var expiredListings = await _context.FoodListings.CountAsync(l => l.ProviderId == providerId && l.Status == FoodListingStatus.Expired);
         var cancelledListings = await _context.FoodListings.CountAsync(l => l.ProviderId == providerId && (l.Status == FoodListingStatus.Cancelled || l.Status == FoodListingStatus.Unavailable));
 
-        // FR9.5: Only completed donations count towards redistributed quantity
         var redistributedQuantity = await _context.FoodListings
             .Where(l => l.ProviderId == providerId && l.Status == FoodListingStatus.Completed)
             .SumAsync(l => (decimal?)l.Quantity) ?? 0m;
@@ -53,7 +52,6 @@ public class ReportingService : IReportingService
 
     public async Task<CharityStatsDto> GetCharityStatsAsync(string charityId)
     {
-        // FR9.2: Number of donations received through completed reservations
         var totalReceived = await _context.Reservations
             .CountAsync(r => r.CharityId == charityId && r.Status == ReservationStatus.Completed);
 
@@ -63,7 +61,6 @@ public class ReportingService : IReportingService
         var cancelledReservations = await _context.Reservations
             .CountAsync(r => r.CharityId == charityId && (r.Status == ReservationStatus.Cancelled || r.Status == ReservationStatus.Rejected));
 
-        // FR9.5: Only completed donations count towards quantity received
         var totalQuantity = await _context.Reservations
             .Include(r => r.FoodListing)
             .Where(r => r.CharityId == charityId && r.Status == ReservationStatus.Completed && r.FoodListing != null)
@@ -84,8 +81,6 @@ public class ReportingService : IReportingService
 
     public async Task<PlatformWideStatsDto> GetPlatformStatsAsync()
     {
-        // FR9.3 & FR9.5: Total quantity of food redistributed through completed donations ONLY,
-        // excluding cancelled, rejected, and expired donations.
         var completedListings = await _context.FoodListings
             .Where(l => l.Status == FoodListingStatus.Completed)
             .ToListAsync();
@@ -105,12 +100,10 @@ public class ReportingService : IReportingService
         var totalVerified = await _context.Users
             .CountAsync(u => u.IsVerified);
 
-        // Group by category
         var categoryBreakdown = completedListings
             .GroupBy(l => l.FoodCategory.ToString())
             .ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
 
-        // Monthly trends (past 6 months)
         var sixMonthsAgo = DateTimeOffset.UtcNow.AddMonths(-6);
         var monthly = completedListings
             .Where(l => l.CreatedAt >= sixMonthsAgo)
@@ -140,7 +133,6 @@ public class ReportingService : IReportingService
 
     public async Task<List<FoodListingDto>> FilterProviderDonationHistoryAsync(string providerId, DonationHistoryFilterDto filter)
     {
-        // FR9.4: Users filter donation history by date and status
         var query = _context.FoodListings
             .Include(l => l.Provider)
             .Where(l => l.ProviderId == providerId)
@@ -200,7 +192,6 @@ public class ReportingService : IReportingService
 
     public async Task<List<ReservationDto>> FilterCharityDonationHistoryAsync(string charityId, DonationHistoryFilterDto filter)
     {
-        // FR9.4: Users filter donation history by date and status
         var query = _context.Reservations
             .Include(r => r.FoodListing)
             .ThenInclude(l => l!.Provider)

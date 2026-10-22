@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -41,7 +41,6 @@ public class AdminModerationTests
         var updatedProvider = await db.Users.FindAsync("provider-unverified");
         Assert.True(updatedProvider!.IsVerified);
 
-        // FR8.9: Verify audit record
         var audit = await db.AuditLogs.FirstOrDefaultAsync(a => a.TargetId == "provider-unverified");
         Assert.NotNull(audit);
         Assert.Equal("ApproveVerification", audit!.Action);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,14 +53,14 @@ public class FoodListingService : IFoodListingService
         }
 
         var unitLower = (dto.UnitOfMeasurement ?? "").Trim().ToLower();
-        if (unitLower.Contains("kg") || unitLower.Contains("كيلو") || unitLower.Contains("kilo"))
+        if (unitLower.Contains("kg") || unitLower.Contains("ÙƒÙŠÙ„Ùˆ") || unitLower.Contains("kilo"))
         {
             if (dto.Quantity < 1m)
             {
                 return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Kilograms (kg) is 1 kg to ensure practical logistics for charity collection.");
             }
         }
-        else if (unitLower.Contains("liter") || unitLower.Contains("litre") || unitLower.Contains("لتر") || unitLower == "l")
+        else if (unitLower.Contains("liter") || unitLower.Contains("litre") || unitLower.Contains("Ù„ØªØ±") || unitLower == "l")
         {
             if (dto.Quantity < 1m)
             {
@@ -141,14 +141,14 @@ public class FoodListingService : IFoodListingService
         }
 
         var updateUnitLower = (dto.UnitOfMeasurement ?? "").Trim().ToLower();
-        if (updateUnitLower.Contains("kg") || updateUnitLower.Contains("كيلو") || updateUnitLower.Contains("kilo"))
+        if (updateUnitLower.Contains("kg") || updateUnitLower.Contains("ÙƒÙŠÙ„Ùˆ") || updateUnitLower.Contains("kilo"))
         {
             if (dto.Quantity < 1m)
             {
                 return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Kilograms (kg) is 1 kg to ensure practical logistics for charity collection.");
             }
         }
-        else if (updateUnitLower.Contains("liter") || updateUnitLower.Contains("litre") || updateUnitLower.Contains("لتر") || updateUnitLower == "l")
+        else if (updateUnitLower.Contains("liter") || updateUnitLower.Contains("litre") || updateUnitLower.Contains("Ù„ØªØ±") || updateUnitLower == "l")
         {
             if (dto.Quantity < 1m)
             {
@@ -261,26 +261,22 @@ public class FoodListingService : IFoodListingService
             .AsNoTracking()
             .AsQueryable();
 
-        // FR3.5: Default browsing shows only Available listings
         if (filter.OnlyAvailable)
         {
             query = query.Where(l => l.Status == FoodListingStatus.Available);
         }
 
-        // FR3.3: Filter by Category
         if (filter.Category.HasValue)
         {
             query = query.Where(l => l.FoodCategory == filter.Category.Value);
         }
 
-        // FR3.3: Filter by Provider Type
         if (!string.IsNullOrWhiteSpace(filter.ProviderType))
         {
             var pt = filter.ProviderType.Trim().ToLower();
             query = query.Where(l => l.Provider != null && l.Provider.SpecificType.ToLower().Contains(pt));
         }
 
-        // FR3.3: Filter by Availability Date
         if (filter.AvailabilityDate.HasValue)
         {
             var date = filter.AvailabilityDate.Value.Date;
@@ -288,7 +284,6 @@ public class FoodListingService : IFoodListingService
             query = query.Where(l => l.PreparationDate >= date && l.PreparationDate < nextDate);
         }
 
-        // Text search
         if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
         {
             var term = filter.SearchTerm.Trim().ToLower();
@@ -298,7 +293,6 @@ public class FoodListingService : IFoodListingService
                 || (l.Provider != null && l.Provider.OrganizationName.ToLower().Contains(term)));
         }
 
-        // FR3.4: Sort donations by newest listing, nearest pickup deadline, or quantity
         query = (filter.SortBy?.ToLower()) switch
         {
             "deadline" => query.OrderBy(l => l.PickupDeadline),
@@ -442,8 +436,6 @@ public class FoodListingService : IFoodListingService
 
     public async Task<int> ProcessExpiredListingsAsync()
     {
-        // FR2.8: Automatically mark a donation as expired when its pickup deadline passes,
-        // provided it has not already been completed or cancelled.
         var now = DateTime.UtcNow;
         var expiredListings = await _context.FoodListings
             .Where(l => (l.Status == FoodListingStatus.Available || l.Status == FoodListingStatus.Reserved) 

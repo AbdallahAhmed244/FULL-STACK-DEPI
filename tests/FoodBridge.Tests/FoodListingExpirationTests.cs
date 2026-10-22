@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Moq;
 using Xunit;
@@ -24,7 +24,6 @@ public class FoodListingExpirationTests
         var pastDeadline = DateTime.UtcNow.AddHours(-1);
         var futureDeadline = DateTime.UtcNow.AddHours(5);
 
-        // 1. Available listing whose deadline has passed -> should be Expired
         var listing1 = new FoodListing
         {
             Id = 1,
@@ -34,7 +33,6 @@ public class FoodListingExpirationTests
             Status = FoodListingStatus.Available
         };
 
-        // 2. Available listing whose deadline is in the future -> should stay Available
         var listing2 = new FoodListing
         {
             Id = 2,
@@ -44,7 +42,6 @@ public class FoodListingExpirationTests
             Status = FoodListingStatus.Available
         };
 
-        // 3. Completed listing whose deadline has passed -> should stay Completed (FR2.8)
         var listing3 = new FoodListing
         {
             Id = 3,

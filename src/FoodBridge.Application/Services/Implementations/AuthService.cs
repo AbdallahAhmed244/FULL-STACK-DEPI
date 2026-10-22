@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +49,7 @@ public class AuthService : IAuthService
             OrganizationAddress = dto.OrganizationAddress,
             UserType = UserType.FoodProvider,
             SpecificType = dto.SpecificType,
-            IsVerified = false, // Must be verified by Admin
+            IsVerified = false,
             Status = UserStatus.Active,
             CreatedAt = DateTimeOffset.UtcNow
         };
@@ -62,7 +62,6 @@ public class AuthService : IAuthService
 
         await _userManager.AddToRoleAsync(user, "Provider");
 
-        // Generate email verification token
         var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         await _emailSender.SendVerificationEmailAsync(user.Email!, user.Id, emailToken);
 
@@ -113,7 +112,6 @@ public class AuthService : IAuthService
 
         await _userManager.AddToRoleAsync(user, "Charity");
 
-        // Generate email verification token
         var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         await _emailSender.SendVerificationEmailAsync(user.Email!, user.Id, emailToken);
 
@@ -159,7 +157,6 @@ public class AuthService : IAuthService
             await _userManager.AccessFailedAsync(user);
             var failedCount = await _userManager.GetAccessFailedCountAsync(user);
 
-            // Progressive Security Ban: If persistent attempts reach 10, automatically suspend the account
             if (failedCount >= 10)
             {
                 user.Status = UserStatus.Suspended;
@@ -231,7 +228,6 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            // For security, don't reveal if user doesn't exist
             return Result<string>.Success("If that email is registered, a password reset link has been dispatched.");
         }
 

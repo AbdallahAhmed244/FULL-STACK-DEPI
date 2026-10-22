@@ -1,17 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodBridge Platform — Food Surplus Management & Charity Redistribution</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -81,14 +79,11 @@
         }
     </script>
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- SignalR Client -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
 
     <style>
         .glass {
@@ -102,8 +97,7 @@
             overflow: hidden;
         }
 
-        /* Dark Mode Global Styles */
-        html.dark {
+html.dark {
             color-scheme: dark;
         }
         html.dark body {
@@ -147,8 +141,7 @@
             background-color: #334155 !important;
         }
 
-        /* RTL & Arabic Support */
-        html[dir="rtl"] {
+html[dir="rtl"] {
             font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif !important;
         }
         html[dir="rtl"] body {
@@ -178,12 +171,7 @@
             left: 1rem !important;
         }
 
-        /* ========================================================= */
-        /* MODERN INTERACTIVE ANIMATIONS & MICRO-INTERACTIONS       */
-        /* ========================================================= */
-
-        /* Floating background orbs */
-        @keyframes floatSlow {
+@keyframes floatSlow {
             0%, 100% {
                 transform: translate(0, 0) scale(1) rotate(0deg);
             }
@@ -225,8 +213,7 @@
             animation: pulseGlow 10s ease-in-out infinite;
         }
 
-        /* Smooth View Entrance */
-        @keyframes fadeInUpView {
+@keyframes fadeInUpView {
             from {
                 opacity: 0;
                 transform: translateY(14px);
@@ -240,8 +227,7 @@
             animation: fadeInUpView 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Modal Pop / Scale Entrance */
-        @keyframes modalPopIn {
+@keyframes modalPopIn {
             0% {
                 opacity: 0;
                 transform: scale(0.93) translateY(14px);
@@ -255,8 +241,7 @@
             animation: modalPopIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Button Glow & Shimmer */
-        @keyframes btnShimmer {
+@keyframes btnShimmer {
             0% {
                 transform: translateX(-150%) skewX(-25deg);
             }
@@ -290,8 +275,7 @@
             transform: translateY(0) scale(0.98);
         }
 
-        /* Interactive Listing & Feature Cards */
-        .interactive-card {
+.interactive-card {
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .interactive-card:hover {
@@ -303,8 +287,7 @@
             border-color: rgba(16, 185, 129, 0.4) !important;
         }
 
-        /* Glassmorphic Stat Cards (Hero & Dashboard) */
-        .glass-stat-card {
+.glass-stat-card {
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .glass-stat-card:hover {
@@ -314,8 +297,7 @@
             box-shadow: 0 15px 35px -5px rgba(6, 78, 59, 0.4);
         }
 
-        /* Pulse ring for live indicators */
-        @keyframes pulseRing {
+@keyframes pulseRing {
             0% {
                 transform: scale(0.95);
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
@@ -333,8 +315,7 @@
             animation: pulseRing 2s infinite;
         }
 
-        /* Toast Animations */
-        @keyframes toastIn {
+@keyframes toastIn {
             0% {
                 opacity: 0;
                 transform: translateY(20px) scale(0.95);
@@ -361,8 +342,7 @@
             animation: toastOut 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Sleek Modern Custom Scrollbar */
-        ::-webkit-scrollbar {
+::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
@@ -383,45 +363,37 @@
             background: #475569;
         }
 
-        /* ========================================================= */
-        /* SCROLL-DRIVEN REVEAL & TEXT ANIMATIONS                    */
-        /* ========================================================= */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(32px);
-            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, transform;
-        }
-        .scroll-reveal-left {
-            opacity: 0;
-            transform: translateX(-45px);
-            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, transform;
-        }
-        .scroll-reveal-right {
-            opacity: 0;
-            transform: translateX(45px);
-            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, transform;
-        }
+        .scroll-reveal,
+        .scroll-reveal-left,
+        .scroll-reveal-right,
         .scroll-reveal-scale {
-            opacity: 0;
-            transform: scale(0.92) translateY(24px);
-            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
-
-        /* Revealed Active State */
-        .scroll-reveal.revealed,
-        .scroll-reveal-left.revealed,
-        .scroll-reveal-right.revealed,
-        .scroll-reveal-scale.revealed {
+        .scroll-hidden.scroll-reveal {
+            opacity: 0;
+            transform: translateY(28px);
+        }
+        .scroll-hidden.scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-35px);
+        }
+        .scroll-hidden.scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(35px);
+        }
+        .scroll-hidden.scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.93) translateY(20px);
+        }
+        .scroll-hidden.revealed {
             opacity: 1 !important;
             transform: translate(0, 0) scale(1) !important;
         }
 
-        /* Stagger Delays */
-        .delay-100 { transition-delay: 100ms !important; }
+.delay-100 { transition-delay: 100ms !important; }
         .delay-150 { transition-delay: 150ms !important; }
         .delay-200 { transition-delay: 200ms !important; }
         .delay-250 { transition-delay: 250ms !important; }
@@ -430,8 +402,7 @@
         .delay-500 { transition-delay: 500ms !important; }
         .delay-600 { transition-delay: 600ms !important; }
 
-        /* Interactive Floating Card Hover */
-        .card-tilt-hover {
+.card-tilt-hover {
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
         }
         .card-tilt-hover:hover {
@@ -441,13 +412,11 @@
 </head>
 <body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
 
-    <!-- Main Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                
-                <!-- Logo & Brand -->
-                <div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('landing')">
+
+<div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('landing')">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-emerald-500/40 transition-all duration-300">
                         <i class="fa-solid fa-seedling text-lg group-hover:animate-wiggle"></i>
                     </div>
@@ -459,12 +428,11 @@
                     </div>
                 </div>
 
-                <!-- Navigation Tabs -->
-                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
-                    <button onclick="navigateTo('landing')" id="nav-landing" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition">
+<nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="navigateTo('landing')" id="nav-landing" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center shadow-xs">
                         <i class="fa-solid fa-house mr-2 text-emerald-600"></i> <span data-i18n="navHome">Home</span>
                     </button>
-                    <button onclick="navigateTo('explore')" id="nav-explore" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center">
+                    <button onclick="navigateTo('explore')" id="nav-explore" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition">
                         <i class="fa-solid fa-compass mr-2 text-emerald-600"></i> Browse Donations
                     </button>
                     <button onclick="navigateTo('provider')" id="nav-provider" class="nav-link hidden px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center">
@@ -481,29 +449,24 @@
                     </button>
                 </nav>
 
-                <!-- Right Side Actions & User Menu -->
-                <div class="flex items-center space-x-2 sm:space-x-3">
-                    
-                    <!-- Language Switcher (EN / عربي) -->
-                    <button onclick="toggleLanguage()" id="langToggleBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center shadow-xs" title="تغيير اللغة / Switch Language">
+<div class="flex items-center space-x-2 sm:space-x-3">
+
+<button onclick="toggleLanguage()" id="langToggleBtn" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center shadow-xs" title="تغيير اللغة / Switch Language">
                         <i class="fa-solid fa-globe text-emerald-600 mr-1.5"></i>
                         <span id="langBtnText">عربي</span>
                     </button>
 
-                    <!-- Dark / Light Mode Switcher -->
-                    <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none" title="الوضع الليلي / Dark Mode">
+<button onclick="toggleTheme()" id="themeToggleBtn" class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none" title="الوضع الليلي / Dark Mode">
                         <i id="themeToggleIcon" class="fa-solid fa-moon text-base text-amber-500 transition-transform duration-300"></i>
                     </button>
 
-                    <!-- Real-Time SignalR Notifications Bell -->
-                    <div class="relative group" id="notificationDropdownContainer">
+<div class="relative group" id="notificationDropdownContainer">
                         <button onclick="toggleNotificationDropdown()" class="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 hover:scale-110 active:scale-95 focus:outline-none" title="Notifications">
                             <i class="fa-regular fa-bell text-lg group-hover:animate-wiggle"></i>
                             <span id="unreadBadge" class="hidden absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce shadow-md">0</span>
                         </button>
-                        
-                        <!-- Notifications Panel Dropdown -->
-                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50">
+
+<div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50">
                             <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                                 <div class="font-semibold text-sm text-slate-800 flex items-center">
                                     <i class="fa-solid fa-bell mr-2 text-emerald-600"></i> <span data-i18n="liveNotifications">Live Notifications</span>
@@ -517,9 +480,8 @@
                         </div>
                     </div>
 
-                    <!-- Auth State Container -->
-                    <div id="authContainer" class="flex items-center">
-                        <!-- Populated by JS based on user state -->
+<div id="authContainer" class="flex items-center">
+                        
                     </div>
 
                 </div>
@@ -527,17 +489,12 @@
         </div>
     </header>
 
-    <!-- Main Dynamic Content Wrapper -->
-    <main class="flex-1">
+<main class="flex-1">
 
-        <!-- ======================================================== -->
-        <!-- VIEW 0: LANDING PAGE                                      -->
-        <!-- ======================================================== -->
-        <section id="view-landing" class="hidden">
+<section id="view-landing">
 
-            <!-- Hero Section -->
-            <div class="relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-white overflow-hidden">
-                <!-- Dynamic Floating Ambient Glow Orbs -->
+<div class="relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-white overflow-hidden">
+                
                 <div class="absolute inset-0 pointer-events-none overflow-hidden">
                     <div class="floating-orb-1 absolute top-10 left-10 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl"></div>
                     <div class="floating-orb-2 absolute bottom-10 right-10 w-[30rem] h-[30rem] bg-teal-400/20 rounded-full blur-3xl"></div>
@@ -571,7 +528,7 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- Stats Column with Glassmorphic Interactive Cards & Tailwind Floating Badges -->
+                        
                         <div class="scroll-reveal-right delay-200 relative">
                             <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-bold animate-float-slow absolute -top-5 right-2 shadow-xl z-20">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -609,8 +566,7 @@
                 </div>
             </div>
 
-            <!-- How It Works Section -->
-            <div class="bg-white py-20">
+<div class="bg-white py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-14 scroll-reveal">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 mb-4">
@@ -620,7 +576,7 @@
                         <p class="text-slate-500 text-lg max-w-2xl mx-auto" data-i18n="howItWorksSubtitle">A streamlined, secure, and real-time platform for food redistribution — from posting to pickup in minutes.</p>
                     </div>
                     <div class="grid md:grid-cols-3 gap-8">
-                        <!-- Step 1 -->
+                        
                         <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-amber-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
                             <div class="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                                 <i class="fa-solid fa-store"></i>
@@ -629,7 +585,7 @@
                             <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-3 group-hover:text-amber-600 transition-colors" data-i18n="step1Title">Provider Posts Surplus</h3>
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step1Desc">Restaurants, bakeries, and hotels list available food with details — quantity, pickup time, allergens, storage conditions, and photos.</p>
                         </div>
-                        <!-- Step 2 -->
+                        
                         <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-250 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-emerald-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
                             <div class="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                                 <i class="fa-solid fa-hand-holding-heart"></i>
@@ -638,7 +594,7 @@
                             <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 transition-colors" data-i18n="step2Title">Charity Reserves Food</h3>
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step2Desc">Verified charities browse available donations, filter by category and date, and submit a reservation request — all in real time.</p>
                         </div>
-                        <!-- Step 3 -->
+                        
                         <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-teal-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
                             <div class="w-16 h-16 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                                 <i class="fa-solid fa-truck-fast"></i>
@@ -651,15 +607,14 @@
                 </div>
             </div>
 
-            <!-- Who We Serve Section -->
-            <div class="bg-slate-50 dark:bg-slate-900/50 py-20">
+<div class="bg-slate-50 dark:bg-slate-900/50 py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-14 scroll-reveal">
                         <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4" data-i18n="whoUsesHeading">Who Uses FoodBridge?</h2>
                         <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto" data-i18n="whoUsesSubtitle">Two types of organizations — united by one mission.</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-8">
-                        <!-- Food Providers Card -->
+                        
                         <div class="interactive-card card-tilt-hover scroll-reveal-left delay-150 bg-white dark:bg-slate-800 rounded-3xl border border-amber-100 dark:border-amber-900/30 p-8 shadow-sm hover:shadow-xl hover:border-amber-300 transition-all duration-300">
                             <div class="flex items-start space-x-5">
                                 <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl shrink-0 shadow-xs">
@@ -680,7 +635,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Charities Card -->
+                        
                         <div class="interactive-card card-tilt-hover scroll-reveal-right delay-300 bg-white dark:bg-slate-800 rounded-3xl border border-emerald-100 dark:border-emerald-900/30 p-8 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300">
                             <div class="flex items-start space-x-5">
                                 <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl shrink-0 shadow-xs">
@@ -705,8 +660,7 @@
                 </div>
             </div>
 
-            <!-- Features Section -->
-            <div class="bg-white dark:bg-slate-900 py-20">
+<div class="bg-white dark:bg-slate-900 py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-14 scroll-reveal">
                         <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4" data-i18n="platformFeaturesHeading">Platform Features</h2>
@@ -747,8 +701,7 @@
                 </div>
             </div>
 
-            <!-- CTA Section -->
-            <div class="relative bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 py-16 overflow-hidden">
+<div class="relative bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 py-16 overflow-hidden">
                 <div class="absolute inset-0 pointer-events-none opacity-20">
                     <div class="floating-orb-1 absolute -top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
                     <div class="floating-orb-2 absolute -bottom-10 right-10 w-80 h-80 bg-emerald-300 rounded-full blur-3xl"></div>
@@ -768,8 +721,7 @@
                 </div>
             </div>
 
-            <!-- Footer -->
-            <footer class="bg-slate-900 text-slate-400 py-10">
+<footer class="bg-slate-900 text-slate-400 py-10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="flex items-center space-x-3">
                         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white">
@@ -786,13 +738,9 @@
             </footer>
         </section>
 
-        <!-- ======================================================== -->
-        <!-- VIEW 1: EXPLORE / DISCOVERY (FR3) -->
-        <!-- ======================================================== -->
-        <section id="view-explore" class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            
-            <!-- Hero Banner -->
-            <div class="rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-8 sm:p-12 mb-8 shadow-2xl relative overflow-hidden">
+<section id="view-explore" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+<div class="rounded-3xl bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-8 sm:p-12 mb-8 shadow-2xl relative overflow-hidden">
                 <div class="floating-orb-1 absolute -top-10 -right-10 w-64 h-64 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="floating-orb-2 absolute -bottom-10 -left-10 w-72 h-72 bg-teal-400/20 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl animate-spin-slow pointer-events-none">
@@ -819,11 +767,9 @@
                 </div>
             </div>
 
-            <!-- Filter & Search Controls (FR3.3, FR3.4, FR3.5) -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 p-5 mb-8 shadow-sm">
-                
-                <!-- Category Quick Select Pills -->
-                <div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-4 scrollbar-none" id="categoryPillContainer">
+<div class="bg-white rounded-2xl border border-slate-200/80 p-5 mb-8 shadow-sm">
+
+<div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-4 scrollbar-none" id="categoryPillContainer">
                     <button onclick="setCategoryFilter(null)" class="category-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm transition shrink-0" data-category="all">
                         All Categories
                     </button>
@@ -847,8 +793,7 @@
                     </button>
                 </div>
 
-                <!-- Search, Provider Type Filter & Sort Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <div class="relative">
                         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
                         <input type="text" id="searchInput" oninput="debounce(loadExploreListings, 300)()" placeholder="Search food, dishes, location..." class="w-full pl-9 pr-4 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -874,8 +819,7 @@
                     </div>
                 </div>
 
-                <!-- Active Status Filter Indicator -->
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+<div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                     <div class="flex items-center">
                         <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
                         <span data-i18n="showingAvailable">Showing available listings for reservation (FR3.5 default).</span>
@@ -884,13 +828,11 @@
                 </div>
             </div>
 
-            <!-- Listings Grid -->
-            <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamically rendered listing cards -->
+<div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
             </div>
 
-            <!-- Empty State -->
-            <div id="emptyListingsState" class="hidden text-center py-16 bg-white rounded-3xl border border-slate-200 p-8">
+<div id="emptyListingsState" class="hidden text-center py-16 bg-white rounded-3xl border border-slate-200 p-8">
                 <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-2xl">
                     <i class="fa-solid fa-bowl-food"></i>
                 </div>
@@ -903,13 +845,9 @@
 
         </section>
 
-        <!-- ======================================================== -->
-        <!-- VIEW 2: PROVIDER PORTAL (FR2, FR4, FR5, FR9.1) -->
-        <!-- ======================================================== -->
-        <section id="view-provider" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            
-            <!-- Provider Header & Action Bar -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+<section id="view-provider" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center space-x-2">
                         <h2 class="font-heading font-bold text-2xl sm:text-3xl text-slate-900" data-i18n="providerPortalHeading">Food Provider Portal</h2>
@@ -926,8 +864,7 @@
                 </div>
             </div>
 
-            <!-- Provider Performance KPI Cards (FR9.1) -->
-            <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                 <div class="interactive-card group cursor-default bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm">
                     <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="statTotalListed">Total Listed</div>
                     <div id="statProviderTotalListed" class="font-heading text-2xl font-bold text-slate-900 dark:text-white group-hover:scale-105 transition-transform duration-200">0</div>
@@ -960,8 +897,7 @@
                 </div>
             </div>
 
-            <!-- Provider Sub-Tabs -->
-            <div class="flex border-b border-slate-200 mb-6 space-x-4">
+<div class="flex border-b border-slate-200 mb-6 space-x-4">
                 <button onclick="switchProviderTab('listings')" id="ptab-listings" class="pb-3 text-sm font-semibold text-emerald-600 border-b-2 border-emerald-600">
                     <i class="fa-solid fa-list-check mr-1.5"></i> <span data-i18n="myListings">My Donation Listings</span>
                 </button>
@@ -970,8 +906,7 @@
                 </button>
             </div>
 
-            <!-- Sub-Tab Content 1: My Listings -->
-            <div id="providerTabListings">
+<div id="providerTabListings">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center space-x-2">
                         <span class="text-xs font-semibold text-slate-500" data-i18n="filterByStatus">Filter by Status:</span>
@@ -999,26 +934,22 @@
                                 </tr>
                             </thead>
                             <tbody id="providerListingsTableBody" class="divide-y divide-slate-100">
-                                <!-- Populated dynamically -->
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Sub-Tab Content 2: Incoming Requests -->
-            <div id="providerTabRequests" class="hidden">
+<div id="providerTabRequests" class="hidden">
                 <div id="providerRequestsList" class="space-y-4">
-                    <!-- Populated dynamically with requests and accept/reject actions -->
+                    
                 </div>
             </div>
 
         </section>
 
-        <!-- ======================================================== -->
-        <!-- VIEW 3: CHARITY PORTAL (FR4, FR5, FR7, FR9.2) -->
-        <!-- ======================================================== -->
-        <section id="view-charity" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+<section id="view-charity" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                 <div>
@@ -1037,8 +968,7 @@
                 </div>
             </div>
 
-            <!-- Charity KPI Cards (FR9.2) -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="interactive-card group cursor-default bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm">
                     <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1" data-i18n="donationsReceived">Donations Received</div>
                     <div id="statCharityTotalReceived" class="font-heading text-2xl font-bold text-emerald-700 dark:text-emerald-400 group-hover:scale-105 transition-transform duration-200">0</div>
@@ -1061,8 +991,7 @@
                 </div>
             </div>
 
-            <!-- Charity Reservations List (FR4.7, FR5.2, FR5.4, FR5.5, FR5.6) -->
-            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm p-5">
+<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm p-5">
                 <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                     <h3 class="font-heading font-bold text-lg text-slate-800" data-i18n="myReservations">My Food Reservations</h3>
                     <div class="flex items-center space-x-2">
@@ -1079,16 +1008,13 @@
                 </div>
 
                 <div id="charityReservationsContainer" class="space-y-4">
-                    <!-- Populated dynamically -->
+                    
                 </div>
             </div>
 
         </section>
 
-        <!-- ======================================================== -->
-        <!-- VIEW 4: ADMIN SUITE (FR8.1 - FR8.9) -->
-        <!-- ======================================================== -->
-        <section id="view-admin" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+<section id="view-admin" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             
             <div class="mb-8">
                 <div class="flex items-center space-x-2">
@@ -1100,8 +1026,7 @@
                 <p class="text-slate-500 text-sm mt-1" data-i18n="adminSuiteDesc">Verify food provider and charity organizations, moderate platform content, resolve problem reports, and audit administrative events.</p>
             </div>
 
-            <!-- Admin Activity Summaries (FR8.8) -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div class="interactive-card group cursor-default bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm">
                     <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1" data-i18n="registeredUsers">Registered Users</div>
                     <div id="adminStatUsers" class="font-heading text-2xl font-bold text-indigo-900 dark:text-indigo-300 group-hover:scale-105 transition-transform duration-200">0</div>
@@ -1124,8 +1049,7 @@
                 </div>
             </div>
 
-            <!-- Admin Tabs -->
-            <div class="flex border-b border-slate-200 mb-6 space-x-4 overflow-x-auto">
+<div class="flex border-b border-slate-200 mb-6 space-x-4 overflow-x-auto">
                 <button onclick="switchAdminTab('verifications')" id="atab-verifications" class="pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0">
                     <i class="fa-solid fa-stamp mr-1.5"></i> <span data-i18n="tabVerifications">Organization Verifications</span> (<span id="adminBadgeVerifications">0</span>)
                 </button>
@@ -1140,19 +1064,17 @@
                 </button>
             </div>
 
-            <!-- Admin Sub-Tab 1: Verification Queue (FR8.3) -->
-            <div id="adminTabVerifications">
+<div id="adminTabVerifications">
                 <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                     <h3 class="font-heading font-bold text-base text-slate-900 mb-2" data-i18n="pendingVerificationsTitle">Pending Organization Verification Requests</h3>
                     <p class="text-slate-500 text-xs mb-4" data-i18n="pendingVerificationsDesc">Review organizational mission, address, and credentials before approving access to protected features.</p>
                     <div id="adminVerificationList" class="space-y-3">
-                        <!-- Populated dynamically -->
+                        
                     </div>
                 </div>
             </div>
 
-            <!-- Admin Sub-Tab 2: User Directory & Suspension (FR8.2, FR8.4) -->
-            <div id="adminTabUsers" class="hidden">
+<div id="adminTabUsers" class="hidden">
                 <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                         <input type="text" id="adminUserSearch" oninput="debounce(loadAdminUsers, 300)()" placeholder="Search users by name, email, organization..." data-i18n-placeholder="searchUsersPlaceholder" class="px-3.5 py-2 rounded-xl text-sm border border-slate-200 w-full sm:w-72">
@@ -1185,48 +1107,46 @@
                                 </tr>
                             </thead>
                             <tbody id="adminUsersTableBody" class="divide-y divide-slate-100">
-                                <!-- Populated dynamically -->
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Admin Sub-Tab 3: Moderation & Reports (FR8.5, FR8.6, FR8.7) -->
-            <div id="adminTabModeration" class="hidden">
+<div id="adminTabModeration" class="hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Reported Listings -->
+                    
                     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                         <h4 class="font-heading font-bold text-sm text-slate-800 mb-3 flex items-center text-rose-600">
                             <i class="fa-solid fa-flag mr-2"></i> <span data-i18n="reportedListings">Reported Listings</span>
                         </h4>
                         <div id="adminReportedListingsContainer" class="space-y-3 text-xs">
-                            <!-- Populated dynamically -->
+                            
                         </div>
                     </div>
-                    <!-- Reported Reviews -->
+                    
                     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                         <h4 class="font-heading font-bold text-sm text-slate-800 mb-3 flex items-center text-amber-600">
                             <i class="fa-solid fa-star-half-stroke mr-2"></i> <span data-i18n="reportedReviews">Reported Reviews</span>
                         </h4>
                         <div id="adminReportedReviewsContainer" class="space-y-3 text-xs">
-                            <!-- Populated dynamically -->
+                            
                         </div>
                     </div>
-                    <!-- Problem Reports from Pickups -->
+                    
                     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                         <h4 class="font-heading font-bold text-sm text-slate-800 mb-3 flex items-center text-indigo-600">
                             <i class="fa-solid fa-circle-exclamation mr-2"></i> <span data-i18n="pickupDisputes">Pickup Disputes</span>
                         </h4>
                         <div id="adminProblemReportsContainer" class="space-y-3 text-xs">
-                            <!-- Populated dynamically -->
+                            
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Admin Sub-Tab 4: Audit Logs (FR8.9) -->
-            <div id="adminTabAudit" class="hidden">
+<div id="adminTabAudit" class="hidden">
                 <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                     <h3 class="font-heading font-bold text-base text-slate-900 mb-2" data-i18n="auditRecordsTitle">Administrative Audit Records</h3>
                     <p class="text-slate-500 text-xs mb-4" data-i18n="auditRecordsDesc">Immutable log of security actions, user verifications, account suspensions, and content removals.</p>
@@ -1242,7 +1162,7 @@
                                 </tr>
                             </thead>
                             <tbody id="adminAuditTableBody" class="divide-y divide-slate-100 text-xs">
-                                <!-- Populated dynamically -->
+                                
                             </tbody>
                         </table>
                     </div>
@@ -1251,10 +1171,7 @@
 
         </section>
 
-        <!-- ======================================================== -->
-        <!-- VIEW 5: PLATFORM IMPACT & STATISTICS (FR9.3, FR9.5) -->
-        <!-- ======================================================== -->
-        <section id="view-impact" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+<section id="view-impact" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             
             <div class="mb-8 text-center max-w-2xl mx-auto">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-3">
@@ -1266,8 +1183,7 @@
                 </p>
             </div>
 
-            <!-- Big Impact Numbers -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="interactive-card group bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-8 text-white shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 relative overflow-hidden cursor-default">
                     <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
                     <div class="text-xs font-bold uppercase tracking-wider text-emerald-200 mb-2" data-i18n="impactCardQty">Redistributed Food Quantity</div>
@@ -1288,8 +1204,7 @@
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div class="interactive-card bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-xl transition-all duration-300">
                     <h3 class="font-heading font-bold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center">
                         <i class="fa-solid fa-chart-pie mr-2 text-emerald-600"></i> <span data-i18n="chartCategory">Redistribution by Food Category</span>
@@ -1312,8 +1227,7 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-auto py-8">
+<footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-auto py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
             <div class="flex items-center space-x-2">
                 <div class="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center text-xs">
@@ -1331,12 +1245,7 @@
         </div>
     </footer>
 
-    <!-- ======================================================== -->
-    <!-- MODALS & DIALOGS -->
-    <!-- ======================================================== -->
-
-    <!-- Modal 1: Food Listing Detail & Reserve Dialog (FR3.6, FR4.1) -->
-    <div id="listingDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="listingDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
             <div class="relative h-56 bg-slate-100">
                 <img id="detailModalImage" src="" alt="Food" class="w-full h-full object-cover">
@@ -1363,8 +1272,7 @@
                     Food description details...
                 </p>
 
-                <!-- Food Safety, Storage, and Allergen Info (FR2.3, FR3.2) -->
-                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+<div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div>
                         <span class="font-bold text-slate-500 uppercase tracking-wider text-[10px] block mb-1">
                             <i class="fa-solid fa-snowflake text-blue-500 mr-1"></i> <span data-i18n="storageConditions">Storage Conditions</span>
@@ -1391,8 +1299,7 @@
                     </div>
                 </div>
 
-                <!-- Reserve Action Container -->
-                <div id="detailModalActionContainer" class="flex items-center justify-end space-x-3">
+<div id="detailModalActionContainer" class="flex items-center justify-end space-x-3">
                     <button onclick="closeListingDetailModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition" data-i18n="close">
                         Close
                     </button>
@@ -1404,8 +1311,7 @@
         </div>
     </div>
 
-    <!-- Modal 2: Create Donation Listing Modal (FR2.1 - FR2.4) -->
-    <div id="createListingModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="createListingModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-700">
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -1503,8 +1409,7 @@
         </div>
     </div>
 
-    <!-- Modal 3: Accept Reservation & Set Pickup (FR5.1) -->
-    <div id="acceptReservationModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="acceptReservationModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
             <h3 class="font-heading font-bold text-lg text-slate-900 mb-1" data-i18n="acceptModalTitle">Confirm & Schedule Pickup</h3>
             <p class="text-xs text-slate-500 mb-4" data-i18n="acceptModalSubtitle">Set the agreed pickup date, time, and confirmed collection address for the charity.</p>
@@ -1527,8 +1432,7 @@
         </div>
     </div>
 
-    <!-- Modal 4: Leave Mutual Review (FR7.1, FR7.2) -->
-    <div id="reviewModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="reviewModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
             <h3 class="font-heading font-bold text-lg text-slate-900 mb-1" data-i18n="reviewModalTitle">Submit Partner Review</h3>
             <p class="text-xs text-slate-500 mb-4" id="reviewModalSubtitle" data-i18n="reviewModalSubtitle">Rate your donation pickup partner.</p>
@@ -1558,8 +1462,7 @@
         </div>
     </div>
 
-    <!-- Modal 5: Report Problem (FR5.5) -->
-    <div id="reportProblemModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="reportProblemModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
             <h3 class="font-heading font-bold text-lg text-slate-900 mb-1 text-rose-600 flex items-center">
                 <i class="fa-solid fa-triangle-exclamation mr-2"></i> <span data-i18n="reportProblemTitle">Report Pickup Problem</span>
@@ -1580,8 +1483,7 @@
         </div>
     </div>
 
-    <!-- Modal 6: Auth & Registration Modal (FR1.1 - FR1.4, FR1.6) -->
-    <div id="authModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="authModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-700">
             <div class="flex items-center justify-between mb-4">
                 <h3 id="authModalTitle" class="font-heading font-bold text-xl text-slate-900" data-i18n="authSignInTitle">Sign In to FoodBridge</h3>
@@ -1590,15 +1492,13 @@
                 </button>
             </div>
 
-            <!-- Mode Selector -->
-            <div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl text-xs font-semibold mb-6">
+<div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl text-xs font-semibold mb-6">
                 <button onclick="setAuthTab('login')" id="atab-login" class="py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition" data-i18n="signInTab">Sign In</button>
                 <button onclick="setAuthTab('reg-provider')" id="atab-reg-provider" class="py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition" data-i18n="providerTab">Provider</button>
                 <button onclick="setAuthTab('reg-charity')" id="atab-reg-charity" class="py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition" data-i18n="charityTab">Charity</button>
             </div>
 
-            <!-- Form: Login -->
-            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
+<form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelEmail">Email Address</label>
                     <input type="email" id="loginEmail" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -1610,8 +1510,7 @@
                 <button type="submit" class="w-full py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow text-sm transition flex items-center justify-center"><i class="fa-solid fa-right-to-bracket mr-2"></i> <span data-i18n="signIn">Sign In</span></button>
             </form>
 
-            <!-- Form: Register Provider (FR1.1, FR1.3) -->
-            <form id="regProviderForm" onsubmit="handleRegisterProviderSubmit(event)" class="hidden space-y-3">
+<form id="regProviderForm" onsubmit="handleRegisterProviderSubmit(event)" class="hidden space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPContactName">Contact Full Name *</label>
                     <input type="text" id="regPFullName" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -1650,8 +1549,7 @@
                 <button type="submit" class="w-full py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow text-sm transition flex items-center justify-center"><i class="fa-solid fa-user-plus mr-2"></i> <span data-i18n="createProviderBtn">Create Provider Account</span></button>
             </form>
 
-            <!-- Form: Register Charity (FR1.1, FR1.4) -->
-            <form id="regCharityForm" onsubmit="handleRegisterCharitySubmit(event)" class="hidden space-y-3">
+<form id="regCharityForm" onsubmit="handleRegisterCharitySubmit(event)" class="hidden space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelCDirectorName">Director Full Name *</label>
                     <input type="text" id="regCFullName" required class="w-full px-3 py-1.5 rounded-xl text-xs border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -1696,8 +1594,7 @@
         </div>
     </div>
 
-    <!-- Modal 7: Add New Platform Administrator -->
-    <div id="createAdminModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="createAdminModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
             <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div class="flex items-center space-x-2">
@@ -1743,12 +1640,10 @@
             </form>
         </div>
     </div>
-    <!-- Toast Notification Container (Fixed Bottom-Right) -->
+    
     <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <!-- Application Script -->
-    <script src="/app.js"></script>
+<script src="/app.js"></script>
 </body>
 </html>
-
 

@@ -1,4 +1,4 @@
-namespace FoodBridge.Application.Common.Interfaces;
+﻿namespace FoodBridge.Application.Common.Interfaces;
 
 public interface ICurrentUserService
 {

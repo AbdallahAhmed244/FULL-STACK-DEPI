@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Moq;
 using Xunit;
@@ -59,14 +59,12 @@ public class ReviewServiceTests
         db.Reservations.Add(reservation);
         await db.SaveChangesAsync();
 
-        // 1. First review succeeds
         var dto = new CreateReviewDto { ReservationId = 2, Rating = 5, Comment = "Excellent distribution!" };
         var firstResult = await service.SubmitReviewAsync("c1", dto);
 
         Assert.True(firstResult.Succeeded);
         Assert.Equal(5, firstResult.Data!.Rating);
 
-        // 2. Duplicate review from same user fails (FR7.3)
         var secondResult = await service.SubmitReviewAsync("c1", dto);
 
         Assert.False(secondResult.Succeeded);

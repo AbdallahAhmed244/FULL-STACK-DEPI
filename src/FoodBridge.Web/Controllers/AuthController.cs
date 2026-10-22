@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FoodBridge.Application.Common.Interfaces;
@@ -124,9 +124,6 @@ public class AuthController : ControllerBase
         return Ok(result.Data);
     }
 
-    /// <summary>
-    /// Helper endpoint for demonstrations to view dispatched emails & tokens.
-    /// </summary>
     [HttpGet("recent-emails")]
     public IActionResult GetRecentEmails()
     {

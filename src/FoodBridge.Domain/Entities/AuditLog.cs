@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace FoodBridge.Domain.Entities;
 
@@ -9,8 +9,8 @@ public class AuditLog
     public string AdminId { get; set; } = string.Empty;
     public virtual ApplicationUser? Admin { get; set; }
 
-    public string Action { get; set; } = string.Empty; // e.g. "VerifyUser", "SuspendUser", "RemoveListing"
-    public string TargetEntity { get; set; } = string.Empty; // e.g. "ApplicationUser", "FoodListing", "Review"
+    public string Action { get; set; } = string.Empty;
+    public string TargetEntity { get; set; } = string.Empty;
     public string TargetId { get; set; } = string.Empty;
     public string Details { get; set; } = string.Empty;
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;

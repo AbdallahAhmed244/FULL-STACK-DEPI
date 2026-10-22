@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FoodBridge.Domain.Enums;
 
@@ -16,7 +16,6 @@ public class Reservation
 
     public DateTimeOffset RequestDate { get; set; } = DateTimeOffset.UtcNow;
     
-    // Provider confirmed pickup details
     public DateTime? PickupDateTime { get; set; }
     public string? ConfirmedLocation { get; set; }
 
@@ -28,6 +27,5 @@ public class Reservation
 
     public byte[]? RowVersion { get; set; }
 
-    // Navigation Properties
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

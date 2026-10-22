@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -29,7 +29,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
     {
         base.OnModelCreating(builder);
 
-        // ApplicationUser configuration
         builder.Entity<ApplicationUser>(entity =>
         {
             entity.Property(u => u.FullName).HasMaxLength(150).IsRequired();
@@ -39,7 +38,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
             entity.Property(u => u.TargetCommunityDescription).HasMaxLength(1000);
         });
 
-        // FoodListing configuration
         builder.Entity<FoodListing>(entity =>
         {
             entity.ToTable("FoodListings");
@@ -54,7 +52,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
             entity.Property(e => e.Allergens).HasMaxLength(250).IsRequired();
             entity.Property(e => e.ImageUrl).HasMaxLength(500);
 
-            // Optimistic Concurrency RowVersion
             entity.Property(e => e.RowVersion).IsRowVersion();
 
             entity.HasIndex(e => e.Status);
@@ -67,7 +64,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                   .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // Reservation configuration
         builder.Entity<Reservation>(entity =>
         {
             entity.ToTable("Reservations");
@@ -77,7 +73,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
             entity.Property(e => e.CancellationReason).HasMaxLength(500);
             entity.Property(e => e.ProblemDescription).HasMaxLength(1000);
 
-            // Optimistic Concurrency RowVersion
             entity.Property(e => e.RowVersion).IsRowVersion();
 
             entity.HasIndex(e => e.Status);
@@ -95,7 +90,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                   .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // Review configuration
         builder.Entity<Review>(entity =>
         {
             entity.ToTable("Reviews");
@@ -122,7 +116,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                   .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // Notification configuration
         builder.Entity<Notification>(entity =>
         {
             entity.ToTable("Notifications");
@@ -140,7 +133,6 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // AuditLog configuration
         builder.Entity<AuditLog>(entity =>
         {
             entity.ToTable("AuditLogs");

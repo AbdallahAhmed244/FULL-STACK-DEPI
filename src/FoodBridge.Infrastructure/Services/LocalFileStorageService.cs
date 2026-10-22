@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -59,7 +59,6 @@ public class LocalFileStorageService : IFileStorageService
         }
         catch
         {
-            // Ignore deletion failures for robust operation
         }
 
         return Task.CompletedTask;

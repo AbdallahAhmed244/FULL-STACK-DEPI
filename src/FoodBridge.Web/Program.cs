@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -19,17 +19,13 @@ using FoodBridge.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Clean Architecture Infrastructure & Application Services
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// 2. Web Services
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-// 3. SignalR for Real-time Updates & Notifications
 builder.Services.AddSignalR();
 
-// 4. Controllers & JSON configuration
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -37,7 +33,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 
-// 5. JWT Authentication & Bearer Options
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? "FoodBridgeSuperSecretKeyForJwtTokenGeneration2026!MustBeLongEnough";
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"] ?? "FoodBridge";
 var jwtAudience = builder.Configuration["JwtSettings:Audience"] ?? "FoodBridgeApp";
@@ -63,7 +58,6 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 
-    // Support SignalR JWT auth via query string
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
@@ -79,7 +73,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 6. Role & Policy-Based Authorization
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
@@ -88,7 +81,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("VerifiedOnly", policy => policy.RequireClaim("isVerified", "true"));
 });
 
-// 7. CORS configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -100,7 +92,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// 8. Swagger / OpenAPI Documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -111,7 +102,6 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Comprehensive Food Surplus Management and Donation Platform API connecting food providers (restaurants, hotels, bakeries) with charities."
     });
 
-    // JWT Security in Swagger
     var securityScheme = new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -136,7 +126,6 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 9. Database Auto-Migration and Data Seeding
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -154,7 +143,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// 10. Pipeline configuration
 if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
@@ -174,7 +162,6 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// SignalR & Controller Endpoints
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.MapControllers();
 app.MapFallbackToFile("index.html");

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using FoodBridge.Domain.Enums;
 
@@ -19,7 +19,7 @@ public class CreateFoodListingDto
     public decimal Quantity { get; set; }
 
     [Required, StringLength(50)]
-    public string UnitOfMeasurement { get; set; } = "portions"; // kg, portions, boxes, meals
+    public string UnitOfMeasurement { get; set; } = "portions";
 
     [Required]
     public DateTime PreparationDate { get; set; }
@@ -31,10 +31,10 @@ public class CreateFoodListingDto
     public string PickupAddress { get; set; } = string.Empty;
 
     [Required, StringLength(200)]
-    public string StorageConditions { get; set; } = "Room Temperature"; // Refrigerated, Frozen, Room Temperature, Heated
+    public string StorageConditions { get; set; } = "Room Temperature";
 
     [Required, StringLength(250)]
-    public string Allergens { get; set; } = "None"; // Gluten, Dairy, Peanuts, Eggs, None
+    public string Allergens { get; set; } = "None";
 }
 
 public class UpdateFoodListingDto : CreateFoodListingDto
@@ -82,7 +82,7 @@ public class FoodListingFilterDto
     public string? ProviderType { get; set; }
     public DateTime? AvailabilityDate { get; set; }
     public string? SearchTerm { get; set; }
-    public string? SortBy { get; set; } = "newest"; // newest, deadline, quantity
+    public string? SortBy { get; set; } = "newest";
     public bool OnlyAvailable { get; set; } = true;
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 20;

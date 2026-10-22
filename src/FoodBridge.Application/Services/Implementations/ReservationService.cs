@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +38,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("Charity account is suspended.");
         }
 
-        // FR4.2 Concurrency check: Ensure listing is Available
         var listing = await _context.FoodListings
             .Include(l => l.Provider)
             .FirstOrDefaultAsync(l => l.Id == foodListingId);
@@ -65,7 +64,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("This donation listing has expired.");
         }
 
-        // Check if this charity already requested this listing
         var existingRequest = await _context.Reservations
             .AnyAsync(r => r.FoodListingId == foodListingId 
                            && r.CharityId == charityId 
@@ -77,7 +75,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("You already have an active reservation or pending request for this listing.");
         }
 
-        // Create reservation with Pending status
         var reservation = new Reservation
         {
             FoodListingId = foodListingId,
@@ -97,7 +94,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("A conflict occurred while creating the reservation. Please try again.");
         }
 
-        // FR6.1: Notify Food Provider when Charity submits reservation request
         await _notificationService.SendNotificationAsync(
             listing.ProviderId,
             "New Reservation Request",
@@ -135,13 +131,11 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("Confirmed pickup time cannot exceed the listing's pickup deadline.");
         }
 
-        // FR4.2: Ensure no other reservation has already claimed this listing
         if (reservation.FoodListing.Status != FoodListingStatus.Available)
         {
             return Result<ReservationDto>.Failure("The food listing is no longer available.");
         }
 
-        // Accept this reservation and lock the listing to Reserved
         reservation.Status = ReservationStatus.Accepted;
         reservation.PickupDateTime = dto.PickupDateTime;
         reservation.ConfirmedLocation = dto.ConfirmedLocation;
@@ -149,7 +143,6 @@ public class ReservationService : IReservationService
         reservation.FoodListing.Status = FoodListingStatus.Reserved;
         reservation.FoodListing.UpdatedAt = DateTimeOffset.UtcNow;
 
-        // Auto-reject any other pending requests for the same listing
         var otherPending = await _context.Reservations
             .Where(r => r.FoodListingId == reservation.FoodListingId && r.Id != reservation.Id && r.Status == ReservationStatus.Pending)
             .ToListAsync();
@@ -174,7 +167,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("Concurrency conflict: The food listing was modified by another operation.");
         }
 
-        // FR4.6 & FR6.2: Notify Charity on acceptance
         await _notificationService.SendNotificationAsync(
             reservation.CharityId,
             "Reservation Accepted!",
@@ -210,7 +202,6 @@ public class ReservationService : IReservationService
 
         await _context.SaveChangesAsync();
 
-        // FR4.6 & FR6.2: Notify Charity
         await _notificationService.SendNotificationAsync(
             reservation.CharityId,
             "Reservation Request Declined",
@@ -244,7 +235,6 @@ public class ReservationService : IReservationService
         reservation.Status = ReservationStatus.ReadyForPickup;
         await _context.SaveChangesAsync();
 
-        // FR5.3 & FR6.4: Notify Charity
         await _notificationService.SendNotificationAsync(
             reservation.CharityId,
             "Food Ready For Pickup!",
@@ -277,7 +267,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure($"Cannot complete reservation with current status {reservation.Status}.");
         }
 
-        // FR5.4: Mark as Completed and update listing to Completed
         reservation.Status = ReservationStatus.Completed;
         reservation.CompletedAt = DateTimeOffset.UtcNow;
 
@@ -289,7 +278,6 @@ public class ReservationService : IReservationService
 
         await _context.SaveChangesAsync();
 
-        // Notify provider of completion and invite review
         if (reservation.FoodListing != null)
         {
             await _notificationService.SendNotificationAsync(
@@ -324,7 +312,6 @@ public class ReservationService : IReservationService
             return Result<ReservationDto>.Failure("Cannot cancel an already completed reservation.");
         }
 
-        // FR4.8: Cancel before agreed pickup deadline
         if (reservation.FoodListing != null && DateTime.UtcNow > reservation.FoodListing.PickupDeadline)
         {
             return Result<ReservationDto>.Failure("Cannot cancel reservation after the agreed pickup deadline has passed.");
@@ -332,7 +319,6 @@ public class ReservationService : IReservationService
 
         var wasAccepted = reservation.Status == ReservationStatus.Accepted || reservation.Status == ReservationStatus.ReadyForPickup;
 
-        // Imminent Pickup Cutoff Protection:
         if (wasAccepted && reservation.PickupDateTime.HasValue)
         {
             var timeUntilPickup = reservation.PickupDateTime.Value - DateTime.UtcNow;
@@ -345,7 +331,6 @@ public class ReservationService : IReservationService
         reservation.Status = ReservationStatus.Cancelled;
         reservation.CancellationReason = dto.Reason;
 
-        // FR4.9: Change the food listing back to "Available" when an accepted reservation is cancelled
         if (wasAccepted && reservation.FoodListing != null)
         {
             reservation.FoodListing.Status = FoodListingStatus.Available;
@@ -354,7 +339,6 @@ public class ReservationService : IReservationService
 
         await _context.SaveChangesAsync();
 
-        // FR6.3: Notify Provider
         if (reservation.FoodListing != null)
         {
             await _notificationService.SendNotificationAsync(
@@ -389,7 +373,6 @@ public class ReservationService : IReservationService
 
         await _context.SaveChangesAsync();
 
-        // Notify Provider and Admin
         if (reservation.FoodListing != null)
         {
             await _notificationService.SendNotificationAsync(
@@ -567,7 +550,6 @@ public class ReservationService : IReservationService
 
     public async Task<int> ProcessUpcomingPickupRemindersAsync()
     {
-        // FR6.4: Notify users when an upcoming pickup requires their attention (e.g., within 2 hours)
         var now = DateTime.UtcNow;
         var upcomingWindow = now.AddHours(2);
 
@@ -582,14 +564,12 @@ public class ReservationService : IReservationService
         int notifiedCount = 0;
         foreach (var r in upcoming)
         {
-            // Notify charity
             await _notificationService.SendNotificationAsync(
                 r.CharityId,
                 "Upcoming Food Pickup Reminder",
                 $"Reminder: Your pickup for '{r.FoodListing?.FoodName}' is scheduled within the next 2 hours ({r.PickupDateTime:t}).",
                 $"reservation:{r.Id}");
 
-            // Notify provider
             if (r.FoodListing != null)
             {
                 await _notificationService.SendNotificationAsync(

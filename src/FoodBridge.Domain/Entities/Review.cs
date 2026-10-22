@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace FoodBridge.Domain.Entities;
 
@@ -15,7 +15,7 @@ public class Review
     public string RevieweeId { get; set; } = string.Empty;
     public virtual ApplicationUser? Reviewee { get; set; }
 
-    public int Rating { get; set; } // 1 to 5
+    public int Rating { get; set; }
     public string? Comment { get; set; }
 
     public bool IsReported { get; set; } = false;

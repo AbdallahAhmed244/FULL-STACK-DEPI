@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,10 +59,8 @@ public class NotificationService : INotificationService
             CreatedAt = notification.CreatedAt
         };
 
-        // Real-time broadcast to specific user group
         await _hubContext.Clients.Group($"user-{userId}").SendAsync("ReceiveNotification", dto);
 
-        // Dispatch email notification as well
         if (_emailSender != null)
         {
             try
@@ -76,7 +74,6 @@ public class NotificationService : INotificationService
             }
             catch
             {
-                // Non-blocking email dispatch failure
             }
         }
     }

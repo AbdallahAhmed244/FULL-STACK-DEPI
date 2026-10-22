@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using FoodBridge.Domain.Enums;
 
@@ -22,7 +22,7 @@ public class RegisterProviderDto
     public string OrganizationAddress { get; set; } = string.Empty;
 
     [Required]
-    public string SpecificType { get; set; } = "Restaurant"; // Restaurant, Hotel, Bakery, Catering Company
+    public string SpecificType { get; set; } = "Restaurant";
 }
 
 public class RegisterCharityDto
@@ -43,10 +43,10 @@ public class RegisterCharityDto
     public string OrganizationAddress { get; set; } = string.Empty;
 
     [Required]
-    public string SpecificType { get; set; } = "Food Bank"; // Food Bank, Shelter, Community Kitchen, Youth Care
+    public string SpecificType { get; set; } = "Food Bank";
 
     [Required]
-    public string TargetCommunityDescription { get; set; } = string.Empty; // Description of communities / people served
+    public string TargetCommunityDescription { get; set; } = string.Empty;
 }
 
 public class LoginDto
