@@ -9,6 +9,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/UI-Tailwind%20CSS%203.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Leaflet.js](https://img.shields.io/badge/Maps-Leaflet.js-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com/)
 [![Tests](https://img.shields.io/badge/Tests-17%2F17%20Passed-brightgreen?style=for-the-badge&logo=checkmarx)](tests/FoodBridge.Tests)
+[![Latest Release](https://img.shields.io/badge/Release-v3.0--Final-blueviolet?style=for-the-badge)](https://github.com/AbdallahAhmed244/FULL-STACK-DEPI)
 
 > **Digital Egypt Pioneers Initiative (DEPI) Graduation Project — Enterprise Full-Stack .NET Solution**  
 > Architected according to **Clean Architecture** principles, featuring ASP.NET Core 10 Web API, Entity Framework Core 10 with SQL Server, ASP.NET Core Identity with JWT Authentication, SignalR Real-Time Communications, Background Hosted Services, Interactive Geospatial Mapping, and a Fully Responsive Web UI across Mobile, Tablet, and Desktop.
@@ -281,4 +282,5 @@ http://localhost:5000
 Developed as a Graduation Capstone Project for the **Digital Egypt Pioneers Initiative (DEPI)**.  
 * **Lead Developer / Author**: Abdallah Sharaf
 * **Support & Contact**: [ahlawy.ahmed25@gmail.com](mailto:ahlawy.ahmed25@gmail.com) *(Default: support@foodbridge.com)*  
+* **Release Version**: v3.0 Final Production Build (October 23, 2026)  
 All rights reserved © 2026 **FoodBridge Platform**.
