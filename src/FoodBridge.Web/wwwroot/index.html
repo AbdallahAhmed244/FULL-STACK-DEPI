@@ -382,6 +382,61 @@
         html.dark ::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
+
+        /* ========================================================= */
+        /* SCROLL-DRIVEN REVEAL & TEXT ANIMATIONS                    */
+        /* ========================================================= */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-45px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(45px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.92) translateY(24px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        /* Revealed Active State */
+        .scroll-reveal.revealed,
+        .scroll-reveal-left.revealed,
+        .scroll-reveal-right.revealed,
+        .scroll-reveal-scale.revealed {
+            opacity: 1 !important;
+            transform: translate(0, 0) scale(1) !important;
+        }
+
+        /* Stagger Delays */
+        .delay-100 { transition-delay: 100ms !important; }
+        .delay-150 { transition-delay: 150ms !important; }
+        .delay-200 { transition-delay: 200ms !important; }
+        .delay-250 { transition-delay: 250ms !important; }
+        .delay-300 { transition-delay: 300ms !important; }
+        .delay-400 { transition-delay: 400ms !important; }
+        .delay-500 { transition-delay: 500ms !important; }
+        .delay-600 { transition-delay: 600ms !important; }
+
+        /* Interactive Floating Card Hover */
+        .card-tilt-hover {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+        }
+        .card-tilt-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
     </style>
 </head>
 <body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
@@ -392,7 +447,7 @@
             <div class="flex items-center justify-between h-16">
                 
                 <!-- Logo & Brand -->
-                <div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('explore')">
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('landing')">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-emerald-500/40 transition-all duration-300">
                         <i class="fa-solid fa-seedling text-lg group-hover:animate-wiggle"></i>
                     </div>
@@ -406,6 +461,9 @@
 
                 <!-- Navigation Tabs -->
                 <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="navigateTo('landing')" id="nav-landing" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition">
+                        <i class="fa-solid fa-house mr-2 text-emerald-600"></i> <span data-i18n="navHome">Home</span>
+                    </button>
                     <button onclick="navigateTo('explore')" id="nav-explore" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center">
                         <i class="fa-solid fa-compass mr-2 text-emerald-600"></i> Browse Donations
                     </button>
@@ -488,20 +546,20 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10">
                     <div class="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 mb-6 backdrop-blur-md shadow-sm animate-bounce-subtle cursor-default">
+                            <span class="scroll-reveal delay-100 inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 mb-6 backdrop-blur-md shadow-sm animate-bounce-subtle cursor-default">
                                 <span class="relative flex h-2 w-2 mr-2">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-300"></span>
                                 </span>
                                 <span data-i18n="heroBadge">Connecting Surplus to Need</span>
                             </span>
-                            <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6" data-i18n="heroTitle">
+                            <h1 class="scroll-reveal delay-200 font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6" data-i18n="heroTitle">
                                 Bridge the Gap Between <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-200 animate-gradient-flow">Food Waste</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-amber-200 to-emerald-200 animate-gradient-flow">Hunger</span>
                             </h1>
-                            <p class="text-emerald-100/90 text-lg leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">
+                            <p class="scroll-reveal delay-300 text-emerald-100/90 text-lg leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">
                                 FoodBridge connects restaurants, hotels, and bakeries with verified charities — turning daily food surplus into life-changing meals for thousands in need.
                             </p>
-                            <div class="flex flex-wrap gap-4">
+                            <div class="scroll-reveal delay-400 flex flex-wrap gap-4">
                                 <button onclick="openAuthModal('reg-provider')" class="btn-glow px-7 py-3.5 rounded-2xl font-bold bg-white text-emerald-900 hover:bg-emerald-50 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center">
                                     <i class="fa-solid fa-user-plus mr-2 text-emerald-600"></i> <span data-i18n="joinFree">Join FoodBridge — Free</span>
                                 </button>
@@ -514,7 +572,7 @@
                             </div>
                         </div>
                         <!-- Stats Column with Glassmorphic Interactive Cards & Tailwind Floating Badges -->
-                        <div class="relative">
+                        <div class="scroll-reveal-right delay-200 relative">
                             <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-bold animate-float-slow absolute -top-5 right-2 shadow-xl z-20">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                                 <span>Live Surplus Matching</span>
@@ -554,7 +612,7 @@
             <!-- How It Works Section -->
             <div class="bg-white py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-14">
+                    <div class="text-center mb-14 scroll-reveal">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 mb-4">
                             <i class="fa-solid fa-gears mr-2"></i> <span data-i18n="howItWorksTitle">How FoodBridge Works</span>
                         </span>
@@ -563,7 +621,7 @@
                     </div>
                     <div class="grid md:grid-cols-3 gap-8">
                         <!-- Step 1 -->
-                        <div class="interactive-card bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-amber-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-amber-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
                             <div class="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                                 <i class="fa-solid fa-store"></i>
                             </div>
@@ -572,7 +630,7 @@
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step1Desc">Restaurants, bakeries, and hotels list available food with details — quantity, pickup time, allergens, storage conditions, and photos.</p>
                         </div>
                         <!-- Step 2 -->
-                        <div class="interactive-card bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-emerald-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-250 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-emerald-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
                             <div class="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                                 <i class="fa-solid fa-hand-holding-heart"></i>
                             </div>
@@ -581,7 +639,7 @@
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step2Desc">Verified charities browse available donations, filter by category and date, and submit a reservation request — all in real time.</p>
                         </div>
                         <!-- Step 3 -->
-                        <div class="interactive-card bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-teal-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-teal-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
                             <div class="w-16 h-16 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
                                 <i class="fa-solid fa-truck-fast"></i>
                             </div>
@@ -596,13 +654,13 @@
             <!-- Who We Serve Section -->
             <div class="bg-slate-50 dark:bg-slate-900/50 py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-14">
+                    <div class="text-center mb-14 scroll-reveal">
                         <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4" data-i18n="whoUsesHeading">Who Uses FoodBridge?</h2>
                         <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto" data-i18n="whoUsesSubtitle">Two types of organizations — united by one mission.</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-8">
                         <!-- Food Providers Card -->
-                        <div class="interactive-card bg-white dark:bg-slate-800 rounded-3xl border border-amber-100 dark:border-amber-900/30 p-8 shadow-sm hover:shadow-xl hover:border-amber-300 transition-all duration-300">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-left delay-150 bg-white dark:bg-slate-800 rounded-3xl border border-amber-100 dark:border-amber-900/30 p-8 shadow-sm hover:shadow-xl hover:border-amber-300 transition-all duration-300">
                             <div class="flex items-start space-x-5">
                                 <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl shrink-0 shadow-xs">
                                     <i class="fa-solid fa-utensils"></i>
@@ -623,7 +681,7 @@
                             </div>
                         </div>
                         <!-- Charities Card -->
-                        <div class="interactive-card bg-white dark:bg-slate-800 rounded-3xl border border-emerald-100 dark:border-emerald-900/30 p-8 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-right delay-300 bg-white dark:bg-slate-800 rounded-3xl border border-emerald-100 dark:border-emerald-900/30 p-8 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300">
                             <div class="flex items-start space-x-5">
                                 <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl shrink-0 shadow-xs">
                                     <i class="fa-solid fa-heart"></i>
@@ -650,37 +708,37 @@
             <!-- Features Section -->
             <div class="bg-white dark:bg-slate-900 py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-14">
+                    <div class="text-center mb-14 scroll-reveal">
                         <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4" data-i18n="platformFeaturesHeading">Platform Features</h2>
                         <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto" data-i18n="platformFeaturesSubtitle">Built with enterprise-grade technology to ensure security, reliability, and real-time coordination.</p>
                     </div>
                     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="interactive-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-300 hover:bg-emerald-50/30 dark:hover:bg-slate-800 transition group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-300 hover:bg-emerald-50/30 dark:hover:bg-slate-800 transition group cursor-default">
                             <div class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-bell"></i></div>
                             <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat1Title">Real-Time Notifications</h4>
                             <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat1Desc">Instant SignalR push alerts for reservation updates, acceptances, pickups, and reviews.</p>
                         </div>
-                        <div class="interactive-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-300 hover:bg-indigo-50/30 dark:hover:bg-slate-800 transition group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-200 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-300 hover:bg-indigo-50/30 dark:hover:bg-slate-800 transition group cursor-default">
                             <div class="w-11 h-11 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-shield-halved"></i></div>
                             <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat2Title">JWT + Role-Based Auth</h4>
                             <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat2Desc">Secure JWT authentication with Admin, Provider, and Charity role-based access control.</p>
                         </div>
-                        <div class="interactive-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-amber-300 hover:bg-amber-50/30 dark:hover:bg-slate-800 transition group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-300 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-amber-300 hover:bg-amber-50/30 dark:hover:bg-slate-800 transition group cursor-default">
                             <div class="w-11 h-11 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-envelope-circle-check"></i></div>
                             <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat3Title">Email Verification</h4>
                             <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat3Desc">All new accounts must verify their email before accessing protected features.</p>
                         </div>
-                        <div class="interactive-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-teal-300 hover:bg-teal-50/30 dark:hover:bg-slate-800 transition group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-teal-300 hover:bg-teal-50/30 dark:hover:bg-slate-800 transition group cursor-default">
                             <div class="w-11 h-11 rounded-xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-lock"></i></div>
                             <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat4Title">Concurrency Protection</h4>
                             <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat4Desc">Optimistic concurrency (RowVersion) prevents two charities from reserving the same listing simultaneously.</p>
                         </div>
-                        <div class="interactive-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-rose-300 hover:bg-rose-50/30 dark:hover:bg-slate-800 transition group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-500 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-rose-300 hover:bg-rose-50/30 dark:hover:bg-slate-800 transition group cursor-default">
                             <div class="w-11 h-11 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-clock-rotate-left"></i></div>
                             <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat5Title">Admin Audit Trail</h4>
                             <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat5Desc">Every admin action is logged immutably — verifications, suspensions, removals, and resolutions.</p>
                         </div>
-                        <div class="interactive-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-purple-300 hover:bg-purple-50/30 dark:hover:bg-slate-800 transition group cursor-default">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-600 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-purple-300 hover:bg-purple-50/30 dark:hover:bg-slate-800 transition group cursor-default">
                             <div class="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-robot"></i></div>
                             <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat6Title">Auto-Expiry Background Service</h4>
                             <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat6Desc">Hosted background service automatically marks listings as Expired when the pickup deadline passes.</p>
@@ -695,7 +753,7 @@
                     <div class="floating-orb-1 absolute -top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
                     <div class="floating-orb-2 absolute -bottom-10 right-10 w-80 h-80 bg-emerald-300 rounded-full blur-3xl"></div>
                 </div>
-                <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
+                <div class="max-w-4xl mx-auto text-center px-4 relative z-10 scroll-reveal-scale delay-100">
                     <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mb-4" data-i18n="ctaHeading">Ready to Make an Impact?</h2>
                     <p class="text-emerald-100 text-lg mb-8" data-i18n="ctaSubtitle">Join FoodBridge today — registration is free, fast, and fully verified.</p>
                     <div class="flex flex-wrap justify-center gap-4">

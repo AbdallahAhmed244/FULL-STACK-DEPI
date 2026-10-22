@@ -20,6 +20,7 @@ const i18nDict = {
     en: {
         brandName: 'FoodBridge',
         brandSubtitle: 'Surplus Redistribution Platform',
+        navHome: 'Home',
         navBrowse: 'Browse Donations',
         navProvider: 'Provider Portal',
         navCharity: 'Charity Portal',
@@ -327,6 +328,7 @@ const i18nDict = {
     ar: {
         brandName: 'FoodBridge جسر الغذاء',
         brandSubtitle: 'منصة إعادة توزيع فائض الطعام',
+        navHome: 'الرئيسية',
         navBrowse: 'تصفح التبرعات',
         navProvider: 'بوابة المزودين',
         navCharity: 'بوابة الجمعيات',
@@ -811,6 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         navigateTo('landing');
     }
+    initScrollReveal();
 });
 
 // ============================================================================
@@ -1081,6 +1084,80 @@ async function performLogin(email, password) {
 }
 
 // ============================================================================
+// SCROLL-DRIVEN REVEAL & COUNTER ANIMATIONS
+// ============================================================================
+let scrollRevealObserver = null;
+
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll(
+        '.scroll-reveal:not(.revealed), .scroll-reveal-left:not(.revealed), .scroll-reveal-right:not(.revealed), .scroll-reveal-scale:not(.revealed)'
+    );
+
+    if (!revealElements.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+        revealElements.forEach(el => el.classList.add('revealed'));
+        return;
+    }
+
+    if (scrollRevealObserver) {
+        scrollRevealObserver.disconnect();
+    }
+
+    scrollRevealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('revealed');
+        } else {
+            scrollRevealObserver.observe(el);
+        }
+    });
+}
+
+function animateCounter(elementId, targetValue, duration = 1400) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const end = parseInt(targetValue, 10);
+    if (isNaN(end)) {
+        el.textContent = targetValue;
+        return;
+    }
+
+    let start = 0;
+    const startTime = performance.now();
+
+    function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(2, -10 * progress);
+        const current = Math.floor(start + (end - start) * easeOut);
+
+        el.textContent = `${current}+`;
+
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            el.textContent = `${end}+`;
+        }
+    }
+
+    requestAnimationFrame(updateCounter);
+}
+
+// ============================================================================
 // LANDING PAGE STATS LOADER
 // ============================================================================
 async function loadLandingStats() {
@@ -1088,13 +1165,25 @@ async function loadLandingStats() {
         const res = await fetch(`${API_BASE}/reports/platform-stats`);
         if (res.ok) {
             const stats = await res.json();
-            const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
-            el('landingStatRedistributed', (stats.totalFoodRedistributedQuantity || 115) + '+');
-            el('landingStatDonations',    (stats.totalCompletedDonations || 2) + '+');
-            el('landingStatProviders',    (stats.totalProviders || 5) + '+');
-            el('landingStatCharities',    (stats.totalCharities || 3) + '+');
+            animateCounter('landingStatRedistributed', stats.totalFoodRedistributedQuantity || 115);
+            animateCounter('landingStatDonations',    stats.totalCompletedDonations || 2);
+            animateCounter('landingStatProviders',    stats.totalProviders || 5);
+            animateCounter('landingStatCharities',    stats.totalCharities || 3);
+        } else {
+            animateCounter('landingStatRedistributed', 115);
+            animateCounter('landingStatDonations', 2);
+            animateCounter('landingStatProviders', 5);
+            animateCounter('landingStatCharities', 3);
         }
-    } catch (_) { /* Keep default values if API unavailable */ }
+    } catch (_) {
+        animateCounter('landingStatRedistributed', 115);
+        animateCounter('landingStatDonations', 2);
+        animateCounter('landingStatProviders', 5);
+        animateCounter('landingStatCharities', 3);
+    }
+    setTimeout(() => {
+        initScrollReveal();
+    }, 60);
 }
 
 // ============================================================================
@@ -1154,7 +1243,10 @@ function navigateTo(viewName) {
     else if (viewName === 'charity') loadCharityPortal();
     else if (viewName === 'admin') loadAdminPortal();
     else if (viewName === 'impact') loadImpactStats();
-    else if (viewName === 'landing') loadLandingStats();
+    else if (viewName === 'landing') {
+        loadLandingStats();
+        setTimeout(initScrollReveal, 60);
+    }
 }
 
 // ============================================================================
