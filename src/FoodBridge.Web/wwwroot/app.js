@@ -3350,3 +3350,5 @@ async function handleAdminMaintenanceSubmit(event) {
         if (btn) btn.disabled = false;
     }
 }
+
+function showSignInModal() { openAuthModal('login'); }
