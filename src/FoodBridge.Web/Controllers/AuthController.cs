@@ -58,11 +58,12 @@ public class AuthController : ControllerBase
         {
             return StatusCode(StatusCodes.Status503ServiceUnavailable, new
             {
-                message = "المنصة متوقفة مؤقتاً لأعمال الصيانة المجدولة. تسجيل الدخول متاح لمسؤولي النظام فقط.",
-                messageEn = "Platform is under scheduled maintenance. Sign in is restricted to Administrators only."
+                title = "النظام قيد التطوير والتحديثات",
+                titleEn = "System Under Development & Upgrades",
+                message = "النظام قيد التطوير والتحديثات حالياً. تسجيل الدخول متاح لمسؤولي النظام فقط.",
+                messageEn = "The platform is currently under development and scheduled upgrades. Access is restricted to Administrators only."
             });
         }
-
         return Ok(result.Data);
     }
 

@@ -1,4 +1,4 @@
-function openAdminSignInModal() {
+﻿function openAdminSignInModal() {
     const modal = document.getElementById('authModal');
     if (modal) modal.classList.remove('hidden');
 
@@ -91,17 +91,28 @@ async function performLogin(email, password) {
             body: JSON.stringify({ email, password })
         });
         const data = await res.json();
+
         if (!res.ok) {
-            showToast(isAr ? 'فشل تسجيل الدخول' : 'Login Failed', data.message || (isAr ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة.' : 'Invalid email or password.'), 'error');
+            if (res.status === 503) {
+                const title = isAr ? 'النظام قيد التطوير والتحديثات' : 'System Under Development & Upgrades';
+                const msg = isAr
+                    ? (data.message || 'النظام قيد التطوير والتحديثات حالياً. تسجيل الدخول متاح لمسؤولي النظام فقط.')
+                    : (data.messageEn || data.message || 'The platform is currently under development and scheduled upgrades. Access is restricted to Administrators only.');
+                showToast(title, msg, 'warning');
+                return false;
+            }
+
+            const errorMsg = isAr ? (data.message || 'البريد الإلكتروني أو كلمة المرور غير صحيحة.') : (data.messageEn || data.message || 'Invalid email or password.');
+            showToast(isAr ? 'فشل تسجيل الدخول' : 'Login Failed', errorMsg, 'error');
             return false;
         }
 
-        if (maintenanceStatus.isMaintenanceActive && data.role !== 'Admin') {
+        if (maintenanceStatus && maintenanceStatus.isMaintenanceActive && data.role !== 'Admin') {
             showToast(
-                isAr ? 'عذراً، المنصة تحت الصيانة' : 'Maintenance Mode Active',
+                isAr ? 'النظام قيد التطوير والتحديثات' : 'System Under Development & Upgrades',
                 isAr
-                    ? 'المنصة متوقفة مؤقتاً لأعمال الصيانة والتحديثات. تسجيل الدخول متاح لمسؤولي النظام فقط.'
-                    : 'Access restricted: Platform is undergoing scheduled maintenance. Sign in is restricted to Administrators only.',
+                    ? 'النظام قيد التطوير والتحديثات حالياً. تسجيل الدخول متاح لمسؤولي النظام فقط.'
+                    : 'The platform is currently under development and scheduled upgrades. Access is restricted to Administrators only.',
                 'warning'
             );
             return false;
@@ -111,7 +122,11 @@ async function performLogin(email, password) {
         localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
         closeAuthModal();
         updateAuthUI();
-        showToast(isAr ? 'أهلاً بك مجدداً!' : 'Welcome back!', isAr ? `تم تسجيل الدخول بنجاح بصفتك ${currentUser.fullName}` : `Signed in as ${currentUser.fullName}`, 'success');
+        showToast(
+            isAr ? 'أهلاً بك مجدداً!' : 'Welcome back!',
+            isAr ? `تم تسجيل الدخول بنجاح بصفتك ${currentUser.fullName}` : `Signed in as ${currentUser.fullName}`,
+            'success'
+        );
 
         if (typeof handleMaintenanceModeChanged === 'function') {
             handleMaintenanceModeChanged(maintenanceStatus);

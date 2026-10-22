@@ -1,4 +1,4 @@
-function updateThemeUI(isDark) {
+﻿function updateThemeUI(isDark) {
     const icon1 = document.getElementById('themeToggleIcon');
     const icon2 = document.getElementById('maintenanceThemeToggleIcon');
     const iconClass = isDark ? 'fa-solid fa-sun text-base text-amber-400' : 'fa-solid fa-moon text-base text-amber-500';
@@ -21,5 +21,8 @@ function toggleTheme() {
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('foodbridge_theme', isDark ? 'dark' : 'light');
     updateThemeUI(isDark);
-    showToast(isDark ? 'Dark Mode' : 'Light Mode', isDark ? (currentLang === 'ar' ? 'تم تفعيل الوضع الليلي' : 'Dark mode enabled') : (currentLang === 'ar' ? 'تم تفعيل الوضع النهاري' : 'Light mode enabled'), 'info');
+    const isAr = currentLang === 'ar';
+    const title = isAr ? (isDark ? 'الوضع الليلي' : 'الوضع النهاري') : (isDark ? 'Dark Mode' : 'Light Mode');
+    const msg = isAr ? (isDark ? 'تم تفعيل الوضع الليلي بنجاح.' : 'تم تفعيل الوضع النهاري بنجاح.') : (isDark ? 'Dark mode enabled successfully.' : 'Light mode enabled successfully.');
+    showToast(title, msg, 'info');
 }

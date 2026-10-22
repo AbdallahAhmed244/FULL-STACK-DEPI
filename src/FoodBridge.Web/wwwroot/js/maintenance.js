@@ -1,4 +1,4 @@
-async function checkMaintenanceStatus(manualCheck = false) {
+﻿async function checkMaintenanceStatus(manualCheck = false) {
     try {
         const res = await fetch(`${API_BASE}/admin/maintenance/status`);
         if (res.ok) {
@@ -70,9 +70,26 @@ function handleMaintenanceModeChanged(status) {
             if (currentUser && currentUser.role === 'Admin') {
                 overlay.classList.add('hidden');
             } else {
+                // If a non-admin user was logged in, log them out immediately to preserve data
+                if (currentUser && currentUser.role !== 'Admin') {
+                    currentUser = null;
+                    localStorage.removeItem('foodbridge_user');
+                    try { sessionStorage.removeItem('foodbridge_view'); } catch (e) {}
+                    updateAuthUI();
+                    showToast(
+                        isAr ? 'النظام قيد التطوير والتحديثات' : 'System Under Development & Upgrades',
+                        isAr
+                            ? 'المنصة متوقفة مؤقتاً لأعمال الصيانة والتطوير. تم تسجيل الخروج تلقائياً لحفظ البيانات.'
+                            : 'Maintenance mode activated. You have been signed out to protect data integrity.',
+                        'warning'
+                    );
+                }
+
                 overlay.classList.remove('hidden');
                 renderMaintenanceScreen();
-                document.querySelectorAll('.fixed.inset-0:not(#maintenanceOverlay)').forEach(m => {
+
+                // Close other modals, but NEVER close authModal so admin sign-in is uninterrupted!
+                document.querySelectorAll('.fixed.inset-0:not(#maintenanceOverlay):not(#authModal)').forEach(m => {
                     m.classList.add('hidden');
                 });
             }
@@ -113,6 +130,11 @@ function renderMaintenanceScreen() {
         } else {
             startedDisplay.textContent = '-';
         }
+    }
+
+    const maintLangBtn = document.getElementById('maintenanceLangBtnText');
+    if (maintLangBtn) {
+        maintLangBtn.textContent = isAr ? 'English' : 'عربي';
     }
 
     if (typeof updateThemeUI === 'function') {
