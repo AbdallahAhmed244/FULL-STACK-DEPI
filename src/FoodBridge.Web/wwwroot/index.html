@@ -495,7 +495,7 @@ html[dir="rtl"] {
 
 <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
                     <button onclick="navigateTo('landing')" id="nav-landing" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center shadow-xs">
-                        <i class="fa-solid fa-house mr-2 text-emerald-600"></i> <span data-i18n="navHome">Home</span>
+                        <i class="fa-solid fa-house mr-2 text-emerald-600"></i> <span data-i18n="navHome">الرئيسية</span>
                     </button>
                     <button onclick="navigateTo('explore')" id="nav-explore" class="nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition">
                         <i class="fa-solid fa-compass mr-2 text-emerald-600"></i> Browse Donations
@@ -1130,9 +1130,9 @@ html[dir="rtl"] {
                     <div class="text-[11px] text-rose-500 mt-1" data-i18n="moderationIssuesDesc">Listings, reviews, and pickup issues</div>
                 </div>
                 <div class="interactive-card group cursor-default bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm">
-                    <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1" data-i18n="wastedSurplusStat">Wasted Surplus</div>
-                    <div id="adminStatWastedQuantity" class="font-heading text-2xl font-bold text-amber-700 dark:text-amber-400 group-hover:scale-105 transition-transform duration-200">0 kg</div>
-                    <div class="text-[11px] text-amber-600 mt-1"><span id="adminStatExpiredCount">0</span> <span data-i18n="expiredDonationsLabel">Expired donations</span></div>
+                    <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1" data-i18n="wastedSurplusStat">الفائض المهدر</div>
+                    <div id="adminStatWastedQuantity" class="font-heading text-2xl font-bold text-amber-700 dark:text-amber-400 group-hover:scale-105 transition-transform duration-200">0 كجم</div>
+                    <div class="text-[11px] text-amber-600 mt-1"><span id="adminStatExpiredCount">0</span> <span data-i18n="expiredDonationsLabel">تبرعات منتهية الصلاحية</span></div>
                 </div>
             </div>
 
@@ -1150,7 +1150,7 @@ html[dir="rtl"] {
                     <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> <span data-i18n="tabAudit">Administrative Audit Trail</span>
                 </button>
                 <button onclick="switchAdminTab('waste')" id="atab-waste" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0">
-                    <i class="fa-solid fa-trash-can mr-1.5 text-amber-500"></i> <span data-i18n="tabWaste">Food Waste & Expirations</span> (<span id="adminBadgeExpiredCount">0</span>)
+                    <i class="fa-solid fa-trash-can mr-1.5 text-amber-500"></i> <span data-i18n="tabWaste">الفائض المهدر والصلاحيات</span> (<span id="adminBadgeExpiredCount">0</span>)
                 </button>
             </div>
 
@@ -1263,11 +1263,11 @@ html[dir="rtl"] {
                 <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                         <div>
-                            <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white" data-i18n="expiredSurplusTitle">Expired Food Listings & Waste Management</h3>
-                            <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5" data-i18n="expiredSurplusDesc">Audit past-deadline donations, issue compliance warnings to providers, log certified disposal, or suspend chronic waste offenders.</p>
+                            <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white" data-i18n="expiredSurplusTitle">إعلانات الطعام منتهية الصلاحية وإدارة الهدر</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5" data-i18n="expiredSurplusDesc">تدقيق التبرعات المنتهية، توجيه إنذارات امتثال للمزودين، توثيق الإتلاف المعتمد، أو إيقاف المخالفين.</p>
                         </div>
                         <button onclick="loadAdminExpiredListings()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center transition self-start sm:self-auto">
-                            <i class="fa-solid fa-rotate mr-1.5"></i> <span data-i18n="refreshList">Refresh</span>
+                            <i class="fa-solid fa-rotate mr-1.5"></i> <span data-i18n="refreshList">تحديث</span>
                         </button>
                     </div>
                     <div id="adminExpiredListingsContainer" class="space-y-3">
@@ -1756,8 +1756,8 @@ html[dir="rtl"] {
                         <i class="fa-solid fa-gavel"></i>
                     </div>
                     <div>
-                        <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white" data-i18n="wasteActionModalTitle">Take Waste Action</h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400" id="wasteActionModalSubtitle" data-i18n="wasteActionModalSubtitle">Enforce platform compliance or log certified disposal.</p>
+                        <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white" data-i18n="wasteActionModalTitle">اتخاذ إجراء بشأن الهدر الغذائي</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" id="wasteActionModalSubtitle" data-i18n="wasteActionModalSubtitle">تطبيق سياسات الامتثال أو توثيق التخلص الآمن.</p>
                     </div>
                 </div>
                 <button onclick="closeAdminWasteActionModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
@@ -1768,34 +1768,34 @@ html[dir="rtl"] {
                 <input type="hidden" id="wasteActionListingId" value="">
                 <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs space-y-1">
                     <div class="flex justify-between">
-                        <span class="text-slate-500 dark:text-slate-400" data-i18n="foodItemLabel">Food Item:</span>
+                        <span class="text-slate-500 dark:text-slate-400" data-i18n="foodItemLabel">صنف الطعام:</span>
                         <span id="wasteActionFoodName" class="font-bold text-slate-800 dark:text-white">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-500 dark:text-slate-400" data-i18n="providerLabel">Provider:</span>
+                        <span class="text-slate-500 dark:text-slate-400" data-i18n="providerLabel">الجهة المزودة:</span>
                         <span id="wasteActionProviderName" class="font-semibold text-slate-700 dark:text-slate-300">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-500 dark:text-slate-400" data-i18n="wastedQuantityLabel">Wasted Quantity:</span>
+                        <span class="text-slate-500 dark:text-slate-400" data-i18n="wastedQuantityLabel">الكمية المهدرة:</span>
                         <span id="wasteActionQuantity" class="font-bold text-amber-600 dark:text-amber-400">-</span>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelActionType">Enforcement Action *</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelActionType">نوع الإجراء الرقابي *</label>
                     <select id="wasteActionType" required class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
-                        <option value="WarnProvider" data-i18n="actionWarnProvider">Issue Food Waste Advisory Warning</option>
-                        <option value="RecordDisposal" data-i18n="actionRecordDisposal">Log Safe Disposal / Composting Trail</option>
-                        <option value="SuspendProvider" data-i18n="actionSuspendProvider">Suspend Provider Account</option>
+                        <option value="WarnProvider" data-i18n="actionWarnProvider">توجيه إنذار/تنبيه رسمي بشأن الهدر</option>
+                        <option value="RecordDisposal" data-i18n="actionRecordDisposal">توثيق سجل إتلاف/تدوير آمن</option>
+                        <option value="SuspendProvider" data-i18n="actionSuspendProvider">إيقاف حساب المزود نهائياً</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelActionNotes">Administrative Notes / Reason *</label>
-                    <textarea id="wasteActionNotes" rows="3" required placeholder="Specify details, disposal certifier, or compliance advisory..." data-i18n-placeholder="wasteNotesPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelActionNotes">ملاحظات وتفاصيل الإجراء *</label>
+                    <textarea id="wasteActionNotes" rows="3" required placeholder="أدخل تفاصيل الإجراء، جهة الإتلاف المعتمدة، أو نص الإنذار..." data-i18n-placeholder="wasteNotesPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
                 </div>
                 <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-                    <button type="button" onclick="closeAdminWasteActionModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">Cancel</button>
+                    <button type="button" onclick="closeAdminWasteActionModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">إلغاء</button>
                     <button type="submit" id="btnSubmitWasteAction" class="px-5 py-2 rounded-xl text-xs font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow transition flex items-center">
-                        <i class="fa-solid fa-check mr-1.5"></i> <span data-i18n="btnConfirmAction">Apply Action</span>
+                        <i class="fa-solid fa-check mr-1.5"></i> <span data-i18n="btnConfirmAction">تأكيد وتنفيذ الإجراء</span>
                     </button>
                 </div>
             </form>
@@ -1804,7 +1804,7 @@ html[dir="rtl"] {
     
     <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-<script src="/app.js"></script>
+<script src="/app.js?v=2.2"></script>
 </body>
 </html>
 

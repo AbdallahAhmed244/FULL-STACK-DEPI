@@ -334,6 +334,7 @@ const i18nDict = {
         labelActionNotes: 'Administrative Notes / Reason *',
         wasteNotesPlaceholder: 'Specify details, disposal certifier, or compliance advisory...',
         btnConfirmAction: 'Apply Action',
+        refreshList: 'Refresh',
         langBtnText: 'Ø¹Ø±Ø¨ÙŠ'
     },
     ar: {
@@ -659,6 +660,7 @@ const i18nDict = {
         labelActionNotes: 'ملاحظات وتفاصيل الإجراء *',
         wasteNotesPlaceholder: 'أدخل تفاصيل الإجراء، جهة الإتلاف المعتمدة، أو نص الإنذار...',
         btnConfirmAction: 'تأكيد وتنفيذ الإجراء',
+        refreshList: 'تحديث',
         langBtnText: 'English'
     }
 };
@@ -753,6 +755,9 @@ function applyLanguage(lang) {
 
     const langBtn = document.getElementById('langBtnText');
     if (langBtn) langBtn.textContent = dict.langBtnText;
+
+    const navLanding = document.getElementById('nav-landing');
+    if (navLanding) navLanding.innerHTML = `<i class="fa-solid fa-house ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navHome}`;
 
     const navExplore = document.getElementById('nav-explore');
     if (navExplore) navExplore.innerHTML = `<i class="fa-solid fa-compass ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navBrowse}`;
@@ -1247,6 +1252,8 @@ function navigateTo(viewName) {
         void targetSection.offsetWidth;
         targetSection.classList.add('fade-in-section');
     }
+
+    applyLanguage(currentLang);
 
     if (viewName === 'explore') loadExploreListings();
     else if (viewName === 'provider') loadProviderPortal();
@@ -2123,10 +2130,11 @@ async function loadAdminStats() {
             document.getElementById('adminStatPendingVerifications').textContent = data.pendingVerifications;
             document.getElementById('adminBadgeVerifications').textContent = data.pendingVerifications;
             document.getElementById('adminStatCompleted').textContent = data.completedDonations;
-            document.getElementById('adminStatRedistributed').textContent = `${data.totalRedistributedQuantity} units`;
+            const isAr = currentLang === 'ar';
+            document.getElementById('adminStatRedistributed').textContent = `${data.totalRedistributedQuantity} ${isAr ? 'وحدة' : 'units'}`;
             document.getElementById('adminStatReports').textContent = data.reportedListingsCount + data.reportedReviewsCount + data.reportedProblemsCount;
             if (document.getElementById('adminStatWastedQuantity')) {
-                document.getElementById('adminStatWastedQuantity').textContent = `${data.totalWastedQuantity} kg`;
+                document.getElementById('adminStatWastedQuantity').textContent = `${data.totalWastedQuantity} ${isAr ? 'كجم' : 'kg'}`;
             }
             if (document.getElementById('adminStatExpiredCount')) {
                 document.getElementById('adminStatExpiredCount').textContent = data.expiredDonationsCount;
