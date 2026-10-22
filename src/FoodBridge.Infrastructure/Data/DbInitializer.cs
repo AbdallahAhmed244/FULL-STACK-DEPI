@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +17,21 @@ public static class DbInitializer
         RoleManager<IdentityRole> roleManager)
     {
         await context.Database.EnsureCreatedAsync();
+
+        if (context.Database.IsSqlServer())
+        {
+            await context.Database.ExecuteSqlRawAsync(@"
+                IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'SystemSettings')
+                BEGIN
+                    CREATE TABLE [SystemSettings] (
+                        [Key] NVARCHAR(100) NOT NULL PRIMARY KEY,
+                        [Value] NVARCHAR(MAX) NOT NULL,
+                        [UpdatedAt] DATETIMEOFFSET NOT NULL,
+                        [UpdatedBy] NVARCHAR(200) NULL
+                    );
+                END
+            ");
+        }
 
         string[] roles = { "Admin", "Provider", "Charity" };
         foreach (var role in roles)

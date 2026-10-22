@@ -7,6 +7,14 @@ let currentDetailListing = null;
 let signalrConnection = null;
 let categoryChartInstance = null;
 let monthlyChartInstance = null;
+let maintenanceStatus = {
+    isMaintenanceActive: false,
+    reason: '',
+    reasonAr: '',
+    estimatedDuration: null,
+    activatedAt: null,
+    activatedByAdminName: null
+};
 
 let currentLang = localStorage.getItem('foodbridge_lang') || 'en';
 
@@ -336,6 +344,37 @@ const i18nDict = {
         wasteNotesPlaceholder: 'Specify details, disposal certifier, or compliance advisory...',
         btnConfirmAction: 'Apply Action',
         refreshList: 'Refresh',
+        
+        systemOnlineStatus: 'System Live & Online',
+        systemOnlineDesc: 'Operations active for all',
+        systemMaintenanceStatus: 'Maintenance Mode Active',
+        systemMaintenanceDesc: 'Operations locked for users',
+        btnLockMaintenance: 'Lock System for Maintenance',
+        btnUnlockMaintenance: 'Resume Platform Live',
+        adminMaintenanceBannerText: 'Maintenance mode is currently active — platform operations are paused for regular users while you browse as Admin.',
+        manageMaintenance: 'Manage',
+        adminMaintenanceModalTitle: 'System Maintenance Control',
+        adminMaintenanceModalSubtitle: 'Pause or resume platform operations during updates',
+        maintenanceWarningNote: 'Enabling maintenance mode blocks all providers and charities from creating listings or reservations to prevent data inconsistencies, presenting them with the bilingual maintenance screen. Only Admins can navigate.',
+        labelMaintenanceAction: 'Target System Status *',
+        optLockSystem: '🔒 Lock Platform for Maintenance',
+        optLockSystemSub: 'Pause operations & show screen',
+        optUnlockSystem: '🟢 Unlock Platform Live',
+        optUnlockSystemSub: 'Resume regular service',
+        labelReasonAr: 'Reason (Arabic) *',
+        labelReasonEn: 'Reason (English) *',
+        labelEstimatedDuration: 'Estimated Duration *',
+        btnConfirmMaintenance: 'Confirm & Apply',
+        maintenanceBadgeSub: 'System Maintenance',
+        maintenanceBadgeLabel: 'Scheduled System Maintenance',
+        maintenanceTitle: 'System is Under Scheduled Maintenance & Upgrades',
+        maintenanceDesc: 'We are deploying vital database and platform performance updates to deliver an exceptional experience for our providers and partner charities. We appreciate your patience.',
+        maintenanceReasonLabel: 'Maintenance Reason:',
+        maintenanceDurationLabel: 'Estimated Resume Time:',
+        maintenanceStartedLabel: 'Maintenance Started:',
+        btnCheckMaintenance: 'Check Status Now',
+        maintenanceAutoSyncNotice: 'Live sync active — screen will close automatically once maintenance ends.',
+        adminSignInLink: 'Platform Administrator? Sign In',
         langBtnText: 'عربي'
     },
     ar: {
@@ -663,6 +702,37 @@ const i18nDict = {
         wasteNotesPlaceholder: 'أدخل تفاصيل الإجراء، جهة الإتلاف المعتمدة، أو نص الإنذار...',
         btnConfirmAction: 'تأكيد وتنفيذ الإجراء',
         refreshList: 'تحديث',
+        
+        systemOnlineStatus: 'النظام مباشر ومتاح',
+        systemOnlineDesc: 'العمليات مفتوحة للجميع',
+        systemMaintenanceStatus: 'وضع الصيانة قيد التشغيل',
+        systemMaintenanceDesc: 'العمليات متوقفة للمستخدمين',
+        btnLockMaintenance: 'إيقاف النظام للصيانة',
+        btnUnlockMaintenance: 'فتح المنصة واستئناف العمل',
+        adminMaintenanceBannerText: 'وضع الصيانة مفعّل حالياً — المنصة متوقفة أمام المزودين والجمعيات وأنت تتصفح بصلاحية مشرف نظام.',
+        manageMaintenance: 'إدارة الصيانة',
+        adminMaintenanceModalTitle: 'إدارة وضع صيانة النظام',
+        adminMaintenanceModalSubtitle: 'التحكم في إيقاف وتشغيل المنصة أثناء التحديثات',
+        maintenanceWarningNote: 'عند تفعيل وضع الصيانة، سيتم فوراً منع أي مستخدم (مزود أو جمعية) من إضافة تبرعات أو حجز وجبات لتفادي تضارب البيانات، وستظهر لهم شاشة الصيانة المخصصة باللغتين. يظل المشرف فقط قادراً على التجربة.',
+        labelMaintenanceAction: 'حالة النظام المستهدفة *',
+        optLockSystem: '🔒 إيقاف المنصة للصيانة',
+        optLockSystemSub: 'حظر العمليات وإظهار الشاشة',
+        optUnlockSystem: '🟢 فتح المنصة للجميع',
+        optUnlockSystemSub: 'استئناف العمل الطبيعي',
+        labelReasonAr: 'سبب التحديث (بالعربية) *',
+        labelReasonEn: 'سبب التحديث (بالإنجليزية) *',
+        labelEstimatedDuration: 'الوقت المتوقع للصيانة *',
+        btnConfirmMaintenance: 'تأكيد وتنفيذ',
+        maintenanceBadgeSub: 'صيانة النظام',
+        maintenanceBadgeLabel: 'أعمال ترقية وصيانة مجدولة',
+        maintenanceTitle: 'المنصة تحت الصيانة والتطوير حالياً',
+        maintenanceDesc: 'نقوم حالياً بإجراء تحديثات وتحسينات تقنية لضمان أفضل استقرار وأمان لشركائنا من المزودين والجمعيات. نعتذر عن هذا التوقف المؤقت وسنستأنف الخدمة قريباً جداً.',
+        maintenanceReasonLabel: 'سبب التحديث:',
+        maintenanceDurationLabel: 'الوقت المتوقع للاستئناف:',
+        maintenanceStartedLabel: 'بدأت الصيانة:',
+        btnCheckMaintenance: 'فحص الحالة الآن',
+        maintenanceAutoSyncNotice: 'المزامنة اللحظية مفعلة — سيتم فتح المنصة تلقائياً فور انتهاء المشرف.',
+        adminSignInLink: 'تسجيل دخول مسؤول النظام',
         langBtnText: 'English'
     }
 };
@@ -821,6 +891,10 @@ function applyLanguage(lang) {
 
     updateAuthUI();
 
+    renderMaintenanceScreen();
+    const maintLangBtn = document.getElementById('maintenanceLangBtnText');
+    if (maintLangBtn) maintLangBtn.textContent = isAr ? 'English' : 'عربي';
+
     if (currentView === 'explore') loadExploreListings();
     else if (currentView === 'provider') loadProviderPortal();
     else if (currentView === 'charity') loadCharityPortal();
@@ -837,6 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navigateTo('landing');
     initScrollReveal();
     init3DTilt();
+    checkMaintenanceStatus();
 });
 
 async function initSignalR() {
@@ -881,6 +956,9 @@ async function initSignalR() {
         });
 
         await signalrConnection.start();
+        signalrConnection.on('MaintenanceModeChanged', status => {
+            handleMaintenanceModeChanged(status);
+        });
         console.log(
             '%c[SignalR Live Hub]%c Connected & Active (Connection ID: ' + signalrConnection.connectionId + ', User: ' + (currentUser ? currentUser.email : 'Guest') + ')',
             'background: #059669; color: white; font-weight: bold; padding: 2px 8px; border-radius: 4px;',
@@ -3079,5 +3157,196 @@ async function handleWasteActionSubmit(event) {
         showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
     } finally {
         btn.disabled = false;
+    }
+}
+
+
+async function checkMaintenanceStatus(manualCheck = false) {
+    try {
+        const res = await fetch(`${API_BASE}/admin/maintenance/status`);
+        if (res.ok) {
+            const data = await res.json();
+            handleMaintenanceModeChanged(data);
+            if (manualCheck) {
+                const isAr = currentLang === 'ar';
+                if (data.isMaintenanceActive) {
+                    showToast(
+                        isAr ? 'الصيانة لا تزال جارية' : 'Maintenance Ongoing',
+                        isAr ? 'يجري العمل حالياً على التحديثات وسنعود في أقرب وقت.' : 'System updates are still in progress. Please check again soon.',
+                        'info'
+                    );
+                } else {
+                    showToast(
+                        isAr ? 'النظام متاح الآن!' : 'System Online!',
+                        isAr ? 'عادت المنصة للعمل بصورة طبيعية.' : 'Platform services have been fully restored.',
+                        'success'
+                    );
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error checking maintenance status:', err);
+    }
+}
+
+function handleMaintenanceModeChanged(status) {
+    if (!status) return;
+    maintenanceStatus = status;
+
+    const isAr = currentLang === 'ar';
+    const dict = i18nDict[currentLang] || i18nDict.en;
+
+    const dot = document.getElementById('adminMaintenanceStatusDot');
+    const title = document.getElementById('adminMaintenanceStatusTitle');
+    const subtitle = document.getElementById('adminMaintenanceStatusSubtitle');
+    const toggleBtn = document.getElementById('btnAdminMaintenanceToggle');
+    const toggleText = document.getElementById('btnAdminMaintenanceToggleText');
+
+    if (dot && title && subtitle && toggleBtn && toggleText) {
+        if (status.isMaintenanceActive) {
+            dot.className = 'w-3 h-3 rounded-full bg-rose-500 animate-ping';
+            title.textContent = dict.systemMaintenanceStatus;
+            subtitle.textContent = dict.systemMaintenanceDesc;
+            toggleBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-emerald-600 text-white hover:bg-emerald-700';
+            toggleText.textContent = dict.btnUnlockMaintenance;
+        } else {
+            dot.className = 'w-3 h-3 rounded-full bg-emerald-500 animate-pulse';
+            title.textContent = dict.systemOnlineStatus;
+            subtitle.textContent = dict.systemOnlineDesc;
+            toggleBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300';
+            toggleText.textContent = dict.btnLockMaintenance;
+        }
+    }
+
+    const adminBanner = document.getElementById('adminMaintenanceBanner');
+    if (adminBanner) {
+        if (status.isMaintenanceActive && currentUser && currentUser.role === 'Admin') {
+            adminBanner.classList.remove('hidden');
+        } else {
+            adminBanner.classList.add('hidden');
+        }
+    }
+
+    const overlay = document.getElementById('maintenanceOverlay');
+    if (overlay) {
+        if (status.isMaintenanceActive) {
+            if (currentUser && currentUser.role === 'Admin') {
+                overlay.classList.add('hidden');
+            } else {
+                overlay.classList.remove('hidden');
+                renderMaintenanceScreen();
+            }
+        } else {
+            overlay.classList.add('hidden');
+        }
+    }
+}
+
+function renderMaintenanceScreen() {
+    const isAr = currentLang === 'ar';
+    const reasonDisplay = document.getElementById('maintenanceReasonDisplay');
+    const durationDisplay = document.getElementById('maintenanceDurationDisplay');
+    const startedDisplay = document.getElementById('maintenanceStartedDisplay');
+
+    if (reasonDisplay) {
+        const text = isAr 
+            ? (maintenanceStatus.reasonAr || maintenanceStatus.reason || 'تحديثات أمنية وترقية قاعدة البيانات')
+            : (maintenanceStatus.reason || maintenanceStatus.reasonAr || 'Security upgrades and database optimization');
+        reasonDisplay.textContent = text;
+    }
+
+    if (durationDisplay) {
+        durationDisplay.textContent = maintenanceStatus.estimatedDuration || (isAr ? '30-45 دقيقة' : '30-45 Minutes');
+    }
+
+    if (startedDisplay) {
+        if (maintenanceStatus.activatedAt) {
+            const date = new Date(maintenanceStatus.activatedAt);
+            startedDisplay.textContent = date.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }) + ' (' + date.toLocaleDateString(isAr ? 'ar-EG' : 'en-US') + ')';
+        } else {
+            startedDisplay.textContent = '-';
+        }
+    }
+}
+
+function openAdminMaintenanceModal() {
+    if (!currentUser || currentUser.role !== 'Admin') return;
+    const isAr = currentLang === 'ar';
+
+    const radioEnable = document.getElementById('radioEnableMaintenance');
+    const radioDisable = document.getElementById('radioDisableMaintenance');
+    const reasonArInput = document.getElementById('maintenanceReasonAr');
+    const reasonEnInput = document.getElementById('maintenanceReasonEn');
+    const durationInput = document.getElementById('maintenanceDuration');
+
+    if (maintenanceStatus.isMaintenanceActive) {
+        if (radioDisable) radioDisable.checked = true;
+    } else {
+        if (radioEnable) radioEnable.checked = true;
+    }
+
+    if (reasonArInput) reasonArInput.value = maintenanceStatus.reasonAr || 'تحديثات أمنية وترقية قاعدة البيانات';
+    if (reasonEnInput) reasonEnInput.value = maintenanceStatus.reason || 'Database server upgrade & security enhancements';
+    if (durationInput && maintenanceStatus.estimatedDuration) durationInput.value = maintenanceStatus.estimatedDuration;
+
+    const modal = document.getElementById('adminMaintenanceModal');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function closeAdminMaintenanceModal() {
+    const modal = document.getElementById('adminMaintenanceModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+async function handleAdminMaintenanceSubmit(event) {
+    event.preventDefault();
+    if (!currentUser || currentUser.role !== 'Admin') return;
+
+    const isAr = currentLang === 'ar';
+    const actionVal = document.querySelector('input[name="maintenanceAction"]:checked')?.value;
+    const enable = actionVal === 'enable';
+
+    const reasonAr = document.getElementById('maintenanceReasonAr')?.value.trim() || '';
+    const reasonEn = document.getElementById('maintenanceReasonEn')?.value.trim() || '';
+    const duration = document.getElementById('maintenanceDuration')?.value || '';
+
+    const btn = document.getElementById('btnSubmitAdminMaintenance');
+    if (btn) btn.disabled = true;
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/maintenance/toggle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentUser.token}`
+            },
+            body: JSON.stringify({
+                enable,
+                reason: reasonEn,
+                reasonAr: reasonAr,
+                estimatedDuration: duration
+            })
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            handleMaintenanceModeChanged(data);
+            closeAdminMaintenanceModal();
+            showToast(
+                isAr ? 'تم تحديث حالة النظام' : 'System Status Updated',
+                enable
+                    ? (isAr ? 'تم تفعيل وضع الصيانة بنجاح وإيقاف العمليات مؤقتاً.' : 'Maintenance mode successfully enabled.')
+                    : (isAr ? 'تم فتح المنصة وعادت جميع الخدمات للعمل.' : 'Platform restored to live online status.'),
+                'success'
+            );
+            await loadAdminAuditLogs();
+        } else {
+            const err = await res.json();
+            showToast(isAr ? 'خطأ' : 'Error', err.message || (isAr ? 'تعذر تغيير حالة النظام' : 'Failed to update system status'), 'error');
+        }
+    } catch (err) {
+        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
+    } finally {
+        if (btn) btn.disabled = false;
     }
 }

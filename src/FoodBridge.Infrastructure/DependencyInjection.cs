@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +53,7 @@ public static class DependencyInjection
         services.AddScoped<IReviewService, ReviewService>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IReportingService, ReportingService>();
+        services.AddSingleton<IMaintenanceService, MaintenanceService>();
 
         services.AddHostedService<ListingExpirationHostedService>();
         services.AddHostedService<PickupReminderHostedService>();

@@ -14,13 +14,16 @@ public class AdminController : ControllerBase
 {
     private readonly IAdminService _adminService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IMaintenanceService _maintenanceService;
 
     public AdminController(
         IAdminService adminService,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IMaintenanceService maintenanceService)
     {
         _adminService = adminService;
         _currentUserService = currentUserService;
+        _maintenanceService = maintenanceService;
     }
 
     [HttpGet("dashboard")]
@@ -168,5 +171,28 @@ public class AdminController : ControllerBase
     {
         var logs = await _adminService.GetAuditLogsAsync(take);
         return Ok(logs);
+    }
+
+    [HttpGet("maintenance/status")]
+    [AllowAnonymous]
+    public IActionResult GetMaintenanceStatus()
+    {
+        var status = _maintenanceService.GetCurrentStatus();
+        return Ok(status);
+    }
+
+    [HttpPost("maintenance/toggle")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ToggleMaintenance([FromBody] ToggleMaintenanceModeDto dto)
+    {
+        var adminId = _currentUserService.UserId;
+        if (string.IsNullOrEmpty(adminId)) return Unauthorized();
+
+        var result = await _maintenanceService.ToggleMaintenanceModeAsync(adminId, dto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { message = result.Error });
+        }
+        return Ok(result.Data);
     }
 }

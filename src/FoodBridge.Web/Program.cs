@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -16,6 +16,8 @@ using FoodBridge.Infrastructure;
 using FoodBridge.Infrastructure.Data;
 using FoodBridge.Infrastructure.Hubs;
 using FoodBridge.Web.Services;
+using FoodBridge.Application.Services.Interfaces;
+using FoodBridge.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -135,6 +137,8 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         await DbInitializer.SeedAsync(context, userManager, roleManager);
+        var maintenanceService = services.GetRequiredService<IMaintenanceService>();
+        await maintenanceService.InitializeAsync();
     }
     catch (Exception ex)
     {
@@ -161,6 +165,8 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<MaintenanceModeMiddleware>();
 
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.MapControllers();

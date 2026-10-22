@@ -554,6 +554,16 @@ html[dir="rtl"] {
         </div>
     </header>
 
+    <div id="adminMaintenanceBanner" class="hidden bg-amber-500 text-slate-950 px-4 py-2 text-xs font-bold shadow-md z-40 flex items-center justify-between border-b border-amber-600">
+        <div class="flex items-center space-x-2 rtl:space-x-reverse mx-auto sm:mx-0">
+            <i class="fa-solid fa-triangle-exclamation text-amber-950 text-sm animate-bounce"></i>
+            <span data-i18n="adminMaintenanceBannerText">وضع الصيانة مفعّل حالياً — المنصة متوقفة أمام المزودين والجمعيات وأنت تتصفح بصلاحية مشرف نظام.</span>
+        </div>
+        <button onclick="openAdminMaintenanceModal()" class="px-3 py-1 bg-amber-950 text-white rounded-lg text-[11px] font-bold hover:bg-black transition shrink-0 hidden sm:inline-flex items-center">
+            <i class="fa-solid fa-gear mr-1.5 rtl:ml-1.5"></i> <span data-i18n="manageMaintenance">إدارة الصيانة</span>
+        </button>
+    </div>
+
 <main class="flex-1">
 
 <section id="view-landing">
@@ -1098,14 +1108,30 @@ html[dir="rtl"] {
 
 <section id="view-admin" class="hidden py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             
-            <div class="mb-8">
-                <div class="flex items-center space-x-2">
-                    <h2 class="font-heading font-bold text-2xl sm:text-3xl text-slate-900" data-i18n="adminSuiteHeading">Platform Administration Suite</h2>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
-                        <i class="fa-solid fa-shield-halved mr-1"></i> <span data-i18n="adminSuperuser">Admin Superuser</span>
-                    </span>
+            <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white" data-i18n="adminSuiteHeading">Platform Administration Suite</h2>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200">
+                            <i class="fa-solid fa-shield-halved mr-1 rtl:ml-1"></i> <span data-i18n="adminSuperuser">Admin Superuser</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1" data-i18n="adminSuiteDesc">Verify food provider and charity organizations, moderate platform content, resolve problem reports, and audit administrative events.</p>
                 </div>
-                <p class="text-slate-500 text-sm mt-1" data-i18n="adminSuiteDesc">Verify food provider and charity organizations, moderate platform content, resolve problem reports, and audit administrative events.</p>
+                <!-- Maintenance Control Card -->
+                <div class="flex items-center space-x-3 rtl:space-x-reverse bg-white dark:bg-slate-800 p-2.5 sm:p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">
+                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        <span id="adminMaintenanceStatusDot" class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <div class="text-xs">
+                            <div class="font-bold text-slate-800 dark:text-slate-100" id="adminMaintenanceStatusTitle" data-i18n="systemOnlineStatus">النظام مباشر ومتاح</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400" id="adminMaintenanceStatusSubtitle" data-i18n="systemOnlineDesc">العمليات مفتوحة للجميع</div>
+                        </div>
+                    </div>
+                    <button onclick="openAdminMaintenanceModal()" id="btnAdminMaintenanceToggle" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center shadow-xs bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300">
+                        <i class="fa-solid fa-power-off mr-1.5 rtl:ml-1.5"></i>
+                        <span id="btnAdminMaintenanceToggleText" data-i18n="btnLockMaintenance">إيقاف النظام للصيانة</span>
+                    </button>
+                </div>
             </div>
 
 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
@@ -1802,9 +1828,193 @@ html[dir="rtl"] {
         </div>
     </div>
     
-    <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+    
+    <!-- Admin Maintenance Control Modal -->
+    <div id="adminMaintenanceModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="modal-card-animated bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-power-off text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white" data-i18n="adminMaintenanceModalTitle">إدارة وضع صيانة النظام</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="adminMaintenanceModalSubtitle">التحكم في إيقاف وتشغيل المنصة أثناء التحديثات</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminMaintenanceModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
 
-<script src="/app.js?v=2.3"></script>
+            <form onsubmit="handleAdminMaintenanceSubmit(event)" class="space-y-4">
+                <!-- Warning Callout -->
+                <div class="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/40 text-xs text-amber-900 dark:text-amber-200 flex items-start space-x-2 rtl:space-x-reverse">
+                    <i class="fa-solid fa-circle-exclamation text-amber-600 text-sm mt-0.5 shrink-0"></i>
+                    <div class="leading-relaxed" data-i18n="maintenanceWarningNote">
+                        عند تفعيل وضع الصيانة، سيتم فوراً منع أي مستخدم (مزود أو جمعية) من إضافة تبرعات أو حجز وجبات لتفادي تضارب البيانات، وستظهر لهم شاشة الصيانة المخصصة باللغتين. يظل المشرف فقط قادراً على التجربة.
+                    </div>
+                </div>
+
+                <!-- Toggle Switch -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2" data-i18n="labelMaintenanceAction">حالة النظام المستهدفة *</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer border rounded-2xl p-3 flex items-center space-x-3 rtl:space-x-reverse transition hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 has-[:checked]:border-rose-500 has-[:checked]:bg-rose-50/50 dark:has-[:checked]:bg-rose-950/30">
+                            <input type="radio" name="maintenanceAction" value="enable" id="radioEnableMaintenance" class="text-rose-600 focus:ring-rose-500">
+                            <div>
+                                <div class="text-xs font-bold text-rose-700 dark:text-rose-300" data-i18n="optLockSystem">🔒 إيقاف المنصة للصيانة</div>
+                                <div class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="optLockSystemSub">حظر العمليات وإظهار الشاشة</div>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer border rounded-2xl p-3 flex items-center space-x-3 rtl:space-x-reverse transition hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50/50 dark:has-[:checked]:bg-emerald-950/30">
+                            <input type="radio" name="maintenanceAction" value="disable" id="radioDisableMaintenance" class="text-emerald-600 focus:ring-emerald-500">
+                            <div>
+                                <div class="text-xs font-bold text-emerald-700 dark:text-emerald-300" data-i18n="optUnlockSystem">🟢 فتح المنصة للجميع</div>
+                                <div class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="optUnlockSystemSub">استئناف العمل الطبيعي</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Reason Inputs -->
+                <div id="maintenanceInputsContainer" class="space-y-3.5">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelReasonAr">سبب التحديث (بالعربية) *</label>
+                        <input type="text" id="maintenanceReasonAr" placeholder="مثال: ترقية خوادم قاعدة البيانات ونشر تحديثات أمنية" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelReasonEn">سبب التحديث (بالإنجليزية) *</label>
+                        <input type="text" id="maintenanceReasonEn" placeholder="e.g. Database server upgrade & security enhancements" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelEstimatedDuration">الوقت المتوقع للصيانة *</label>
+                        <select id="maintenanceDuration" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="15-20 دقيقة / 15-20 Minutes">15-20 دقيقة / 15-20 Minutes</option>
+                            <option value="30-45 دقيقة / 30-45 Minutes" selected>30-45 دقيقة / 30-45 Minutes</option>
+                            <option value="ساعة واحدة / 1 Hour">ساعة واحدة / 1 Hour</option>
+                            <option value="ساعتان / 2 Hours">ساعتان / 2 Hours</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 rtl:space-x-reverse pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <button type="button" onclick="closeAdminMaintenanceModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">إلغاء</button>
+                    <button type="submit" id="btnSubmitAdminMaintenance" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow transition flex items-center">
+                        <i class="fa-solid fa-check mr-1.5 rtl:ml-1.5"></i> <span data-i18n="btnConfirmMaintenance">تأكيد وتنفيذ</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fullscreen Bilingual Maintenance Screen -->
+    <div id="maintenanceOverlay" class="hidden fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <!-- Top Bar -->
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-emerald-500 flex items-center justify-center text-white shadow-lg">
+                    <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
+                </div>
+                <div>
+                    <div class="font-heading font-bold text-xl text-white">Food<span class="text-amber-400">Bridge</span></div>
+                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest" data-i18n="maintenanceBadgeSub">System Maintenance</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                <!-- Language toggle button -->
+                <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition flex items-center">
+                    <i class="fa-solid fa-globe mr-1.5 rtl:ml-1.5 text-amber-400"></i>
+                    <span id="maintenanceLangBtnText">English</span>
+                </button>
+                <!-- Theme toggle button -->
+                <button onclick="toggleTheme()" class="p-2 rounded-xl text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Center Card -->
+        <div class="max-w-2xl w-full mx-auto my-8">
+            <div class="bg-slate-900/90 border border-amber-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden text-center text-white">
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Pulsing Gear / Maintenance Icon -->
+                <div class="relative inline-flex items-center justify-center mb-6">
+                    <div class="w-24 h-24 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-inner">
+                        <i class="fa-solid fa-gears text-4xl animate-spin-slow"></i>
+                    </div>
+                    <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-4 w-4 bg-amber-500"></span>
+                    </span>
+                </div>
+
+                <!-- Badge -->
+                <div class="mb-4">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        <i class="fa-solid fa-clock mr-1.5 rtl:ml-1.5"></i>
+                        <span id="maintenanceBadgeLabel" data-i18n="maintenanceBadgeLabel">أعمال ترقية وصيانة مجدولة</span>
+                    </span>
+                </div>
+
+                <!-- Main Heading -->
+                <h1 id="maintenanceTitle" class="font-heading text-2xl sm:text-3xl font-bold mb-3 text-white tracking-tight" data-i18n="maintenanceTitle">
+                    المنصة تحت الصيانة والتطوير حالياً
+                </h1>
+
+                <!-- Subtitle Description -->
+                <p id="maintenanceDesc" class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto mb-6" data-i18n="maintenanceDesc">
+                    نقوم حالياً بإجراء تحديثات وتحسينات تقنية لضمان أفضل استقرار وأمان لشركائنا من المزودين والجمعيات. نعتذر عن هذا التوقف المؤقت وسنستأنف الخدمة قريباً جداً.
+                </p>
+
+                <!-- Dynamic Reason & Info Box -->
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5 text-left rtl:text-right mb-6 space-y-2.5">
+                    <div class="flex items-start justify-between gap-2 text-xs">
+                        <span class="text-slate-400 font-semibold" data-i18n="maintenanceReasonLabel">سبب التحديث:</span>
+                        <span id="maintenanceReasonDisplay" class="font-bold text-amber-300 text-right rtl:text-left">تحديثات أمنية وترقية قاعدة البيانات</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs border-t border-slate-700/60 pt-2">
+                        <span class="text-slate-400 font-semibold" data-i18n="maintenanceDurationLabel">الوقت المتوقع للاستئناف:</span>
+                        <span id="maintenanceDurationDisplay" class="font-bold text-emerald-400">30-45 دقيقة</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs border-t border-slate-700/60 pt-2">
+                        <span class="text-slate-400 font-semibold" data-i18n="maintenanceStartedLabel">بدأت الصيانة:</span>
+                        <span id="maintenanceStartedDisplay" class="text-slate-300 font-mono text-[11px]">-</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button onclick="checkMaintenanceStatus(true)" id="btnCheckMaintenance" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 transition shadow-lg flex items-center justify-center">
+                        <i class="fa-solid fa-arrows-rotate mr-2 rtl:ml-2"></i>
+                        <span data-i18n="btnCheckMaintenance">فحص الحالة الآن</span>
+                    </button>
+                </div>
+
+                <div class="mt-4 flex items-center justify-center text-[11px] text-slate-400 space-x-1.5 rtl:space-x-reverse">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span data-i18n="maintenanceAutoSyncNotice">المزامنة اللحظية مفعلة — سيتم فتح المنصة تلقائياً فور انتهاء المشرف.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar with Admin Login Link -->
+        <div class="max-w-6xl w-full mx-auto text-center text-xs text-slate-400 pb-2">
+            <span>© 2026 FoodBridge. All rights reserved.</span>
+            <span class="mx-2">•</span>
+            <button onclick="showSignInModal()" class="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-4" data-i18n="adminSignInLink">
+                تسجيل دخول مسؤول النظام
+            </button>
+        </div>
+    </div>
+
+<div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+<script src="/app.js?v=2.4"></script>
 </body>
 </html>
 

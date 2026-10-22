@@ -19,6 +19,7 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -149,6 +150,14 @@ public class FoodBridgeDbContext : IdentityDbContext<ApplicationUser, IdentityRo
                   .WithMany(u => u.AuditLogs)
                   .HasForeignKey(e => e.AdminId)
                   .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<SystemSetting>(entity =>
+        {
+            entity.ToTable("SystemSettings");
+            entity.HasKey(e => e.Key);
+            entity.Property(e => e.Key).HasMaxLength(100);
+            entity.Property(e => e.Value).HasMaxLength(4000);
         });
     }
 }
