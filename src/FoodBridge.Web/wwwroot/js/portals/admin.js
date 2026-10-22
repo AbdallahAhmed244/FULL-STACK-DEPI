@@ -1,4 +1,4 @@
-async function loadAdminPortal() {
+﻿async function loadAdminPortal() {
     if (!currentUser || currentUser.role !== 'Admin') {
         const isAr = currentLang === 'ar';
         showToast(isAr ? 'تنبيه أمني' : 'Administrator Required', isAr ? 'يرجى تسجيل الدخول بحساب المشرف.' : 'Please switch to the Administrator profile.', 'warning');
@@ -11,6 +11,7 @@ async function loadAdminPortal() {
     await loadAdminUsers();
     await loadAdminModeration();
     await loadAdminAuditLogs();
+    await loadAdminExpiredListings();
 }
 
 async function loadAdminStats() {
@@ -49,11 +50,12 @@ async function loadAdminVerifications() {
     if (!currentUser) return;
     const container = document.getElementById('adminVerificationList');
     try {
-        const res = await fetch(`${API_BASE}/admin/users?isVerified=false`, {
+        const res = await fetch(`${API_BASE}/admin/users?isVerified=false&status=1`, {
             headers: { 'Authorization': `Bearer ${currentUser.token}` }
         });
         const users = await res.json();
-        const pending = users.filter(u => u.userType !== 3); // Exclude admin
+        // Only active unverified users (exclude admins and suspended/rejected users)
+        const pending = users.filter(u => u.userType !== 3 && !u.isVerified && (u.status === 1 || u.status === 'Active'));
 
         const dict = i18nDict[currentLang] || i18nDict.en;
         const isAr = currentLang === 'ar';
@@ -64,7 +66,7 @@ async function loadAdminVerifications() {
         }
 
         container.innerHTML = pending.map(u => `
-            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div id="verif-card-${u.id}" class="p-4 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800/50 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all duration-300">
                 <div>
                     <div class="flex items-center space-x-2 mb-1">
                         <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.userType === 1 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
@@ -77,11 +79,11 @@ async function loadAdminVerifications() {
                     ${u.targetCommunityDescription ? `<div class="text-[11px] text-slate-500 mt-1.5 bg-white dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700"><strong>${isAr ? 'الفئات المستفيدة:' : 'Served Population:'}</strong> ${escapeHtml(u.targetCommunityDescription)}</div>` : ''}
                 </div>
                 <div class="shrink-0 flex items-center space-x-2">
-                    <button onclick="verifyOrganization('${u.id}', true)" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+                    <button onclick="verifyOrganization('${u.id}', true)" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition">
                         <i class="fa-solid fa-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${dict.approve}
                     </button>
-                    <button onclick="verifyOrganization('${u.id}', false)" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-100 border border-rose-200">
-                        ${dict.reject}
+                    <button onclick="verifyOrganization('${u.id}', false)" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-100 border border-rose-200 transition">
+                        <i class="fa-solid fa-xmark ${isAr ? 'ml-1' : 'mr-1'}"></i> ${dict.reject}
                     </button>
                 </div>
             </div>
@@ -93,19 +95,36 @@ async function loadAdminVerifications() {
 }
 
 async function verifyOrganization(userId, isApproved) {
+    const isAr = currentLang === 'ar';
+    const confirmPrompt = isApproved
+        ? (isAr ? 'هل تريد اعتماد وتوثيق هذه المنظمة رسمياً؟' : 'Approve and verify this organization?')
+        : (isAr ? 'هل تريد رفض طلب الاعتماد وتجميد هذا الحساب لمنع دخوله المنصة؟' : 'Reject verification and suspend this account?');
+
+    if (!confirm(confirmPrompt)) return;
+
     try {
         const res = await fetch(`${API_BASE}/admin/users/${userId}/verify?approve=${isApproved}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${currentUser.token}` }
         });
         if (res.ok) {
-            showToast('Verification Updated', isApproved ? 'Organization approved.' : 'Verification rejected.', 'success');
-            loadAdminVerifications();
-            loadAdminStats();
-            loadAdminAuditLogs();
+            showToast(
+                isApproved ? (isAr ? 'تم اعتماد المنظمة' : 'Organization Approved') : (isAr ? 'تم رفض طلب الاعتماد' : 'Verification Rejected'),
+                isApproved
+                    ? (isAr ? 'تم اعتماد المنظمة وتفعيل حسابها بنجاح.' : 'Organization approved and verified.')
+                    : (isAr ? 'تم رفض طلب الاعتماد وتجميد الحساب بنجاح.' : 'Verification rejected and account suspended.'),
+                'success'
+            );
+            await loadAdminVerifications();
+            await loadAdminStats();
+            await loadAdminUsers();
+            await loadAdminAuditLogs();
+        } else {
+            const errData = await res.json().catch(() => ({}));
+            showToast(isAr ? 'خطأ' : 'Error', errData.message || (isAr ? 'تعذر تنفيذ الإجراء' : 'Failed to update verification'), 'error');
         }
     } catch (err) {
-        showToast('Error', err.message, 'error');
+        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
     }
 }
 
@@ -426,6 +445,12 @@ function switchAdminTab(tab) {
     });
     document.getElementById(`adminTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
     document.getElementById(`atab-${tab}`).className = 'pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0';
+
+    if (tab === 'verifications') loadAdminVerifications();
+    else if (tab === 'users') loadAdminUsers();
+    else if (tab === 'moderation') loadAdminModeration();
+    else if (tab === 'audit') loadAdminAuditLogs();
+    else if (tab === 'waste') loadAdminExpiredListings();
 }
 
 async function loadAdminExpiredListings() {

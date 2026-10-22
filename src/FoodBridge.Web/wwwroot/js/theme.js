@@ -4,6 +4,9 @@
     const iconClass = isDark ? 'fa-solid fa-sun text-base text-amber-400' : 'fa-solid fa-moon text-base text-amber-500';
     if (icon1) icon1.className = iconClass;
     if (icon2) icon2.className = iconClass;
+    if (typeof window.updateEgyptMapTheme === 'function') {
+        window.updateEgyptMapTheme(isDark);
+    }
 }
 
 function initTheme() {

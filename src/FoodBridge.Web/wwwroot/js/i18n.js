@@ -1,4 +1,4 @@
-const i18nDict = {
+﻿const i18nDict = {
     en: {
         brandName: 'FoodBridge',
         brandSubtitle: 'Surplus Redistribution Platform',
@@ -356,7 +356,27 @@ const i18nDict = {
         btnCheckMaintenance: 'Check Status Now',
         maintenanceAutoSyncNotice: 'Live sync active — screen will close automatically once maintenance ends.',
         adminSignInLink: 'Platform Administrator? Sign In',
-        langBtnText: 'عربي'
+        langBtnText: 'عربي',
+        mapBadge: 'Nationwide Presence & Logistics Hubs',
+        mapHeading: 'FoodBridge Network Across Egypt',
+        mapSubtitle: 'Active distribution hubs and verified partnerships connecting food providers (restaurants, hotels, bakeries) with charities to ensure surplus food reaches families fresh and safely.',
+        statCoveredGovs: '18+ Governorates',
+        statCoveredGovsDesc: 'Full logistics coverage from Alex to Aswan',
+        statActivePartners: '120+ Providers',
+        statActivePartnersDesc: 'Hotels, bakeries & restaurant kitchens',
+        statPartnerCharities: '85+ Charities',
+        statPartnerCharitiesDesc: 'Registered community partners',
+        statMealsRedistributed: '50,000+ Meals',
+        statMealsRedistributedDesc: 'Diverted from waste to families in need',
+        filterAllRegions: 'All Hubs',
+        filterCairo: 'Greater Cairo',
+        filterAlex: 'Alexandria',
+        filterDelta: 'Delta',
+        filterCanal: 'Canal Cities',
+        filterUpper: 'Upper Egypt',
+        filterCoastal: 'Red Sea & Resorts',
+        btnResetMap: 'Reset Egypt View',
+        liveNetworkStatus: 'Live Hub Sync Active'
     },
     ar: {
         brandName: 'FoodBridge جسر الغذاء',
@@ -715,7 +735,27 @@ const i18nDict = {
         btnCheckMaintenance: 'فحص الحالة الآن',
         maintenanceAutoSyncNotice: 'المزامنة اللحظية مفعلة — سيتم فتح المنصة تلقائياً فور انتهاء المشرف.',
         adminSignInLink: 'تسجيل دخول مسؤول النظام',
-        langBtnText: 'English'
+        langBtnText: 'English',
+        mapBadge: 'تغطيتنا ومراكزنا اللوجستية في مصر',
+        mapHeading: 'شبكة FoodBridge في محافظات مصر',
+        mapSubtitle: 'مراكز توزيع نشطة وشبكة شراكات ذكية تربط مزودي الطعام من مطاعم وفنادق ومخابز بالجمعيات الخيرية المعتمدة لضمان وصول الوجبات طازجة وبأعلى معايير السلامة.',
+        statCoveredGovs: '18+ محافظة مغطاة',
+        statCoveredGovsDesc: 'تغطية لوجستية شاملة من الإسكندرية إلى أسوان',
+        statActivePartners: '120+ مزود طعام',
+        statActivePartnersDesc: 'مطابخ فنادق ومخابز ومطاعم شريكة',
+        statPartnerCharities: '85+ جمعية معتمدة',
+        statPartnerCharitiesDesc: 'مؤسسات تنموية موثوقة في الميدان',
+        statMealsRedistributed: '50,000+ وجبة',
+        statMealsRedistributedDesc: 'تم إنقاذها من الهدر وتقديمها للأسر الأكثر احتياجاً',
+        filterAllRegions: 'كافة المراكز',
+        filterCairo: 'القاهرة الكبرى',
+        filterAlex: 'الإسكندرية والساحل',
+        filterDelta: 'الدلتا والوجه البحري',
+        filterCanal: 'مدن القناة',
+        filterUpper: 'صعيد مصر',
+        filterCoastal: 'البحر الأحمر والمنتجعات',
+        btnResetMap: 'إعادة ضبط الخريطة',
+        liveNetworkStatus: 'مراكز التوزيع متصلة لحظياً'
     }
 };
 
@@ -853,6 +893,10 @@ function applyLanguage(lang) {
     renderMaintenanceScreen();
     const maintLangBtn = document.getElementById('maintenanceLangBtnText');
     if (maintLangBtn) maintLangBtn.textContent = isAr ? 'English' : 'عربي';
+
+    if (typeof window.updateEgyptMapLanguage === 'function') {
+        window.updateEgyptMapLanguage();
+    }
 
     if (typeof initScrollReveal === 'function') initScrollReveal();
 

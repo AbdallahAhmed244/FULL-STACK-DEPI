@@ -60,3 +60,9 @@ declare function setUserStatus(userId: string, suspend: boolean): Promise<void>;
 declare function removeListingByAdmin(id: string): Promise<void>;
 declare function removeReviewByAdmin(id: string): Promise<void>;
 declare function resolveProblemByAdmin(id: string): Promise<void>;
+
+declare var L: any;
+declare function initEgyptMap(): void;
+declare function focusEgyptHub(hubId: string): void;
+declare function filterEgyptMapRegion(region: string, btnElement?: HTMLElement): void;
+declare function resetEgyptMapView(): void;

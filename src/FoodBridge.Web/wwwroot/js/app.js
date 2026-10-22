@@ -17,5 +17,8 @@
 
     initScrollReveal();
     init3DTilt();
+    if (typeof initEgyptMap === 'function') {
+        setTimeout(initEgyptMap, 200);
+    }
     checkMaintenanceStatus();
 });

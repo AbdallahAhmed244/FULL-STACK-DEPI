@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ public class AdminService : IAdminService
         var totalUsers = await _context.Users.CountAsync();
         var totalProviders = await _context.Users.CountAsync(u => u.UserType == UserType.FoodProvider);
         var totalCharities = await _context.Users.CountAsync(u => u.UserType == UserType.Charity);
-        var pendingVerifications = await _context.Users.CountAsync(u => !u.IsVerified && u.UserType != UserType.Administrator);
+        var pendingVerifications = await _context.Users.CountAsync(u => !u.IsVerified && u.Status == UserStatus.Active && u.UserType != UserType.Administrator);
 
         var activeDonations = await _context.FoodListings.CountAsync(l => l.Status == FoodListingStatus.Available || l.Status == FoodListingStatus.Reserved);
         var completedDonations = await _context.FoodListings.CountAsync(l => l.Status == FoodListingStatus.Completed);
@@ -141,6 +141,14 @@ public class AdminService : IAdminService
         }
 
         user.IsVerified = isApproved;
+        if (!isApproved)
+        {
+            user.Status = UserStatus.Suspended;
+        }
+        else
+        {
+            user.Status = UserStatus.Active;
+        }
 
         var audit = new AuditLog
         {
@@ -148,7 +156,7 @@ public class AdminService : IAdminService
             Action = isApproved ? "ApproveVerification" : "RejectVerification",
             TargetEntity = "ApplicationUser",
             TargetId = targetUserId,
-            Details = $"Organization '{user.OrganizationName}' verification {(isApproved ? "approved" : "revoked/rejected")}.",
+            Details = $"Organization '{user.OrganizationName}' verification {(isApproved ? "approved" : "rejected and suspended")}.",
             Timestamp = DateTimeOffset.UtcNow
         };
         _context.AuditLogs.Add(audit);
