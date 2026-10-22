@@ -28,8 +28,8 @@ const i18nDict = {
         noNotifications: 'No notifications yet.',
         heroBadge: 'Connecting Surplus to Need',
         heroTitle: 'Bridge the Gap Between <span class="text-emerald-300">Food Waste</span> & <span class="text-teal-300">Hunger</span>',
-        heroDesc: 'FoodBridge connects restaurants, hotels, and bakeries with verified charities â€” turning daily food surplus into life-changing meals for thousands in need.',
-        joinFree: 'Join FoodBridge â€” Free',
+        heroDesc: 'FoodBridge connects restaurants, hotels, and bakeries with verified charities — turning daily food surplus into life-changing meals for thousands in need.',
+        joinFree: 'Join FoodBridge — Free',
         statRedistributed: 'Kg of Food Redistributed',
         statRedistributedDesc: 'From completed donations',
         statCompleted: 'Completed Donations',
@@ -39,15 +39,15 @@ const i18nDict = {
         statCharities: 'Charity Partners',
         statCharitiesSub: 'Verified & active',
         howItWorksTitle: 'How FoodBridge Works',
-        howItWorksSubtitle: 'A streamlined, secure, and real-time platform for food redistribution â€” from posting to pickup in minutes.',
+        howItWorksSubtitle: 'A streamlined, secure, and real-time platform for food redistribution — from posting to pickup in minutes.',
         step1Title: 'Provider Posts Surplus',
-        step1Desc: 'Restaurants, bakeries, and hotels list available food with details â€” quantity, pickup time, allergens, storage conditions, and photos.',
+        step1Desc: 'Restaurants, bakeries, and hotels list available food with details — quantity, pickup time, allergens, storage conditions, and photos.',
         step2Title: 'Charity Reserves Food',
-        step2Desc: 'Verified charities browse available donations, filter by category and date, and submit a reservation request â€” all in real time.',
+        step2Desc: 'Verified charities browse available donations, filter by category and date, and submit a reservation request — all in real time.',
         step3Title: 'Pickup & Delivery',
         step3Desc: 'Provider confirms pickup details. Charity collects the food and marks the donation as completed. Both parties leave mutual reviews.',
         whoUsesHeading: 'Who Uses FoodBridge?',
-        whoUsesSubtitle: 'Two types of organizations â€” united by one mission.',
+        whoUsesSubtitle: 'Two types of organizations — united by one mission.',
         providerCardTitle: 'Food Providers',
         providerCardDesc: 'Restaurants, hotels, bakeries, and catering companies with daily food surplus that would otherwise go to waste.',
         pFeature1: 'Post food listings with photos & allergens',
@@ -73,11 +73,11 @@ const i18nDict = {
         feat4Title: 'Concurrency Protection',
         feat4Desc: 'Optimistic concurrency (RowVersion) prevents two charities from reserving the same listing simultaneously.',
         feat5Title: 'Admin Audit Trail',
-        feat5Desc: 'Every admin action is logged immutably â€” verifications, suspensions, removals, and resolutions.',
+        feat5Desc: 'Every admin action is logged immutably — verifications, suspensions, removals, and resolutions.',
         feat6Title: 'Auto-Expiry Background Service',
         feat6Desc: 'Hosted background service automatically marks listings as Expired when the pickup deadline passes.',
         ctaHeading: 'Ready to Make an Impact?',
-        ctaSubtitle: 'Join FoodBridge today â€” registration is free, fast, and fully verified.',
+        ctaSubtitle: 'Join FoodBridge today — registration is free, fast, and fully verified.',
         createFreeAccount: 'Create Free Account',
         alreadyHaveAccount: 'Already have an account?',
         signInHere: 'Sign in here',
@@ -90,7 +90,7 @@ const i18nDict = {
         allCategories: 'All Categories',
         allProviders: 'All Provider Types',
         sortNewest: 'Sort: Newest Listings',
-        sortDeadline: 'Sort: Nearest Deadline â°',
+        sortDeadline: 'Sort: Nearest Deadline ⏰',
         sortQuantity: 'Sort: Highest Quantity',
         showingAvailable: 'Showing available listings for reservation (FR3.5 default).',
         noFoodFound: 'No Available Food Donations Found',
@@ -194,9 +194,9 @@ const i18nDict = {
         chartCategory: 'Redistribution by Food Category',
         chartMonthly: 'Monthly Redistribution Momentum',
         footerBrand: 'FoodBridge Platform',
-        footerTagline: 'â€” Connecting Food Providers with Charities',
+        footerTagline: '— Connecting Food Providers with Charities',
         footerArch: 'Developed by Abdallah Sharaf using ASP.NET Core & Clean Architecture (Domain, Application, Infrastructure, Web API)',
-        copyright: 'Â© 2026 FoodBridge Platform â€¢ Developed by Abdallah Sharaf. All rights reserved.',
+        copyright: '© 2026 FoodBridge Platform • Developed by Abdallah Sharaf. All rights reserved.',
         availableSurplus: 'Available Surplus',
         storageConditions: 'Storage Conditions',
         knownAllergens: 'Known Allergens',
@@ -225,10 +225,10 @@ const i18nDict = {
         labelPrepDate: 'Preparation Date *',
         labelPickupDeadline: 'Pickup Deadline *',
         labelStorageConditions: 'Storage Conditions *',
-        optRefrigerated: 'Refrigerated (0-4Â°C)',
+        optRefrigerated: 'Refrigerated (0-4°C)',
         optRoomTemp: 'Room Temperature',
-        optFrozen: 'Frozen (< -18Â°C)',
-        optKeepWarm: 'Keep Warm (> 63Â°C)',
+        optFrozen: 'Frozen (< -18°C)',
+        optKeepWarm: 'Keep Warm (> 63°C)',
         labelKnownAllergens: 'Known Allergens *',
         allergensPlaceholder: 'e.g. Gluten, Dairy, or None',
         labelPickupAddress: 'Pickup Address & Instructions *',
@@ -317,6 +317,7 @@ const i18nDict = {
         adminNamePlaceholder: 'e.g. Sara Ahmed',
         adminDeptPlaceholder: 'e.g. Compliance & Moderation',
         administrators: 'Administrators',
+        
         wastedSurplusStat: 'Wasted Surplus',
         expiredDonationsLabel: 'Expired donations',
         tabWaste: 'Food Waste & Expirations',
@@ -335,321 +336,322 @@ const i18nDict = {
         wasteNotesPlaceholder: 'Specify details, disposal certifier, or compliance advisory...',
         btnConfirmAction: 'Apply Action',
         refreshList: 'Refresh',
-        langBtnText: 'Ø¹Ø±Ø¨ÙŠ'
+        langBtnText: 'عربي'
     },
     ar: {
-        brandName: 'FoodBridge Ø¬Ø³Ø± Ø§Ù„ØºØ°Ø§Ø¡',
-        brandSubtitle: 'Ù…Ù†ØµØ© Ø¥Ø¹Ø§Ø¯Ø© ØªÙˆØ²ÙŠØ¹ ÙØ§Ø¦Ø¶ Ø§Ù„Ø·Ø¹Ø§Ù…',
-        navHome: 'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©',
-        navBrowse: 'ØªØµÙØ­ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª',
-        navProvider: 'Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ†',
-        navCharity: 'Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª',
-        navAdmin: 'Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø´Ø±Ù',
-        navImpact: 'Ø§Ù„Ø£Ø«Ø± ÙˆØ§Ù„Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª',
-        signIn: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„',
-        register: 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨',
-        signOut: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬',
-        liveNotifications: 'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø§Ù„ÙÙˆØ±ÙŠØ©',
-        markAllRead: 'ØªØ­Ø¯ÙŠØ¯ Ø§Ù„ÙƒÙ„ ÙƒÙ…Ù‚Ø±ÙˆØ¡',
-        noNotifications: 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.',
-        heroBadge: 'Ø±Ø¨Ø· Ø§Ù„ÙØ§Ø¦Ø¶ Ø¨Ù…Ø³ØªØ­Ù‚ÙŠÙ‡',
-        heroTitle: 'Ù†Ø³Ø¯ Ø§Ù„ÙØ¬ÙˆØ© Ø¨ÙŠÙ† <span class="text-emerald-300">Ù‡Ø¯Ø± Ø§Ù„Ø·Ø¹Ø§Ù…</span> Ùˆ <span class="text-teal-300">Ø§Ù„Ø¬ÙˆØ¹</span>',
-        heroDesc: 'Ù…Ù†ØµØ© FoodBridge ØªØ±Ø¨Ø· Ø§Ù„Ù…Ø·Ø§Ø¹Ù… ÙˆØ§Ù„ÙÙ†Ø§Ø¯Ù‚ ÙˆØ§Ù„Ù…Ø®Ø§Ø¨Ø² Ø¨Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ© Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© â€” Ù„Ù†Ø­ÙˆÙ„ ÙØ§Ø¦Ø¶ Ø§Ù„Ø·Ø¹Ø§Ù… Ø§Ù„ÙŠÙˆÙ…ÙŠ Ø¥Ù„Ù‰ ÙˆØ¬Ø¨Ø§Øª ØªØ³Ø¯ Ø­Ø§Ø¬Ø© Ø¢Ù„Ø§Ù Ø§Ù„Ø£Ø³Ø± Ø§Ù„Ù…Ø­ØªØ§Ø¬Ø©.',
-        joinFree: 'Ø§Ù†Ø¶Ù… Ù„Ù€ FoodBridge Ù…Ø¬Ø§Ù†Ø§Ù‹',
-        statRedistributed: 'ÙƒØ¬Ù… Ø·Ø¹Ø§Ù… ØªÙ… ØªÙˆØ²ÙŠØ¹Ù‡',
-        statRedistributedDesc: 'Ù…Ù† Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø©',
-        statCompleted: 'ØªØ¨Ø±Ø¹ Ù…ÙƒØªÙ…Ù„ Ø¨Ù†Ø¬Ø§Ø­',
-        statCompletedSub: 'ØªÙ… ØªØ³Ù„ÙŠÙ…Ù‡Ø§ ÙˆØªÙˆØ«ÙŠÙ‚Ù‡Ø§',
-        statProviders: 'Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù… Ù…Ø¹ØªÙ…Ø¯',
-        statProvidersSub: 'Ù…Ø·Ø§Ø¹Ù…ØŒ Ù…Ø®Ø§Ø¨Ø²ØŒ ÙˆÙÙ†Ø§Ø¯Ù‚',
-        statCharities: 'Ø´Ø±ÙŠÙƒ Ù…Ù† Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª',
-        statCharitiesSub: 'Ù…ÙˆØ«Ù‚Ø© ÙˆÙ†Ø´Ø·Ø© Ø¨Ø§Ù„Ù…Ù†ØµØ©',
-        howItWorksTitle: 'ÙƒÙŠÙ ØªØ¹Ù…Ù„ Ù…Ù†ØµØ© FoodBridgeØŸ',
-        howItWorksSubtitle: 'Ù…Ù†Ø¸ÙˆÙ…Ø© Ø³Ø±ÙŠØ¹Ø© ÙˆØ¢Ù…Ù†Ø© ÙˆÙÙˆØ±ÙŠØ© Ù„Ø¥Ø¹Ø§Ø¯Ø© ØªÙˆØ²ÙŠØ¹ ÙØ§Ø¦Ø¶ Ø§Ù„Ø·Ø¹Ø§Ù… â€” Ù…Ù† Ø§Ù„Ù†Ø´Ø± Ø­ØªÙ‰ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… ÙÙŠ Ø¯Ù‚Ø§Ø¦Ù‚.',
-        step1Title: '1. Ù†Ø´Ø± Ø§Ù„ÙØ§Ø¦Ø¶ Ù…Ù† Ø§Ù„Ù…Ø²ÙˆØ¯',
-        step1Desc: 'ØªÙ‚ÙˆÙ… Ø§Ù„Ù…Ø·Ø§Ø¹Ù… ÙˆØ§Ù„ÙÙ†Ø§Ø¯Ù‚ ÙˆØ§Ù„Ù…Ø®Ø§Ø¨Ø² Ø¨Ø¥Ø¶Ø§ÙØ© Ø§Ù„ÙØ§Ø¦Ø¶ Ù…Ø¹ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙƒÙ…ÙŠØ©ØŒ Ø§Ù„Ù…ÙˆØ¹Ø¯ØŒ Ø´Ø±ÙˆØ· Ø§Ù„Ø­ÙØ¸ØŒ ÙˆØ§Ù„Ø­Ø³Ø§Ø³ÙŠØ© Ù…Ø¹ Ø§Ù„ØµÙˆØ±.',
-        step2Title: '2. Ø·Ù„Ø¨ Ø§Ù„Ø­Ø¬Ø² Ù…Ù† Ø§Ù„Ø¬Ù…Ø¹ÙŠØ©',
-        step2Desc: 'ØªØªØµÙØ­ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© Ø§Ù„Ø¹Ø±ÙˆØ¶ ÙˆØªØ­Ø¬Ø²Ù‡Ø§ ÙÙˆØ±Ø§Ù‹ Ù…Ø¹ Ù…Ù†Ø¹ ØªÙƒØ±Ø§Ø± Ø§Ù„Ø­Ø¬Ø² Ù„Ù†ÙØ³ Ø§Ù„ÙˆØ¬Ø¨Ø© Ø¨Ø¯Ù‚Ø© Ø¹Ø§Ù„ÙŠØ©.',
-        step3Title: '3. Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… ÙˆØ§Ù„ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ù…ØªØ¨Ø§Ø¯Ù„',
-        step3Desc: 'ÙŠØªÙ… Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø·Ø¹Ø§Ù… ÙˆØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø·Ù„Ø¨ ÙˆØªÙˆØ«ÙŠÙ‚ Ø§Ù„ØªÙ‚ÙŠÙŠÙ…Ø§Øª ÙˆØ§Ù„Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª ÙÙˆØ±ÙŠØ§Ù‹ Ø¹Ø¨Ø± SignalR.',
-        whoUsesHeading: 'Ù…Ù† ÙŠØ³ØªØ®Ø¯Ù… Ù…Ù†ØµØ© FoodBridgeØŸ',
-        whoUsesSubtitle: 'Ù†ÙˆØ¹Ø§Ù† Ù…Ù† Ø§Ù„Ø´Ø±ÙƒØ§Ø¡ â€” ØªØ¬Ù…Ø¹Ù‡Ù… Ø±Ø³Ø§Ù„Ø© ÙˆØ§Ø­Ø¯Ø© Ù„Ù…ÙƒØ§ÙØ­Ø© Ø§Ù„Ù‡Ø¯Ø± ÙˆØ¥Ø·Ø¹Ø§Ù… Ø§Ù„Ù…Ø­ØªØ§Ø¬ÙŠÙ†.',
-        providerCardTitle: 'Ù…Ø²ÙˆØ¯Ùˆ Ø§Ù„Ø·Ø¹Ø§Ù…',
-        providerCardDesc: 'Ø§Ù„Ù…Ø·Ø§Ø¹Ù… ÙˆØ§Ù„ÙÙ†Ø§Ø¯Ù‚ ÙˆØ§Ù„Ù…Ø®Ø§Ø¨Ø² ÙˆØ´Ø±ÙƒØ§Øª Ø§Ù„ØªØºØ°ÙŠØ© ÙˆØ§Ù„Ø¶ÙŠØ§ÙØ© Ø§Ù„ØªÙŠ Ù„Ø¯ÙŠÙ‡Ø§ ÙØ§Ø¦Ø¶ Ø·Ø¹Ø§Ù… ØµØ§Ù„Ø­ Ù„Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ.',
-        pFeature1: 'Ù†Ø´Ø± Ø¹Ø±ÙˆØ¶ Ø§Ù„Ø·Ø¹Ø§Ù… Ù…Ø¹ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù…ÙƒÙˆÙ†Ø§Øª ÙˆÙ…Ø³Ø¨Ø¨Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø³ÙŠØ©',
-        pFeature2: 'Ù‚Ø¨ÙˆÙ„ Ø£Ùˆ Ø±ÙØ¶ Ø·Ù„Ø¨Ø§Øª Ø­Ø¬Ø² Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø¨Ù…Ø±ÙˆÙ†Ø© ØªØ§Ù…Ø©',
-        pFeature3: 'ØªØ£ÙƒÙŠØ¯ Ù…ÙˆÙ‚Ø¹ ÙˆÙ…ÙˆØ¹Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…Ù†Ø§Ø³Ø¨ Ù„ÙØ±Ù‚ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ©',
-        pFeature4: 'Ù…ØªØ§Ø¨Ø¹Ø© Ø³Ø¬Ù„ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª ÙˆØ¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ø£Ø«Ø± Ø§Ù„Ø¨ÙŠØ¦ÙŠ ÙˆØ§Ù„Ù…Ø¬ØªÙ…Ø¹ÙŠ',
-        registerAsProvider: 'Ø³Ø¬Ù„ ÙƒÙ…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…',
-        charityCardTitle: 'Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª ÙˆØ§Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ø£Ù‡Ù„ÙŠØ©',
-        charityCardDesc: 'Ø¨Ù†ÙˆÙƒ Ø§Ù„Ø·Ø¹Ø§Ù… ÙˆØ¯ÙˆØ± Ø§Ù„Ø±Ø¹Ø§ÙŠØ© ÙˆØ§Ù„Ù…Ø·Ø§Ø¨Ø® Ø§Ù„Ù…Ø¬ØªÙ…Ø¹ÙŠØ© ÙˆÙ…Ù†Ø¸Ù…Ø§Øª Ø§Ù„Ø¥ØºØ§Ø«Ø© Ø§Ù„ØªÙŠ ØªØ±Ø¹Ù‰ Ø§Ù„Ø£Ø³Ø± Ø§Ù„Ù…Ø³ØªØ­Ù‚Ø©.',
-        cFeature1: 'ØªØµÙØ­ ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ø·Ø¹Ø§Ù… Ø­Ø³Ø¨ Ø§Ù„ØªØµÙ†ÙŠÙ ÙˆØ§Ù„ØªØ§Ø±ÙŠØ® ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹',
-        cFeature2: 'Ø­Ø¬Ø² Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª ÙÙˆØ±ÙŠØ§Ù‹ Ø¨Ø¶ØºØ·Ø© Ø²Ø± ÙˆØ§Ø­Ø¯Ø© ÙˆÙ…Ù†Ø¹ Ø§Ù„ØªÙƒØ±Ø§Ø±',
-        cFeature3: 'Ø§Ø³ØªÙ‚Ø¨Ø§Ù„ Ø¥Ø´Ø¹Ø§Ø±Ø§Øª ÙˆØªØ­Ø¯ÙŠØ«Ø§Øª ÙÙˆØ±ÙŠØ© Ø¨Ø§Ù„Ù„Ø­Ø¸Ø© Ø¹Ø¨Ø± SignalR',
-        cFeature4: 'ØªÙˆØ«ÙŠÙ‚ Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„ÙˆØ¬Ø¨Ø§Øª ÙˆØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ† Ø¨Ø´ÙØ§ÙÙŠØ©',
-        registerAsCharity: 'Ø³Ø¬Ù„ ÙƒØ¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©',
-        platformFeaturesHeading: 'Ù…Ù…ÙŠØ²Ø§Øª Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„ØªÙ‚Ù†ÙŠØ©',
-        platformFeaturesSubtitle: 'Ù…Ø¨Ù†ÙŠØ© Ø¨Ø£Ø­Ø¯Ø« ØªÙ‚Ù†ÙŠØ§Øª Ø§Ù„ÙˆÙŠØ¨ Ø§Ù„Ù…Ø¤Ø³Ø³ÙŠØ© Ù„Ø¶Ù…Ø§Ù† Ø§Ù„Ø£Ù…Ø§Ù† ÙˆØ§Ù„Ù…ÙˆØ«ÙˆÙ‚ÙŠØ© ÙˆØ§Ù„Ø³Ø±Ø¹Ø© Ø§Ù„Ù„Ø­Ø¸ÙŠØ©.',
-        feat1Title: 'Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø­ÙŠØ© ÙˆÙÙˆØ±ÙŠØ©',
-        feat1Desc: 'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ÙÙˆØ±ÙŠØ© Ø¨ØªÙ‚Ù†ÙŠØ© SignalR Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª Ø§Ù„Ø­Ø¬Ø² ÙˆØ§Ù„Ù‚Ø¨ÙˆÙ„ ÙˆØ¬Ø§Ù‡Ø²ÙŠØ© Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… ÙˆØ§Ù„ØªÙ‚ÙŠÙŠÙ…Ø§Øª.',
-        feat2Title: 'Ø£Ù…Ø§Ù† JWT ÙˆØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ø£Ø¯ÙˆØ§Ø±',
-        feat2Desc: 'Ø­Ù…Ø§ÙŠØ© ÙƒØ§Ù…Ù„Ø© Ø¨Ø§Ù„ØªÙˆÙƒÙ†Ø§Øª Ù…Ø¹ Ø¥Ø¯Ø§Ø±Ø© Ù…Ø´Ø¯Ø¯Ø© Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ø´Ø±ÙÙŠÙ† ÙˆØ§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ† ÙˆØ§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ©.',
-        feat3Title: 'ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ø¨Ø±ÙŠØ¯ ÙˆØ§Ù„Ù…Ø¤Ø³Ø³Ø§Øª',
-        feat3Desc: 'Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¨Ø±ÙŠØ¯ ÙˆÙ…Ø±Ø§Ø¬Ø¹Ø© Ù‡ÙˆÙŠØ© Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª ÙˆØ§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ† Ù‚Ø¨Ù„ Ù…Ù†Ø­ ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ø­Ø¬Ø² ÙˆØ§Ù„Ù†Ø´Ø±.',
-        feat4Title: 'Ù…Ù†Ø¹ ØªØ¹Ø§Ø±Ø¶ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª',
-        feat4Desc: 'Ø­Ù…Ø§ÙŠØ© Ù‚ÙÙ„ Ù…ØªÙØ§Ø¦Ù„ (RowVersion) ØªÙ…Ù†Ø¹ Ø­Ø¬Ø² Ù†ÙØ³ Ø§Ù„ØªØ¨Ø±Ø¹ Ù…Ù† Ø£ÙƒØ«Ø± Ù…Ù† Ø¬Ù…Ø¹ÙŠØ© ÙÙŠ Ù†ÙØ³ Ø§Ù„Ø«Ø§Ù†ÙŠØ©.',
-        feat5Title: 'Ø³Ø¬Ù„ ØªØ¯Ù‚ÙŠÙ‚ Ø¥Ø¯Ø§Ø±ÙŠ Ø´Ø§Ù…Ù„',
-        feat5Desc: 'ØªÙˆØ«ÙŠÙ‚ ØºÙŠØ± Ù‚Ø§Ø¨Ù„ Ù„Ù„ØªØ¹Ø¯ÙŠÙ„ Ù„Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠØ© ÙˆØ§Ù„ØªÙˆØ«ÙŠÙ‚Ø§Øª ÙˆØ¥Ø¬Ø±Ø§Ø¡Ø§Øª Ø§Ù„Ø¥Ø´Ø±Ø§Ù.',
-        feat6Title: 'Ø®Ø¯Ù…Ø© Ø¢Ù„ÙŠØ© Ù„Ø¥Ù†Ù‡Ø§Ø¡ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ©',
-        feat6Desc: 'Ø®Ø¯Ù…Ø© Ø®Ù„ÙÙŠØ© Ø¨Ø±Ù…Ø¬ÙŠØ© ØªÙ„Ù‚Ø§Ø¦ÙŠØ© ØªÙØ­Øµ Ø§Ù„Ù…ÙˆØ§Ø¹ÙŠØ¯ ÙˆØªØ­Ø¯Ø« Ø§Ù„Ø¹Ø±ÙˆØ¶ Ø§Ù„Ù…Ù†ØªÙ‡ÙŠØ© ÙÙˆØ± Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ù…ÙˆØ¹Ø¯ Ø§Ø³ØªÙ„Ø§Ù…Ù‡Ø§.',
-        ctaHeading: 'Ù‡Ù„ Ø£Ù†Øª Ø¬Ø§Ù‡Ø² Ù„ØµÙ†Ø¹ Ø£Ø«Ø± Ø­Ù‚ÙŠÙ‚ÙŠØŸ',
-        ctaSubtitle: 'Ø§Ù†Ø¶Ù… Ø¥Ù„Ù‰ Ù…Ù†ØµØ© FoodBridge Ø§Ù„ÙŠÙˆÙ… â€” Ø§Ù„ØªØ³Ø¬ÙŠÙ„ Ù…Ø¬Ø§Ù†ÙŠ ÙˆØ³Ø±ÙŠØ¹ ÙˆÙ…ÙˆØ«Ù‚ Ø¨Ø§Ù„ÙƒØ§Ù…Ù„.',
-        createFreeAccount: 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¬Ø¯ÙŠØ¯ Ù…Ø¬Ø§Ù†Ø§Ù‹',
-        alreadyHaveAccount: 'Ù‡Ù„ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ Ø¨Ø§Ù„ÙØ¹Ù„ØŸ',
-        signInHere: 'Ø³Ø¬Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ù‡Ù†Ø§',
-        directFrom: 'Ù…Ø¨Ø§Ø´Ø±Ø© Ù…Ù† Ø§Ù„Ù…Ø·Ø§Ø¹Ù… ÙˆØ§Ù„Ù…Ø®Ø§Ø¨Ø² ÙˆØ§Ù„ÙÙ†Ø§Ø¯Ù‚ Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø©',
-        exploreBannerTitle: 'Ø­ÙˆÙ„ ÙØ§Ø¦Ø¶ Ø§Ù„Ø·Ø¹Ø§Ù… Ø¥Ù„Ù‰ Ø¹Ø·Ø§Ø¡ ÙˆØ­ÙŠØ§Ø©.',
-        exploreBannerDesc: 'Ù…Ø·Ø§Ø¹Ù… ÙˆÙÙ†Ø§Ø¯Ù‚ Ù…ÙˆØ«ÙˆÙ‚Ø© ØªÙ‚Ø¯Ù… ÙˆØ¬Ø¨Ø§Øª Ø·Ø§Ø²Ø¬Ø© ÙˆÙ…Ø®Ø¨ÙˆØ²Ø§Øª ÙŠÙˆÙ…ÙŠØ©. ØªØªØ³Ù„Ù…Ù‡Ø§ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© Ø¨Ø¯ÙˆÙ† Ù‡Ø¯Ø± ÙˆÙ…Ø¹ ØªÙˆØ«ÙŠÙ‚ ÙÙˆØ±ÙŠ Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù….',
-        exploreHeading: 'Ø§Ø³ØªÙƒØ´Ø§Ù Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø©',
-        exploreSubtitle: 'ØªØµÙØ­ ÙˆØ§Ø­Ø¬Ø² ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ø·Ø¹Ø§Ù… Ø§Ù„Ø­ÙŠØ© Ù…Ù† Ø§Ù„Ù…Ø·Ø§Ø¹Ù… ÙˆØ§Ù„ÙÙ†Ø§Ø¯Ù‚ ÙˆØ§Ù„Ù…Ø®Ø§Ø¨Ø² Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø©.',
-        searchPlaceholder: 'Ø§Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„ÙˆØ¬Ø¨Ø§ØªØŒ Ø§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ†ØŒ Ø£Ùˆ Ø§Ù„Ø¹Ù†Ø§ÙˆÙŠÙ†...',
-        allCategories: 'Ø¬Ù…ÙŠØ¹ Ø§Ù„ØªØµÙ†ÙŠÙØ§Øª',
-        allProviders: 'Ø¬Ù…ÙŠØ¹ Ø£Ù†ÙˆØ§Ø¹ Ø§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ†',
-        sortNewest: 'Ø§Ù„ØªØ±ØªÙŠØ¨: Ø§Ù„Ø£Ø­Ø¯Ø« Ø£ÙˆÙ„Ø§Ù‹',
-        sortDeadline: 'Ø§Ù„ØªØ±ØªÙŠØ¨: Ø§Ù„Ø£Ù‚Ø±Ø¨ Ø§Ù†ØªÙ‡Ø§Ø¡Ù‹ â°',
-        sortQuantity: 'Ø§Ù„ØªØ±ØªÙŠØ¨: Ø§Ù„ÙƒÙ…ÙŠØ© Ø§Ù„Ø£ÙƒØ¨Ø±',
-        showingAvailable: 'Ø¹Ø±Ø¶ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„Ù„Ø­Ø¬Ø² Ø­Ø§Ù„ÙŠØ§Ù‹ (Ø§Ù„Ù…Ø¹ÙŠØ§Ø± Ø§Ù„Ø£Ø³Ø§Ø³ÙŠ).',
-        noFoodFound: 'Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ ØªØ¨Ø±Ø¹Ø§Øª Ø·Ø¹Ø§Ù… Ù…Ø·Ø§Ø¨Ù‚Ø©',
-        noFoodFoundDesc: 'ÙŠØ±Ø¬Ù‰ ØªØ¬Ø±Ø¨Ø© Ø¥Ø¹Ø§Ø¯Ø© Ø¶Ø¨Ø· Ø¹ÙˆØ§Ù…Ù„ Ø§Ù„ØªØµÙÙŠØ© Ø£Ùˆ ØªÙÙ‚Ø¯ Ø§Ù„ØµÙØ­Ø© Ù„Ø§Ø­Ù‚Ø§Ù‹ Ø­ÙŠØ« ÙŠØ¶ÙŠÙ Ø§Ù„Ù…Ø²ÙˆØ¯ÙˆÙ† Ø¯ÙØ¹Ø§Øª Ø·Ø§Ø²Ø¬Ø© Ø¨Ø§Ø³ØªÙ…Ø±Ø§Ø±.',
-        resetFilters: 'Ø¥Ø¹Ø§Ø¯Ø© Ø¶Ø¨Ø· Ø¹ÙˆØ§Ù…Ù„ Ø§Ù„ØªØµÙÙŠØ©',
-        viewAndReserve: 'Ø¹Ø±Ø¶ ÙˆØ­Ø¬Ø²',
-        pickupBefore: 'Ù…ÙˆØ¹Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ù‚Ø¨Ù„',
-        allergens: 'Ù…Ø³Ø¨Ø¨Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø³ÙŠØ©',
-        providerPortalHeading: 'Ø¨ÙˆØ§Ø¨Ø© Ù…Ø²ÙˆØ¯ÙŠ Ø§Ù„Ø·Ø¹Ø§Ù…',
-        providerPortalDesc: 'Ø¥Ø¯Ø§Ø±Ø© ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ø·Ø¹Ø§Ù…ØŒ Ù‚Ø¨ÙˆÙ„ Ø·Ù„Ø¨Ø§Øª Ø­Ø¬Ø² Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§ØªØŒ ÙˆØªÙ†Ø³ÙŠÙ‚ Ù…ÙˆØ§Ø¹ÙŠØ¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø©.',
-        verified: 'Ù…ÙˆØ«Ù‚ ÙˆÙ…Ø¹ØªÙ…Ø¯',
-        postDonation: 'Ø¥Ø¶Ø§ÙØ© ØªØ¨Ø±Ø¹ Ø·Ø¹Ø§Ù… Ø¬Ø¯ÙŠØ¯',
-        statTotalListed: 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª',
-        statTotalListedDesc: 'Ø¹Ø±ÙˆØ¶ Ø§Ù„ØªØ¨Ø±Ø¹ Ø§Ù„Ù…Ø¶Ø§ÙØ©',
-        statCompleted: 'Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø©',
-        statCompletedDesc: 'ØªÙ… Ø§Ø³ØªÙ„Ø§Ù…Ù‡Ø§ Ø¨Ù†Ø¬Ø§Ø­',
-        statActiveNow: 'Ø§Ù„Ù†Ø´Ø·Ø© Ø­Ø§Ù„ÙŠØ§Ù‹',
-        statActiveNowDesc: 'Ù…ØªØ§Ø­Ø© Ø£Ùˆ Ù‚ÙŠØ¯ Ø§Ù„Ø­Ø¬Ø²',
-        statRedistributedTitle: 'Ø§Ù„Ù…Ø¹Ø§Ø¯ ØªÙˆØ²ÙŠØ¹Ù‡',
-        statRedistributedDesc2: 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ…ÙŠØ§Øª Ø§Ù„Ù…Ø³Ù„Ù…Ø©',
-        statProviderRating: 'ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ù…Ø²ÙˆØ¯',
-        basedOnReviews: 'Ø¨Ù†Ø§Ø¡Ù‹ Ø¹Ù„Ù‰ ØªÙ‚ÙŠÙŠÙ…Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ§Ø¡',
-        myListings: 'ØªØ¨Ø±Ø¹Ø§ØªÙŠ Ø§Ù„Ù…Ø¹Ù„Ù†Ø©',
-        incomingRequests: 'Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø­Ø¬Ø² Ø§Ù„ÙˆØ§Ø±Ø¯Ø©',
-        filterByStatus: 'ØªØµÙÙŠØ© Ø­Ø³Ø¨ Ø§Ù„Ø­Ø§Ù„Ø©:',
-        allStatuses: 'Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ø§Ù„Ø§Øª',
-        statusAvailable: 'Ù…ØªØ§Ø­ Ù„Ù„Ø­Ø¬Ø²',
-        statusReserved: 'Ù…Ø­Ø¬ÙˆØ²',
-        statusCompleted: 'Ù…ÙƒØªÙ…Ù„ Ø¨Ù†Ø¬Ø§Ø­',
-        statusExpired: 'Ù…Ù†ØªÙ‡ÙŠ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ©',
-        statusUnavailable: 'ØºÙŠØ± Ù…ØªØ§Ø­',
-        thFoodDonation: 'ØªØ¨Ø±Ø¹ Ø§Ù„Ø·Ø¹Ø§Ù…',
-        thCategory: 'Ø§Ù„ØªØµÙ†ÙŠÙ',
-        thQuantity: 'Ø§Ù„ÙƒÙ…ÙŠØ©',
-        thPickupDeadline: 'Ø¢Ø®Ø± Ù…ÙˆØ¹Ø¯ Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        thStatus: 'Ø§Ù„Ø­Ø§Ù„Ø©',
-        thActions: 'Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª',
-        charityPortalHeading: 'Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª ÙˆØ§Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ©',
-        charityPortalDesc: 'Ù…ØªØ§Ø¨Ø¹Ø© Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ø£Ø·Ø¹Ù…Ø© Ø§Ù„Ù†Ø´Ø·Ø©ØŒ ØªÙ†Ø³ÙŠÙ‚ Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø´Ø­Ù†Ø§ØªØŒ ÙˆØªØ£ÙƒÙŠØ¯ ÙˆØµÙˆÙ„ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ù„Ù„Ù…Ø³ØªØ­Ù‚ÙŠÙ†.',
-        browseMoreFood: 'ØªØµÙØ­ ÙˆØ­Ø¬Ø² Ø§Ù„Ù…Ø²ÙŠØ¯ Ù…Ù† Ø§Ù„Ø·Ø¹Ø§Ù…',
-        donationsReceived: 'Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ù…Ø³ØªÙ„Ù…Ø©',
-        successfullyCollected: 'ØªÙ… Ø§Ø³ØªÙ„Ø§Ù…Ù‡Ø§ Ø¨Ù†Ø¬Ø§Ø­',
-        activeReservations: 'Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ù†Ø´Ø·Ø©',
-        pendingAcceptedReady: 'Ù…Ø¹Ù„Ù‚Ø©ØŒ Ù…Ù‚Ø¨ÙˆÙ„Ø© Ø£Ùˆ Ø¬Ø§Ù‡Ø²Ø©',
-        totalQtyReceived: 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ…ÙŠØ© Ø§Ù„Ù…Ø³ØªÙ„Ù…Ø©',
-        foodRedistributedCommunity: 'ÙˆØ¬Ø¨Ø§Øª ØªÙ… Ø¥ÙŠØµØ§Ù„Ù‡Ø§ Ù„Ù„Ø£Ø³Ø±',
-        partnerReviews: 'ØªÙ‚ÙŠÙŠÙ…Ø§Øª Ø§Ù„Ø´Ø±ÙƒØ§Ø¡',
-        reviewsSubmittedProviders: 'Ø§Ù„ØªÙ‚ÙŠÙŠÙ…Ø§Øª Ø§Ù„Ù…Ù‚Ø¯Ù…Ø© Ù„Ù„Ù…Ø²ÙˆØ¯ÙŠÙ†',
-        myReservations: 'Ø­Ø¬ÙˆØ²Ø§Øª Ø§Ù„Ø£Ø·Ø¹Ù…Ø© Ø§Ù„Ø®Ø§ØµØ© Ø¨ÙŠ',
-        statusPendingApproval: 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ù…ÙˆØ§ÙÙ‚Ø© Ø§Ù„Ù…Ø²ÙˆØ¯',
-        statusAcceptedScheduled: 'Ù…Ù‚Ø¨ÙˆÙ„ ÙˆÙ…Ø­Ø¯Ø¯ Ù…ÙˆØ¹Ø¯Ù‡',
-        statusReadyPickup: 'Ø¬Ø§Ù‡Ø² Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø¢Ù†',
-        statusCancelled: 'Ù…Ù„ØºÙŠ',
-        statusProblemReported: 'ØªÙ… Ø§Ù„Ø¥Ø¨Ù„Ø§Øº Ø¹Ù† Ù…Ø´ÙƒÙ„Ø©',
-        adminSuiteHeading: 'Ù„ÙˆØ­Ø© Ø§Ù„Ø¥Ø´Ø±Ø§Ù Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠ Ù„Ù„Ù…Ù†ØµØ©',
-        adminSuperuser: 'Ù…Ø´Ø±Ù Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø¹Ø§Ù…',
-        adminSuiteDesc: 'ØªÙˆØ«ÙŠÙ‚ Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ† ÙˆØ§Ù„Ø¬Ù…Ø¹ÙŠØ§ØªØŒ Ø¥Ø¯Ø§Ø±Ø© ÙˆÙ…Ø±Ø§Ù‚Ø¨Ø© Ø§Ù„Ù…Ø­ØªÙˆÙ‰ØŒ Ø­Ù„ Ø¨Ù„Ø§ØºØ§Øª Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…ØŒ ÙˆØªØ¯Ù‚ÙŠÙ‚ Ø³Ø¬Ù„Ø§Øª Ø§Ù„Ø£Ù…Ø§Ù†.',
-        registeredUsers: 'Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ† Ø§Ù„Ù…Ø³Ø¬Ù„ÙˆÙ†',
-        providersLabel: 'Ù…Ø²ÙˆØ¯',
-        charitiesLabel: 'Ø¬Ù…Ø¹ÙŠØ©',
-        pendingVerifications: 'Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¹Ù„Ù‚Ø©',
-        awaitingAdminReview: 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±Ø©',
-        completedDonations: 'Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø©',
-        totalRedistributedLabel: 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ…ÙŠØ§Øª Ø§Ù„Ù…ÙˆØ²Ø¹Ø©',
-        reportedModerations: 'Ø¨Ù„Ø§ØºØ§Øª Ø§Ù„Ø¥Ø´Ø±Ø§Ù',
-        moderationIssuesDesc: 'Ø¹Ø±ÙˆØ¶ØŒ ØªÙ‚ÙŠÙŠÙ…Ø§ØªØŒ ÙˆÙ†Ø²Ø§Ø¹Ø§Øª Ø§Ø³ØªÙ„Ø§Ù…',
-        tabVerifications: 'ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¤Ø³Ø³Ø§Øª ÙˆØ§Ù„Ø´Ø±ÙƒØ§Ø¡',
-        tabUsers: 'Ø¯Ù„ÙŠÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª',
-        tabModeration: 'Ø§Ù„Ø¥Ø´Ø±Ø§Ù ÙˆØ§Ù„Ø´ÙƒØ§ÙˆÙ‰ ÙˆØ§Ù„Ù†Ø²Ø§Ø¹Ø§Øª',
-        tabAudit: 'Ø³Ø¬Ù„ Ø§Ù„ØªØ¯Ù‚ÙŠÙ‚ ÙˆØ§Ù„Ø£Ù…Ø§Ù† Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠ',
-        pendingVerificationsTitle: 'Ø·Ù„Ø¨Ø§Øª ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø§Ø¹ØªÙ…Ø§Ø¯',
-        pendingVerificationsDesc: 'Ù…Ø±Ø§Ø¬Ø¹Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¤Ø³Ø³Ø©ØŒ Ø§Ù„Ø¹Ù†ÙˆØ§Ù†ØŒ ÙˆØ±Ø³Ø§Ù„ØªÙ‡Ø§ Ø§Ù„Ø®ÙŠØ±ÙŠØ© Ù‚Ø¨Ù„ Ø§Ø¹ØªÙ…Ø§Ø¯ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØªÙØ¹ÙŠÙ„ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª.',
-        searchUsersPlaceholder: 'Ø§Ø¨Ø­Ø« Ø¨Ø§Ù„Ø§Ø³Ù…ØŒ Ø§Ù„Ø¨Ø±ÙŠØ¯ØŒ Ø£Ùˆ Ø§Ø³Ù… Ø§Ù„Ù…Ø¤Ø³Ø³Ø©...',
-        allAccountTypes: 'Ø¬Ù…ÙŠØ¹ Ø£Ù†ÙˆØ§Ø¹ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª',
-        foodProviders: 'Ù…Ø²ÙˆØ¯Ùˆ Ø§Ù„Ø·Ø¹Ø§Ù…',
-        charities: 'Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ©',
-        statusActive: 'Ù†Ø´Ø·',
-        statusSuspended: 'Ù…Ø¬Ù…Ù‘Ø¯',
-        thUserOrg: 'Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆØ§Ù„Ù…Ø¤Ø³Ø³Ø©',
-        thRoleType: 'Ø§Ù„Ø¯ÙˆØ± / Ø§Ù„Ù†ÙˆØ¹',
-        thVerification: 'Ø­Ø§Ù„Ø© Ø§Ù„ØªÙˆØ«ÙŠÙ‚',
-        reportedListings: 'Ø¹Ø±ÙˆØ¶ Ø·Ø¹Ø§Ù… Ù…Ø¨Ù„Ù‘Øº Ø¹Ù†Ù‡Ø§',
-        reportedReviews: 'ØªÙ‚ÙŠÙŠÙ…Ø§Øª Ù…Ø¨Ù„Ù‘Øº Ø¹Ù†Ù‡Ø§',
-        pickupDisputes: 'Ù†Ø²Ø§Ø¹Ø§Øª Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø´Ø­Ù†Ø§Øª',
-        auditRecordsTitle: 'Ø³Ø¬Ù„Ø§Øª Ø§Ù„ØªØ¯Ù‚ÙŠÙ‚ Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠ ÙˆØ§Ù„Ø£Ù…Ù†ÙŠ',
-        auditRecordsDesc: 'Ø³Ø¬Ù„ ØªØ¯Ù‚ÙŠÙ‚ Ø±Ù‚Ù…ÙŠ ØºÙŠØ± Ù‚Ø§Ø¨Ù„ Ù„Ù„ØªØ¹Ø¯ÙŠÙ„ Ù„Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠØ© ÙˆØªØ¬Ù…ÙŠØ¯ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª ÙˆØ­Ø°Ù Ø§Ù„Ù…Ø®Ø§Ù„ÙØ§Øª.',
-        thTimestamp: 'Ø§Ù„ØªÙˆÙ‚ÙŠØª',
-        thAdmin: 'Ø§Ù„Ù…Ø´Ø±Ù',
-        thAction: 'Ù†ÙˆØ¹ Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡',
-        thTargetEntity: 'Ø§Ù„ÙƒÙŠØ§Ù† Ø§Ù„Ù…Ø³ØªÙ‡Ø¯Ù',
-        thDetails: 'Ø§Ù„ØªÙØ§ØµÙŠÙ„',
-        impactBadge: 'Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ù„Ø­Ø¸ÙŠØ©',
-        impactHeading: 'Ø§Ù„Ø£Ø«Ø± Ø§Ù„Ø¨ÙŠØ¦ÙŠ ÙˆØ§Ù„Ù…Ø¬ØªÙ…Ø¹ÙŠ Ù„Ù…Ù†ØµØ© FoodBridge',
-        impactDesc: 'ØªØ·Ø¨ÙŠÙ‚Ø§Ù‹ Ù„Ù…Ø¹Ø§ÙŠÙŠØ± Ø§Ù„Ø´ÙØ§ÙÙŠØ©ØŒ ÙŠØªÙ… Ø§Ø­ØªØ³Ø§Ø¨ ÙƒØ§ÙØ© Ø§Ù„Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø¨Ø§Ù„Ø§Ø¹ØªÙ…Ø§Ø¯ Ø¹Ù„Ù‰ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø© Ø¨Ù†Ø¬Ø§Ø­ ÙÙ‚Ø·ØŒ Ù…Ø¹ Ø§Ø³ØªØ¨Ø¹Ø§Ø¯ Ø§Ù„Ù…Ù„ØºØ§Ø© ÙˆØ§Ù„Ù…Ø±ÙÙˆØ¶Ø© ÙˆØ§Ù„Ù…Ù†ØªÙ‡ÙŠØ©.',
-        impactCardQty: 'ÙƒÙ…ÙŠØ© Ø§Ù„Ø·Ø¹Ø§Ù… Ø§Ù„Ù…Ø¹Ø§Ø¯ ØªÙˆØ²ÙŠØ¹Ù‡',
-        impactCardQtyDesc: 'ÙˆØ­Ø¯Ø©/ÙƒØ¬Ù… ØªÙ… Ø¥Ù†Ù‚Ø§Ø°Ù‡Ø§ Ù…Ù† Ø§Ù„Ù‡Ø¯Ø± ÙˆØªÙˆØ¬ÙŠÙ‡Ù‡Ø§ Ù…Ø¨Ø§Ø´Ø±Ø© Ù„Ù„Ø£Ø³Ø± Ø§Ù„Ù…Ø­ØªØ§Ø¬Ø©.',
-        impactCardCompleted: 'ØªØ¨Ø±Ø¹Ø§Øª Ø·Ø¹Ø§Ù… Ù…ÙƒØªÙ…Ù„Ø©',
-        impactCardCompletedDesc: 'Ø¯ÙˆØ±Ø§Øª ØªØ¨Ø±Ø¹ ÙˆØªØ³Ù„ÙŠÙ… ØªÙ…Øª Ø¨Ù†Ø¬Ø§Ø­ Ù…Ù† Ø§Ù„Ø¨Ø¯Ø§ÙŠØ© Ù„Ù„Ù†Ù‡Ø§ÙŠØ©.',
-        impactCardNetwork: 'Ø´Ø¨ÙƒØ© Ø§Ù„Ø´Ø±ÙƒØ§Ø¡ Ø§Ù„Ù†Ø´Ø·Ø©',
-        impactCardNetworkDesc: 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø·Ø§Ø¹Ù… ÙˆØ§Ù„ÙÙ†Ø§Ø¯Ù‚ ÙˆØ§Ù„Ù…Ø®Ø§Ø¨Ø² ÙˆØ§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ù…Ø´Ø§Ø±ÙƒØ©.',
-        chartCategory: 'ØªÙˆØ²ÙŠØ¹ Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª Ø­Ø³Ø¨ ÙØ¦Ø© Ø§Ù„Ø·Ø¹Ø§Ù…',
-        chartMonthly: 'Ø²Ø®Ù… ÙˆÙ†Ù…Ùˆ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ø´Ù‡Ø±ÙŠ',
-        footerBrand: 'Ù…Ù†ØµØ© FoodBridge',
-        footerTagline: 'â€” Ø¬Ø³Ø± Ø§Ù„Ø¹Ø·Ø§Ø¡ Ø¨ÙŠÙ† Ù…Ø²ÙˆØ¯ÙŠ Ø§Ù„Ø·Ø¹Ø§Ù… ÙˆØ§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ©',
-        footerArch: 'ØªÙ… Ø§Ù„ØªØ·ÙˆÙŠØ± Ø¨ÙˆØ§Ø³Ø·Ø© Abdallah Sharaf Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ASP.NET Core ÙˆØ§Ù„Ø¨Ù†ÙŠØ© Ø§Ù„Ù…Ø¹Ù…Ø§Ø±ÙŠØ© Ø§Ù„Ù†Ø¸ÙŠÙØ© (Clean Architecture)',
-        copyright: 'Â© 2026 Ù…Ù†ØµØ© FoodBridge â€¢ ØªÙ… Ø§Ù„ØªØ·ÙˆÙŠØ± Ø¨ÙˆØ§Ø³Ø·Ø© Abdallah Sharaf. Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ‚ Ù…Ø­ÙÙˆØ¸Ø©.',
-        availableSurplus: 'Ø§Ù„ÙØ§Ø¦Ø¶ Ø§Ù„Ù…ØªØ§Ø­',
-        storageConditions: 'Ø´Ø±ÙˆØ· Ø§Ù„Ø­ÙØ¸ ÙˆØ§Ù„ØªØ®Ø²ÙŠÙ†',
-        knownAllergens: 'Ù…Ø³Ø¨Ø¨Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø³ÙŠØ©',
-        pickupDeadline: 'Ø¢Ø®Ø± Ù…ÙˆØ¹Ø¯ Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        pickupLocation: 'Ù…ÙˆÙ‚Ø¹ ÙˆØ¹Ù†ÙˆØ§Ù† Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        close: 'Ø¥ØºÙ„Ø§Ù‚',
-        requestReservation: 'Ø·Ù„Ø¨ Ø­Ø¬Ø² Ø§Ù„ØªØ¨Ø±Ø¹',
-        postDonationModalTitle: 'Ø¥Ø¶Ø§ÙØ© ØªØ¨Ø±Ø¹ Ø·Ø¹Ø§Ù… Ø¬Ø¯ÙŠØ¯',
-        postDonationModalSubtitle: 'Ø³Ø¬Ù„ ÙØ§Ø¦Ø¶ Ø§Ù„Ø·Ø¹Ø§Ù… Ø§Ù„ØµØ§Ù„Ø­ Ù„Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ù„ØªØªÙ…ÙƒÙ† Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© Ù…Ù† Ø­Ø¬Ø²Ù‡.',
-        labelFoodName: 'Ø§Ø³Ù… Ø§Ù„ÙˆØ¬Ø¨Ø© Ø£Ùˆ Ø§Ù„ØµÙ†Ù *',
-        foodNamePlaceholder: 'Ù…Ø«Ø§Ù„: ÙˆØ¬Ø¨Ø§Øª Ù„Ø­ÙˆÙ… ÙˆØ£Ø±Ø² Ø·Ø§Ø²Ø¬Ø©ØŒ Ø®Ø¨Ø² ÙˆÙ…Ø¹Ø¬Ù†Ø§Øª...',
-        labelCategory: 'Ø§Ù„ØªØµÙ†ÙŠÙ *',
-        catCookedMeals: 'ÙˆØ¬Ø¨Ø§Øª Ù…Ø·Ø¨ÙˆØ®Ø©',
-        catBakery: 'Ù…Ø®Ø¨ÙˆØ²Ø§Øª ÙˆÙ…Ø¹Ø¬Ù†Ø§Øª',
-        catProduce: 'Ø®Ø¶Ø±ÙˆØ§Øª ÙˆÙÙˆØ§ÙƒÙ‡ Ø·Ø§Ø²Ø¬Ø©',
-        catDairy: 'Ø£Ù„Ø¨Ø§Ù† ÙˆØ¨ÙŠØ¶',
-        catPackaged: 'Ø£Ø·Ø¹Ù…Ø© Ù…Ø¹Ù„Ø¨Ø© ÙˆÙ…ØºÙ„ÙØ©',
-        catMeat: 'Ù„Ø­ÙˆÙ… ÙˆØ¯ÙˆØ§Ø¬Ù†',
-        catBeverages: 'Ù…Ø´Ø±ÙˆØ¨Ø§Øª',
-        catOther: 'Ø£Ø®Ø±Ù‰',
-        labelQuantityUnit: 'Ø§Ù„ÙƒÙ…ÙŠØ© ÙˆØ§Ù„ÙˆØ­Ø¯Ø© *',
-        qtyPlaceholder: 'Ø§Ù„Ø¹Ø¯Ø¯',
-        unitPlaceholder: 'ÙˆØ¬Ø¨Ø©ØŒ ÙƒØ¬Ù…ØŒ Ø¹Ù„Ø¨Ø©',
-        labelDescription: 'Ø§Ù„ÙˆØµÙ ÙˆØ§Ù„Ù…ÙƒÙˆÙ†Ø§Øª *',
-        descPlaceholder: 'Ø§ÙˆØµÙ Ø§Ù„Ù…ÙƒÙˆÙ†Ø§ØªØŒ Ø­Ø§Ù„Ø© Ø§Ù„ØªØºÙ„ÙŠÙØŒ ÙˆØªÙˆØµÙŠØ§Øª Ø§Ù„ØªÙ‚Ø¯ÙŠÙ… Ø£Ùˆ Ø§Ù„ØªØ³Ø®ÙŠÙ†...',
-        labelPrepDate: 'ØªØ§Ø±ÙŠØ® ÙˆÙˆÙ‚Øª Ø§Ù„ØªØ­Ø¶ÙŠØ± *',
-        labelPickupDeadline: 'Ø¢Ø®Ø± Ù…ÙˆØ¹Ø¯ Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù… *',
-        labelStorageConditions: 'Ø´Ø±ÙˆØ· Ø§Ù„Ø­ÙØ¸ *',
-        optRefrigerated: 'Ù…Ø¨Ø±Ù‘Ø¯ (0-4 Ø¯Ø±Ø¬Ø§Øª Ù…Ø¦ÙˆÙŠØ©)',
-        optRoomTemp: 'Ø­Ø±Ø§Ø±Ø© Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ø¹Ø§Ø¯ÙŠØ©',
-        optFrozen: 'Ù…Ø¬Ù…Ù‘Ø¯ (Ø£Ù‚Ù„ Ù…Ù† -18 Ù…Ø¦ÙˆÙŠØ©)',
-        optKeepWarm: 'Ø­ÙØ¸ Ø³Ø§Ø®Ù† (ÙÙˆÙ‚ 63 Ù…Ø¦ÙˆÙŠØ©)',
-        labelKnownAllergens: 'Ù…Ø³Ø¨Ø¨Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø³ÙŠØ© Ø§Ù„Ù…Ø¹Ø±ÙˆÙØ© *',
-        allergensPlaceholder: 'Ù…Ø«Ø§Ù„: ØºÙ„ÙˆØªÙŠÙ†ØŒ Ù…Ø´ØªÙ‚Ø§Øª Ø­Ù„ÙŠØ¨ØŒ Ù…ÙƒØ³Ø±Ø§ØªØŒ Ø£Ùˆ Ù„Ø§ ÙŠÙˆØ¬Ø¯',
-        labelPickupAddress: 'Ø¹Ù†ÙˆØ§Ù† ÙˆÙ…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… *',
-        addressPlaceholder: 'Ø§Ù„Ø¹Ù†ÙˆØ§Ù† Ø¨Ø§Ù„ØªÙØµÙŠÙ„ØŒ Ø§Ù„Ø¨Ø§Ø¨ Ø§Ù„Ø®Ù„ÙÙŠ Ù„Ù„Ù…Ø·Ø¨Ø®ØŒ Ø±Ù‚Ù… Ø§Ù„ØªÙˆØ§ØµÙ„...',
-        labelFoodPhoto: 'ØµÙˆØ±Ø© Ø§Ù„Ø·Ø¹Ø§Ù… (Ù…Ù„Ù Ø£Ùˆ Ø±Ø§Ø¨Ø· Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ)',
-        imageUrlPlaceholder: 'Ø£Ùˆ Ø§Ù„ØµÙ‚ Ø±Ø§Ø¨Ø· ØµÙˆØ±Ø© Ù…Ø¨Ø§Ø´Ø±Ø©...',
-        publishDonation: 'Ù†Ø´Ø± Ø§Ù„ØªØ¨Ø±Ø¹ ÙÙˆØ±Ø§Ù‹',
-        cancel: 'Ø¥Ù„ØºØ§Ø¡',
-        acceptModalTitle: 'ØªØ£ÙƒÙŠØ¯ ÙˆÙ‚Ø¨ÙˆÙ„ Ù…ÙˆØ¹Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        acceptModalSubtitle: 'Ø­Ø¯Ø¯ Ø§Ù„ØªØ§Ø±ÙŠØ® ÙˆØ§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ ÙˆÙ…ÙˆÙ‚Ø¹ ØªØ³Ù„ÙŠÙ… Ø§Ù„Ø´Ø­Ù†Ø© Ù„ÙØ±ÙŠÙ‚ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ©.',
-        labelConfirmedPickupDateTime: 'ØªØ§Ø±ÙŠØ® ÙˆÙˆÙ‚Øª Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…ØªÙÙ‚ Ø¹Ù„ÙŠÙ‡ *',
-        labelConfirmedLocation: 'Ù…ÙˆÙ‚Ø¹ Ø§Ù„ØªØ³Ù„ÙŠÙ… Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ / Ø±ØµÙŠÙ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… *',
-        acceptLocationPlaceholder: 'Ù…Ø«Ø§Ù„: ÙƒÙˆØ±Ù†ÙŠØ´ Ø§Ù„Ù†ÙŠÙ„ØŒ Ø§Ù„Ø¨Ø§Ø¨ Ø§Ù„Ø®Ù„ÙÙŠ Ù„Ù„Ù…Ø·Ø¨Ø® Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ',
-        confirmAcceptance: 'ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ù‚Ø¨ÙˆÙ„ ÙˆØ§Ù„Ù…ÙˆØ¹Ø¯',
-        reviewModalTitle: 'ÙƒØªØ§Ø¨Ø© ØªÙ‚ÙŠÙŠÙ… Ù„Ù„Ø´Ø±ÙŠÙƒ',
-        reviewModalSubtitle: 'Ù‚ÙŠÙ‘Ù… ØªØ¬Ø±Ø¨ØªÙƒ Ù…Ø¹ Ø´Ø±ÙŠÙƒ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø¨Ø¹Ø¯ Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¹Ù…Ù„ÙŠØ©.',
-        labelRating: 'Ø§Ù„ØªÙ‚ÙŠÙŠÙ… (Ù…Ù† 1 Ø¥Ù„Ù‰ 5 Ù†Ø¬ÙˆÙ…) *',
-        labelReviewComment: 'Ù…Ù„Ø§Ø­Ø¸Ø§Øª ÙˆØªØºØ°ÙŠØ© Ø±Ø§Ø¬Ø¹Ø© Ø§Ø®ØªÙŠØ§Ø±ÙŠØ©',
-        reviewCommentPlaceholder: 'Ø´Ø§Ø±ÙƒÙ†Ø§ Ø¨ØªØ¬Ø±Ø¨ØªÙƒ Ø­ÙˆÙ„ Ø§Ù„Ø§Ù„ØªØ²Ø§Ù… Ø¨Ø§Ù„Ù…ÙˆØ¹Ø¯ØŒ Ø¬ÙˆØ¯Ø© Ø§Ù„ØªØºÙ„ÙŠÙ ÙˆØ§Ù„Ù†Ø¸Ø§ÙØ©...',
-        postReview: 'Ù†Ø´Ø± Ø§Ù„ØªÙ‚ÙŠÙŠÙ…',
-        reportProblemTitle: 'Ø§Ù„Ø¥Ø¨Ù„Ø§Øº Ø¹Ù† Ù…Ø´ÙƒÙ„Ø© ÙÙŠ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        reportProblemSubtitle: 'Ø£Ø¨Ù„Øº Ø¹Ù† Ø£ÙŠ Ù…Ø´ÙƒÙ„Ø© Ù…Ø«Ù„ Ø¹Ø¯Ù… ØªÙˆØ§Ø¬Ø¯ Ø§Ù„Ù…Ø²ÙˆØ¯ØŒ Ø¹Ø¯Ù… ØªÙˆÙØ± Ø§Ù„Ø·Ø¹Ø§Ù…ØŒ Ø£Ùˆ Ù†Ù‚Øµ Ø§Ù„ÙƒÙ…ÙŠØ©.',
-        labelProblemDescription: 'ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø´ÙƒÙ„Ø© *',
-        problemDescriptionPlaceholder: 'Ø§Ø´Ø±Ø­ Ø§Ù„Ù…Ø´ÙƒÙ„Ø© Ø§Ù„ØªÙŠ ÙˆØ§Ø¬Ù‡ØªÙ‡Ø§ Ø£Ø«Ù†Ø§Ø¡ Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø¨Ø§Ù„ØªÙØµÙŠÙ„...',
-        submitReport: 'Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§Øº Ù„Ù„Ø¥Ø¯Ø§Ø±Ø©',
-        authSignInTitle: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¥Ù„Ù‰ FoodBridge',
-        signInTab: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„',
-        providerTab: 'Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…',
-        charityTab: 'Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©',
-        labelEmail: 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ',
-        labelPassword: 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±',
-        signInBtn: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„',
-        labelPContactName: 'Ø§Ø³Ù… Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„ØªÙˆØ§ØµÙ„ Ø§Ù„ÙƒØ§Ù…Ù„ *',
-        labelPBusinessName: 'Ø§Ø³Ù… Ø§Ù„Ù…Ù†Ø´Ø£Ø© / Ø§Ù„Ù…Ø·Ø¹Ù… / Ø§Ù„Ù…Ø®Ø¨Ø² *',
-        labelPProviderType: 'Ù†ÙˆØ¹ Ø§Ù„Ù…Ù†Ø´Ø£Ø© *',
-        provRestaurant: 'Ù…Ø·Ø¹Ù…',
-        provBakery: 'Ù…Ø®Ø¨Ø² ÙˆÙ…Ø¹Ø¬Ù†Ø§Øª',
-        provHotel: 'ÙÙ†Ø¯Ù‚',
-        provCatering: 'Ø®Ø¯Ù…Ø§Øª Ø¶ÙŠØ§ÙØ© ÙˆØªØºØ°ÙŠØ©',
-        labelPWorkEmail: 'Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¹Ù…Ù„ Ø§Ù„Ø±Ø³Ù…ÙŠ *',
-        labelPBusinessAddress: 'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ù†Ø´Ø£Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ *',
-        labelPasswordMin: 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± *',
-        passwordMinPlaceholder: '8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„',
-        labelConfirmPassword: 'ØªØ£ÙƒÙŠØ¯ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± *',
-        confirmPasswordPlaceholder: 'Ø£Ø¹Ø¯ Ø¥Ø¯Ø®Ø§Ù„ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±',
-        createProviderBtn: 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…',
-        labelCDirectorName: 'Ø§Ø³Ù… Ù…Ø¯ÙŠØ± Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø£Ùˆ Ø§Ù„Ù…ÙÙˆØ¶ *',
-        labelCCharityName: 'Ø§Ø³Ù… Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø£Ùˆ Ø§Ù„Ù…Ù†Ø¸Ù…Ø© Ø§Ù„Ø£Ù‡Ù„ÙŠØ© *',
-        labelCCharityType: 'Ù†ÙˆØ¹ Ø§Ù„Ù†Ø´Ø§Ø· Ø§Ù„Ø®ÙŠØ±ÙŠ *',
-        charityFoodBank: 'Ø¨Ù†Ùƒ Ø·Ø¹Ø§Ù…',
-        charityShelter: 'Ø¯Ø§Ø± Ø±Ø¹Ø§ÙŠØ© / Ø¥ÙŠÙˆØ§Ø¡',
-        charityCommunityKitchen: 'Ù…Ø·Ø¨Ø® Ù…Ø¬ØªÙ…Ø¹ÙŠ',
-        charityYouthCenter: 'Ù…Ø±ÙƒØ² Ø±Ø¹Ø§ÙŠØ© Ø´Ø¨Ø§Ø¨ ÙˆÙ…Ø¬ØªÙ…Ø¹',
-        labelCOfficialEmail: 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø§Ù„Ø±Ø³Ù…ÙŠ *',
-        labelCCommunitiesServed: 'Ø§Ù„ÙØ¦Ø§Øª ÙˆØ§Ù„Ù…Ø¬ØªÙ…Ø¹Ø§Øª Ø§Ù„Ù…Ø³ØªÙÙŠØ¯Ø© *',
-        communitiesPlaceholder: 'Ù…Ø«Ø§Ù„: Ø§Ù„Ø£Ø³Ø± Ø§Ù„Ù…ØªØ¹ÙÙØ©ØŒ Ø§Ù„Ù„Ø§Ø¬Ø¦ÙˆÙ†ØŒ ÙƒØ¨Ø§Ø± Ø§Ù„Ø³Ù†ØŒ Ø§Ù„Ø£ÙŠØªØ§Ù…...',
-        labelCHqAddress: 'Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…Ù‚Ø± Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ *',
-        createCharityBtn: 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©',
-        acceptPickup: 'Ù‚Ø¨ÙˆÙ„ ÙˆØªØ­Ø¯ÙŠØ¯ Ù…ÙˆØ¹Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        decline: 'Ø±ÙØ¶ Ø§Ù„Ø·Ù„Ø¨',
-        markReady: 'ØªØ­Ø¯ÙŠØ¯ ÙƒØ¬Ø§Ù‡Ø² Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        awaitingPickup: 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø¬Ù…Ø¹ÙŠØ©',
-        completedDouble: 'ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø¨Ù†Ø¬Ø§Ø­',
-        markUnavailable: 'ØªØ­Ø¯ÙŠØ¯ ÙƒØºÙŠØ± Ù…ØªØ§Ø­',
-        confirmCollected: 'ØªØ£ÙƒÙŠØ¯ Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„ÙˆØ¬Ø¨Ø§Øª',
-        reportIssue: 'Ø¥Ø¨Ù„Ø§Øº Ø¹Ù† Ù…Ø´ÙƒÙ„Ø©',
-        withdrawRequest: 'Ø³Ø­Ø¨ Ø·Ù„Ø¨ Ø§Ù„Ø­Ø¬Ø²',
-        leaveReview: 'ÙƒØªØ§Ø¨Ø© ØªÙ‚ÙŠÙŠÙ… Ù„Ù„Ø´Ø±ÙŠÙƒ',
-        reviewed: 'ØªÙ… Ø§Ù„ØªÙ‚ÙŠÙŠÙ…',
-        adminUsers: 'Ù…Ø³ØªØ®Ø¯Ù…Ùˆ Ø§Ù„Ù…Ù†ØµØ©',
-        adminVerifications: 'Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¹Ù„Ù‚Ø©',
-        adminAudit: 'Ø³Ø¬Ù„ Ø§Ù„ØªØ¯Ù‚ÙŠÙ‚ ÙˆØ§Ù„Ø£Ù…Ø§Ù†',
-        approve: 'Ø§Ø¹ØªÙ…Ø§Ø¯ ÙˆØªÙˆØ«ÙŠÙ‚',
-        reject: 'Ø±ÙØ¶',
-        suspend: 'ØªØ¬Ù…ÙŠØ¯ Ø§Ù„Ø­Ø³Ø§Ø¨',
-        reactivate: 'ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨',
-        btnAddAdmin: '+ Ø¥Ø¶Ø§ÙØ© Ù…Ø´Ø±Ù Ø¬Ø¯ÙŠØ¯',
-        createAdminModalTitle: 'Ø¥Ø¶Ø§ÙØ© Ù…Ø´Ø±Ù Ø¬Ø¯ÙŠØ¯ Ù„Ù„Ù…Ù†ØµØ©',
-        createAdminModalSubtitle: 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ù…Ø´Ø±Ù Ø¨Ù†Ø¸Ø§Ù… Ø§Ù„Ø±Ù‚Ø§Ø¨Ø© Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠØ© ÙˆØ¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª.',
-        labelAdminFullName: 'Ø§Ù„Ø§Ø³Ù… Ø§Ù„ÙƒØ§Ù…Ù„ *',
-        labelAdminEmail: 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø§Ù„Ø±Ø³Ù…ÙŠ *',
-        labelAdminDepartment: 'Ø§Ù„Ù‚Ø³Ù… / Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ',
-        labelAdminPhone: 'Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ',
-        labelAdminPassword: 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ø£ÙˆÙ„ÙŠØ© *',
-        btnCreateAdminSubmit: 'Ø­ÙØ¸ ÙˆØ¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ù…Ø´Ø±Ù',
-        adminNamePlaceholder: 'Ù…Ø«Ø§Ù„: Ø³Ø§Ø±Ø© Ø£Ø­Ù…Ø¯',
-        adminDeptPlaceholder: 'Ù…Ø«Ø§Ù„: Ø§Ù„Ø±Ù‚Ø§Ø¨Ø© ÙˆØ§Ù„Ø§Ù…ØªØ«Ø§Ù„',
-        administrators: 'Ø§Ù„Ù…Ø´Ø±ÙÙˆÙ†',
+        brandName: 'FoodBridge جسر الغذاء',
+        brandSubtitle: 'منصة إعادة توزيع فائض الطعام',
+        navHome: 'الرئيسية',
+        navBrowse: 'تصفح التبرعات',
+        navProvider: 'بوابة المزودين',
+        navCharity: 'بوابة الجمعيات',
+        navAdmin: 'لوحة المشرف',
+        navImpact: 'الأثر والإحصائيات',
+        signIn: 'تسجيل الدخول',
+        register: 'إنشاء حساب',
+        signOut: 'تسجيل الخروج',
+        liveNotifications: 'الإشعارات الفورية',
+        markAllRead: 'تحديد الكل كمقروء',
+        noNotifications: 'لا توجد إشعارات حتى الآن.',
+        heroBadge: 'ربط الفائض بمستحقيه',
+        heroTitle: 'نسد الفجوة بين <span class="text-emerald-300">هدر الطعام</span> و <span class="text-teal-300">الجوع</span>',
+        heroDesc: 'منصة FoodBridge تربط المطاعم والفنادق والمخابز بالجمعيات الخيرية المعتمدة — لنحول فائض الطعام اليومي إلى وجبات تسد حاجة آلاف الأسر المحتاجة.',
+        joinFree: 'انضم لـ FoodBridge مجاناً',
+        statRedistributed: 'كجم طعام تم توزيعه',
+        statRedistributedDesc: 'من التبرعات المكتملة',
+        statCompleted: 'تبرع مكتمل بنجاح',
+        statCompletedSub: 'تم تسليمها وتوثيقها',
+        statProviders: 'مزود طعام معتمد',
+        statProvidersSub: 'مطاعم، مخابز، وفنادق',
+        statCharities: 'شريك من الجمعيات',
+        statCharitiesSub: 'موثقة ونشطة بالمنصة',
+        howItWorksTitle: 'كيف تعمل منصة FoodBridge؟',
+        howItWorksSubtitle: 'منظومة سريعة وآمنة وفورية لإعادة توزيع فائض الطعام — من النشر حتى الاستلام في دقائق.',
+        step1Title: '1. نشر الفائض من المزود',
+        step1Desc: 'تقوم المطاعم والفنادق والمخابز بإضافة الفائض مع تفاصيل الكمية، الموعد، شروط الحفظ، والحساسية مع الصور.',
+        step2Title: '2. طلب الحجز من الجمعية',
+        step2Desc: 'تتصفح الجمعيات المعتمدة العروض وتحجزها فوراً مع منع تكرار الحجز لنفس الوجبة بدقة عالية.',
+        step3Title: '3. الاستلام والتقييم المتبادل',
+        step3Desc: 'يتم استلام الطعام وتأكيد الطلب وتوثيق التقييمات والإحصائيات فورياً عبر SignalR.',
+        whoUsesHeading: 'من يستخدم منصة FoodBridge؟',
+        whoUsesSubtitle: 'نوعان من الشركاء — تجمعهم رسالة واحدة لمكافحة الهدر وإطعام المحتاجين.',
+        providerCardTitle: 'مزودو الطعام',
+        providerCardDesc: 'المطاعم والفنادق والمخابز وشركات التغذية والضيافة التي لديها فائض طعام صالح للاستهلاك.',
+        pFeature1: 'نشر عروض الطعام مع الصور والمكونات ومسببات الحساسية',
+        pFeature2: 'قبول أو رفض طلبات حجز الجمعيات بمرونة تامة',
+        pFeature3: 'تأكيد موقع وموعد الاستلام المناسب لفرق الجمعية',
+        pFeature4: 'متابعة سجل التبرعات وإحصائيات الأثر البيئي والمجتمعي',
+        registerAsProvider: 'سجل كمزود طعام',
+        charityCardTitle: 'الجمعيات والمؤسسات الأهلية',
+        charityCardDesc: 'بنوك الطعام ودور الرعاية والمطابخ المجتمعية ومنظمات الإغاثة التي ترعى الأسر المستحقة.',
+        cFeature1: 'تصفح تبرعات الطعام حسب التصنيف والتاريخ والموقع',
+        cFeature2: 'حجز التبرعات فورياً بضغطة زر واحدة ومنع التكرار',
+        cFeature3: 'استقبال إشعارات وتحديثات فورية باللحظة عبر SignalR',
+        cFeature4: 'توثيق استلام الوجبات وتقييم المزودين بشفافية',
+        registerAsCharity: 'سجل كجمعية خيرية',
+        platformFeaturesHeading: 'مميزات المنصة التقنية',
+        platformFeaturesSubtitle: 'مبنية بأحدث تقنيات الويب المؤسسية لضمان الأمان والموثوقية والسرعة اللحظية.',
+        feat1Title: 'إشعارات حية وفورية',
+        feat1Desc: 'تنبيهات فورية بتقنية SignalR لتحديثات الحجز والقبول وجاهزية الاستلام والتقييمات.',
+        feat2Title: 'أمان JWT وصلاحيات الأدوار',
+        feat2Desc: 'حماية كاملة بالتوكنات مع إدارة مشددة لأدوار المشرفين والمزودين والجمعيات الخيرية.',
+        feat3Title: 'توثيق البريد والمؤسسات',
+        feat3Desc: 'التحقق من البريد ومراجعة هوية الجمعيات والمزودين قبل منح صلاحيات الحجز والنشر.',
+        feat4Title: 'منع تعارض الحجوزات',
+        feat4Desc: 'حماية قفل متفائل (RowVersion) تمنع حجز نفس التبرع من أكثر من جمعية في نفس الثانية.',
+        feat5Title: 'سجل تدقيق إداري شامل',
+        feat5Desc: 'توثيق غير قابل للتعديل لجميع العمليات الإدارية والتوثيقات وإجراءات الإشراف.',
+        feat6Title: 'خدمة آلية لإنهاء الصلاحية',
+        feat6Desc: 'خدمة خلفية برمجية تلقائية تفحص المواعيد وتحدث العروض المنتهية فور انقضاء موعد استلامها.',
+        ctaHeading: 'هل أنت جاهز لصنع أثر حقيقي؟',
+        ctaSubtitle: 'انضم إلى منصة FoodBridge اليوم — التسجيل مجاني وسريع وموثق بالكامل.',
+        createFreeAccount: 'إنشاء حساب جديد مجاناً',
+        alreadyHaveAccount: 'هل لديك حساب بالفعل؟',
+        signInHere: 'سجل الدخول من هنا',
+        directFrom: 'مباشرة من المطاعم والمخابز والفنادق المعتمدة',
+        exploreBannerTitle: 'حول فائض الطعام إلى عطاء وحياة.',
+        exploreBannerDesc: 'مطاعم وفنادق موثوقة تقدم وجبات طازجة ومخبوزات يومية. تتسلمها الجمعيات المعتمدة بدون هدر ومع توثيق فوري للاستلام.',
+        exploreHeading: 'استكشاف التبرعات المتاحة',
+        exploreSubtitle: 'تصفح واحجز تبرعات الطعام الحية من المطاعم والفنادق والمخابز المعتمدة.',
+        searchPlaceholder: 'ابحث عن الوجبات، المزودين، أو العناوين...',
+        allCategories: 'جميع التصنيفات',
+        allProviders: 'جميع أنواع المزودين',
+        sortNewest: 'الترتيب: الأحدث أولاً',
+        sortDeadline: 'الترتيب: الأقرب انتهاءً ⏰',
+        sortQuantity: 'الترتيب: الكمية الأكبر',
+        showingAvailable: 'عرض التبرعات المتاحة للحجز حالياً (المعيار الأساسي).',
+        noFoodFound: 'لم يتم العثور على تبرعات طعام مطابقة',
+        noFoodFoundDesc: 'يرجى تجربة إعادة ضبط عوامل التصفية أو تفقد الصفحة لاحقاً حيث يضيف المزودون دفعات طازجة باستمرار.',
+        resetFilters: 'إعادة ضبط عوامل التصفية',
+        viewAndReserve: 'عرض وحجز',
+        pickupBefore: 'موعد الاستلام قبل',
+        allergens: 'مسببات الحساسية',
+        providerPortalHeading: 'بوابة مزودي الطعام',
+        providerPortalDesc: 'إدارة تبرعات الطعام، قبول طلبات حجز الجمعيات، وتنسيق مواعيد الاستلام المعتمدة.',
+        verified: 'موثق ومعتمد',
+        postDonation: 'إضافة تبرع طعام جديد',
+        statTotalListed: 'إجمالي التبرعات',
+        statTotalListedDesc: 'عروض التبرع المضافة',
+        statCompleted: 'المكتملة',
+        statCompletedDesc: 'تم استلامها بنجاح',
+        statActiveNow: 'النشطة حالياً',
+        statActiveNowDesc: 'متاحة أو قيد الحجز',
+        statRedistributedTitle: 'المعاد توزيعه',
+        statRedistributedDesc2: 'إجمالي الكميات المسلمة',
+        statProviderRating: 'تقييم المزود',
+        basedOnReviews: 'بناءً على تقييمات الشركاء',
+        myListings: 'تبرعاتي المعلنة',
+        incomingRequests: 'طلبات الحجز الواردة',
+        filterByStatus: 'تصفية حسب الحالة:',
+        allStatuses: 'جميع الحالات',
+        statusAvailable: 'متاح للحجز',
+        statusReserved: 'محجوز',
+        statusCompleted: 'مكتمل بنجاح',
+        statusExpired: 'منتهي الصلاحية',
+        statusUnavailable: 'غير متاح',
+        thFoodDonation: 'تبرع الطعام',
+        thCategory: 'التصنيف',
+        thQuantity: 'الكمية',
+        thPickupDeadline: 'آخر موعد للاستلام',
+        thStatus: 'الحالة',
+        thActions: 'الإجراءات',
+        charityPortalHeading: 'بوابة الجمعيات والمؤسسات الخيرية',
+        charityPortalDesc: 'متابعة حجوزات الأطعمة النشطة، تنسيق استلام الشحنات، وتأكيد وصول التبرعات للمستحقين.',
+        browseMoreFood: 'تصفح وحجز المزيد من الطعام',
+        donationsReceived: 'التبرعات المستلمة',
+        successfullyCollected: 'تم استلامها بنجاح',
+        activeReservations: 'الحجوزات النشطة',
+        pendingAcceptedReady: 'معلقة، مقبولة أو جاهزة',
+        totalQtyReceived: 'إجمالي الكمية المستلمة',
+        foodRedistributedCommunity: 'وجبات تم إيصالها للأسر',
+        partnerReviews: 'تقييمات الشركاء',
+        reviewsSubmittedProviders: 'التقييمات المقدمة للمزودين',
+        myReservations: 'حجوزات الأطعمة الخاصة بي',
+        statusPendingApproval: 'بانتظار موافقة المزود',
+        statusAcceptedScheduled: 'مقبول ومحدد موعده',
+        statusReadyPickup: 'جاهز للاستلام الآن',
+        statusCancelled: 'ملغي',
+        statusProblemReported: 'تم الإبلاغ عن مشكلة',
+        adminSuiteHeading: 'لوحة الإشراف الإداري للمنصة',
+        adminSuperuser: 'مشرف النظام العام',
+        adminSuiteDesc: 'توثيق مؤسسات المزودين والجمعيات، إدارة ومراقبة المحتوى، حل بلاغات الاستلام، وتدقيق سجلات الأمان.',
+        registeredUsers: 'المستخدمون المسجلون',
+        providersLabel: 'مزود',
+        charitiesLabel: 'جمعية',
+        pendingVerifications: 'طلبات التوثيق المعلقة',
+        awaitingAdminReview: 'بانتظار مراجعة الإدارة',
+        completedDonations: 'التبرعات المكتملة',
+        totalRedistributedLabel: 'إجمالي الكميات الموزعة',
+        reportedModerations: 'بلاغات الإشراف',
+        moderationIssuesDesc: 'عروض، تقييمات، ونزاعات استلام',
+        tabVerifications: 'توثيق المؤسسات والشركاء',
+        tabUsers: 'دليل المستخدمين والصلاحيات',
+        tabModeration: 'الإشراف والشكاوى والنزاعات',
+        tabAudit: 'سجل التدقيق والأمان الإداري',
+        pendingVerificationsTitle: 'طلبات توثيق المؤسسات بانتظار الاعتماد',
+        pendingVerificationsDesc: 'مراجعة بيانات المؤسسة، العنوان، ورسالتها الخيرية قبل اعتماد الحساب وتفعيل الصلاحيات.',
+        searchUsersPlaceholder: 'ابحث بالاسم، البريد، أو اسم المؤسسة...',
+        allAccountTypes: 'جميع أنواع الحسابات',
+        foodProviders: 'مزودو الطعام',
+        charities: 'الجمعيات الخيرية',
+        statusActive: 'نشط',
+        statusSuspended: 'مجمّد',
+        thUserOrg: 'المستخدم والمؤسسة',
+        thRoleType: 'الدور / النوع',
+        thVerification: 'حالة التوثيق',
+        reportedListings: 'عروض طعام مبلّغ عنها',
+        reportedReviews: 'تقييمات مبلّغ عنها',
+        pickupDisputes: 'نزاعات استلام الشحنات',
+        auditRecordsTitle: 'سجلات التدقيق الإداري والأمني',
+        auditRecordsDesc: 'سجل تدقيق رقمي غير قابل للتعديل لجميع العمليات الإدارية وتجميد الحسابات وحذف المخالفات.',
+        thTimestamp: 'التوقيت',
+        thAdmin: 'المشرف',
+        thAction: 'نوع الإجراء',
+        thTargetEntity: 'الكيان المستهدف',
+        thDetails: 'التفاصيل',
+        impactBadge: 'إحصائيات إعادة التوزيع اللحظية',
+        impactHeading: 'الأثر البيئي والمجتمعي لمنصة FoodBridge',
+        impactDesc: 'تطبيقاً لمعايير الشفافية، يتم احتساب كافة الإحصائيات بالاعتماد على التبرعات المكتملة بنجاح فقط، مع استبعاد الملغاة والمرفوضة والمنتهية.',
+        impactCardQty: 'كمية الطعام المعاد توزيعه',
+        impactCardQtyDesc: 'وحدة/كجم تم إنقاذها من الهدر وتوجيهها مباشرة للأسر المحتاجة.',
+        impactCardCompleted: 'تبرعات طعام مكتملة',
+        impactCardCompletedDesc: 'دورات تبرع وتسليم تمت بنجاح من البداية للنهاية.',
+        impactCardNetwork: 'شبكة الشركاء النشطة',
+        impactCardNetworkDesc: 'إجمالي المطاعم والفنادق والمخابز والجمعيات المشاركة.',
+        chartCategory: 'توزيع التبرعات حسب فئة الطعام',
+        chartMonthly: 'زخم ونمو إعادة التوزيع الشهري',
+        footerBrand: 'منصة FoodBridge',
+        footerTagline: '— جسر العطاء بين مزودي الطعام والجمعيات الخيرية',
+        footerArch: 'تم التطوير بواسطة Abdallah Sharaf باستخدام ASP.NET Core والبنية المعمارية النظيفة (Clean Architecture)',
+        copyright: '© 2026 منصة FoodBridge • تم التطوير بواسطة Abdallah Sharaf. جميع الحقوق محفوظة.',
+        availableSurplus: 'الفائض المتاح',
+        storageConditions: 'شروط الحفظ والتخزين',
+        knownAllergens: 'مسببات الحساسية',
+        pickupDeadline: 'آخر موعد للاستلام',
+        pickupLocation: 'موقع وعنوان الاستلام',
+        close: 'إغلاق',
+        requestReservation: 'طلب حجز التبرع',
+        postDonationModalTitle: 'إضافة تبرع طعام جديد',
+        postDonationModalSubtitle: 'سجل فائض الطعام الصالح للاستهلاك لتتمكن الجمعيات المعتمدة من حجزه.',
+        labelFoodName: 'اسم الوجبة أو الصنف *',
+        foodNamePlaceholder: 'مثال: وجبات لحوم وأرز طازجة، خبز ومعجنات...',
+        labelCategory: 'التصنيف *',
+        catCookedMeals: 'وجبات مطبوخة',
+        catBakery: 'مخبوزات ومعجنات',
+        catProduce: 'خضروات وفواكه طازجة',
+        catDairy: 'ألبان وبيض',
+        catPackaged: 'أطعمة معلبة ومغلفة',
+        catMeat: 'لحوم ودواجن',
+        catBeverages: 'مشروبات',
+        catOther: 'أخرى',
+        labelQuantityUnit: 'الكمية والوحدة *',
+        qtyPlaceholder: 'العدد',
+        unitPlaceholder: 'وجبة، كجم، علبة',
+        labelDescription: 'الوصف والمكونات *',
+        descPlaceholder: 'اوصف المكونات، حالة التغليف، وتوصيات التقديم أو التسخين...',
+        labelPrepDate: 'تاريخ ووقت التحضير *',
+        labelPickupDeadline: 'آخر موعد للاستلام *',
+        labelStorageConditions: 'شروط الحفظ *',
+        optRefrigerated: 'مبرّد (0-4 درجات مئوية)',
+        optRoomTemp: 'حرارة الغرفة العادية',
+        optFrozen: 'مجمّد (أقل من -18 مئوية)',
+        optKeepWarm: 'حفظ ساخن (فوق 63 مئوية)',
+        labelKnownAllergens: 'مسببات الحساسية المعروفة *',
+        allergensPlaceholder: 'مثال: غلوتين، مشتقات حليب، مكسرات، أو لا يوجد',
+        labelPickupAddress: 'عنوان وملاحظات الاستلام *',
+        addressPlaceholder: 'العنوان بالتفصيل، الباب الخلفي للمطبخ، رقم التواصل...',
+        labelFoodPhoto: 'صورة الطعام (ملف أو رابط إلكتروني)',
+        imageUrlPlaceholder: 'أو الصق رابط صورة مباشرة...',
+        publishDonation: 'نشر التبرع فوراً',
+        cancel: 'إلغاء',
+        acceptModalTitle: 'تأكيد وقبول موعد الاستلام',
+        acceptModalSubtitle: 'حدد التاريخ والوقت المعتمد وموقع تسليم الشحنة لفريق الجمعية.',
+        labelConfirmedPickupDateTime: 'تاريخ ووقت الاستلام المتفق عليه *',
+        labelConfirmedLocation: 'موقع التسليم المعتمد / رصيف الاستلام *',
+        acceptLocationPlaceholder: 'مثال: كورنيش النيل، الباب الخلفي للمطبخ الرئيسي',
+        confirmAcceptance: 'تأكيد القبول والموعد',
+        reviewModalTitle: 'كتابة تقييم للشريك',
+        reviewModalSubtitle: 'قيّم تجربتك مع شريك الاستلام بعد إتمام العملية.',
+        labelRating: 'التقييم (من 1 إلى 5 نجوم) *',
+        labelReviewComment: 'ملاحظات وتغذية راجعة اختيارية',
+        reviewCommentPlaceholder: 'شاركنا بتجربتك حول الالتزام بالموعد، جودة التغليف والنظافة...',
+        postReview: 'نشر التقييم',
+        reportProblemTitle: 'الإبلاغ عن مشكلة في الاستلام',
+        reportProblemSubtitle: 'أبلغ عن أي مشكلة مثل عدم تواجد المزود، عدم توفر الطعام، أو نقص الكمية.',
+        labelProblemDescription: 'تفاصيل المشكلة *',
+        problemDescriptionPlaceholder: 'اشرح المشكلة التي واجهتها أثناء محاولة الاستلام بالتفصيل...',
+        submitReport: 'إرسال البلاغ للإدارة',
+        authSignInTitle: 'تسجيل الدخول إلى FoodBridge',
+        signInTab: 'تسجيل الدخول',
+        providerTab: 'مزود طعام',
+        charityTab: 'جمعية خيرية',
+        labelEmail: 'البريد الإلكتروني',
+        labelPassword: 'كلمة المرور',
+        signInBtn: 'تسجيل الدخول',
+        labelPContactName: 'اسم مسؤول التواصل الكامل *',
+        labelPBusinessName: 'اسم المنشأة / المطعم / المخبز *',
+        labelPProviderType: 'نوع المنشأة *',
+        provRestaurant: 'مطعم',
+        provBakery: 'مخبز ومعجنات',
+        provHotel: 'فندق',
+        provCatering: 'خدمات ضيافة وتغذية',
+        labelPWorkEmail: 'بريد العمل الرسمي *',
+        labelPBusinessAddress: 'عنوان المنشأة الرئيسي *',
+        labelPasswordMin: 'كلمة المرور *',
+        passwordMinPlaceholder: '8 أحرف على الأقل',
+        labelConfirmPassword: 'تأكيد كلمة المرور *',
+        confirmPasswordPlaceholder: 'أعد إدخال كلمة المرور',
+        createProviderBtn: 'إنشاء حساب مزود طعام',
+        labelCDirectorName: 'اسم مدير الجمعية أو المفوض *',
+        labelCCharityName: 'اسم الجمعية أو المنظمة الأهلية *',
+        labelCCharityType: 'نوع النشاط الخيري *',
+        charityFoodBank: 'بنك طعام',
+        charityShelter: 'دار رعاية / إيواء',
+        charityCommunityKitchen: 'مطبخ مجتمعي',
+        charityYouthCenter: 'مركز رعاية شباب ومجتمع',
+        labelCOfficialEmail: 'البريد الإلكتروني الرسمي *',
+        labelCCommunitiesServed: 'الفئات والمجتمعات المستفيدة *',
+        communitiesPlaceholder: 'مثال: الأسر المتعففة، اللاجئون، كبار السن، الأيتام...',
+        labelCHqAddress: 'عنوان المقر الرئيسي *',
+        createCharityBtn: 'إنشاء حساب جمعية خيرية',
+        acceptPickup: 'قبول وتحديد موعد الاستلام',
+        decline: 'رفض الطلب',
+        markReady: 'تحديد كجاهز للاستلام',
+        awaitingPickup: 'بانتظار استلام الجمعية',
+        completedDouble: 'تم الاستلام بنجاح',
+        markUnavailable: 'تحديد كغير متاح',
+        confirmCollected: 'تأكيد استلام الوجبات',
+        reportIssue: 'إبلاغ عن مشكلة',
+        withdrawRequest: 'سحب طلب الحجز',
+        leaveReview: 'كتابة تقييم للشريك',
+        reviewed: 'تم التقييم',
+        adminUsers: 'مستخدمو المنصة',
+        adminVerifications: 'طلبات التوثيق المعلقة',
+        adminAudit: 'سجل التدقيق والأمان',
+        approve: 'اعتماد وتوثيق',
+        reject: 'رفض',
+        suspend: 'تجميد الحساب',
+        reactivate: 'تفعيل الحساب',
+        btnAddAdmin: '+ إضافة مشرف جديد',
+        createAdminModalTitle: 'إضافة مشرف جديد للمنصة',
+        createAdminModalSubtitle: 'إنشاء حساب مشرف بنظام الرقابة الإدارية وإدارة العمليات.',
+        labelAdminFullName: 'الاسم الكامل *',
+        labelAdminEmail: 'البريد الإلكتروني الرسمي *',
+        labelAdminDepartment: 'القسم / المسمى الوظيفي',
+        labelAdminPhone: 'رقم الهاتف',
+        labelAdminPassword: 'كلمة المرور الأولية *',
+        btnCreateAdminSubmit: 'حفظ وإنشاء المشرف',
+        adminNamePlaceholder: 'مثال: سارة أحمد',
+        adminDeptPlaceholder: 'مثال: الرقابة والامتثال',
+        administrators: 'المشرفون',
+        
         wastedSurplusStat: 'الفائض المهدر',
         expiredDonationsLabel: 'تبرعات منتهية الصلاحية',
         tabWaste: 'الفائض المهدر والصلاحيات',
         expiredSurplusTitle: 'إعلانات الطعام منتهية الصلاحية وإدارة الهدر',
         expiredSurplusDesc: 'تدقيق التبرعات المنتهية، توجيه إنذارات امتثال للمزودين، توثيق الإتلاف المعتمد، أو إيقاف المخالفين.',
         wasteActionModalTitle: 'اتخاذ إجراء بشأن الهدر الغذائي',
-        wasteActionModalSubtitle: 'تطبيق سياسات الامتثال أو توثيق التخلص الآمن.',
+        wasteActionModalSubtitle: 'تطبيق الإجراءات الرقابية أو توثيق مسار الإتلاف الآمن.',
         foodItemLabel: 'صنف الطعام:',
         providerLabel: 'الجهة المزودة:',
         wastedQuantityLabel: 'الكمية المهدرة:',
@@ -666,27 +668,27 @@ const i18nDict = {
 };
 
 function formatCategory(category) {
-    if (!category) return currentLang === 'ar' ? 'Ø·Ø¹Ø§Ù… Ø¹Ø§Ù…' : 'Other';
+    if (!category) return currentLang === 'ar' ? 'طعام عام' : 'Other';
     const isAr = currentLang === 'ar';
     const arMap = {
-        'CookedMeals': 'ðŸ² ÙˆØ¬Ø¨Ø§Øª Ù…Ø·Ø¨ÙˆØ®Ø©',
-        'BakeryAndPastry': 'ðŸ¥ Ù…Ø®Ø¨ÙˆØ²Ø§Øª ÙˆÙ…Ø¹Ø¬Ù†Ø§Øª',
-        'FreshProduce': 'ðŸ¥¦ Ø®Ø¶Ø±ÙˆØ§Øª ÙˆÙÙˆØ§ÙƒÙ‡ Ø·Ø§Ø²Ø¬Ø©',
-        'DairyAndEggs': 'ðŸ¥› Ø£Ù„Ø¨Ø§Ù† ÙˆØ¨ÙŠØ¶',
-        'CannedAndPackaged': 'ðŸ¥« Ø£Ø·Ø¹Ù…Ø© Ù…Ø¹Ù„Ø¨Ø© ÙˆÙ…ØºÙ„ÙØ©',
-        'MeatAndPoultry': 'ðŸ— Ù„Ø­ÙˆÙ… ÙˆØ¯ÙˆØ§Ø¬Ù†',
-        'Beverages': 'ðŸ§ƒ Ù…Ø´Ø±ÙˆØ¨Ø§Øª',
-        'Other': 'ðŸ½ï¸ Ø·Ø¹Ø§Ù… Ø¹Ø§Ù…'
+        'CookedMeals': '🍲 وجبات مطبوخة',
+        'BakeryAndPastry': '🥐 مخبوزات ومعجنات',
+        'FreshProduce': '🥦 خضروات وفواكه طازجة',
+        'DairyAndEggs': '🥛 ألبان وبيض',
+        'CannedAndPackaged': '🥫 أطعمة معلبة ومغلفة',
+        'MeatAndPoultry': '🍗 لحوم ودواجن',
+        'Beverages': '🧃 مشروبات',
+        'Other': '🍽️ طعام عام'
     };
     const enMap = {
-        'CookedMeals': 'ðŸ² Cooked Meals',
-        'BakeryAndPastry': 'ðŸ¥ Bakery & Pastry',
-        'FreshProduce': 'ðŸ¥¦ Fresh Produce',
-        'DairyAndEggs': 'ðŸ¥› Dairy & Eggs',
-        'CannedAndPackaged': 'ðŸ¥« Packaged & Canned',
-        'MeatAndPoultry': 'ðŸ— Meat & Poultry',
-        'Beverages': 'ðŸ§ƒ Beverages',
-        'Other': 'ðŸ½ï¸ General Food'
+        'CookedMeals': '🍲 Cooked Meals',
+        'BakeryAndPastry': '🥐 Bakery & Pastry',
+        'FreshProduce': '🥦 Fresh Produce',
+        'DairyAndEggs': '🥛 Dairy & Eggs',
+        'CannedAndPackaged': '🥫 Packaged & Canned',
+        'MeatAndPoultry': '🍗 Meat & Poultry',
+        'Beverages': '🧃 Beverages',
+        'Other': '🍽️ General Food'
     };
     return isAr ? (arMap[category] || category) : (enMap[category] || category);
 }
@@ -695,18 +697,18 @@ function formatStatus(status) {
     if (!status) return '';
     const isAr = currentLang === 'ar';
     const arMap = {
-        'Available': 'Ù…ØªØ§Ø­ Ù„Ù„Ø­Ø¬Ø²',
-        'Reserved': 'Ù…Ø­Ø¬ÙˆØ²',
-        'Pending': 'Ù‚ÙŠØ¯ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±',
-        'Accepted': 'ØªÙ… Ø§Ù„Ù‚Ø¨ÙˆÙ„',
-        'Rejected': 'Ù…Ø±ÙÙˆØ¶',
-        'ReadyForPickup': 'Ø¬Ø§Ù‡Ø² Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù…',
-        'Completed': 'Ù…ÙƒØªÙ…Ù„ Ø¨Ù†Ø¬Ø§Ø­',
-        'Cancelled': 'Ù…Ù„ØºÙŠ',
-        'Expired': 'Ù…Ù†ØªÙ‡ÙŠ Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ©',
-        'Unavailable': 'ØºÙŠØ± Ù…ØªØ§Ø­',
-        'Active': 'Ù†Ø´Ø·',
-        'Suspended': 'Ù…Ø¬Ù…Ù‘Ø¯'
+        'Available': 'متاح للحجز',
+        'Reserved': 'محجوز',
+        'Pending': 'قيد الانتظار',
+        'Accepted': 'تم القبول',
+        'Rejected': 'مرفوض',
+        'ReadyForPickup': 'جاهز للاستلام',
+        'Completed': 'مكتمل بنجاح',
+        'Cancelled': 'ملغي',
+        'Expired': 'منتهي الصلاحية',
+        'Unavailable': 'غير متاح',
+        'Active': 'نشط',
+        'Suspended': 'مجمّد'
     };
     return isAr ? (arMap[status] || status) : status;
 }
@@ -731,7 +733,7 @@ function toggleTheme() {
     if (icon) {
         icon.className = isDark ? 'fa-solid fa-sun text-base text-amber-400' : 'fa-solid fa-moon text-base text-slate-600';
     }
-    showToast(isDark ? 'Dark Mode' : 'Light Mode', isDark ? (currentLang === 'ar' ? 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù„ÙŠÙ„ÙŠ' : 'Dark mode enabled') : (currentLang === 'ar' ? 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±ÙŠ' : 'Light mode enabled'), 'info');
+    showToast(isDark ? 'Dark Mode' : 'Light Mode', isDark ? (currentLang === 'ar' ? 'تم تفعيل الوضع الليلي' : 'Dark mode enabled') : (currentLang === 'ar' ? 'تم تفعيل الوضع النهاري' : 'Light mode enabled'), 'info');
 }
 
 function initLanguage() {
@@ -743,7 +745,7 @@ function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'ar' : 'en';
     localStorage.setItem('foodbridge_lang', currentLang);
     applyLanguage(currentLang);
-    showToast(currentLang === 'ar' ? 'Ø§Ù„Ù„ØºØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©' : 'Language Changed', currentLang === 'ar' ? 'ØªÙ… ØªØ­ÙˆÙŠÙ„ Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© Ø¥Ù„Ù‰ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø¨Ù†Ø¬Ø§Ø­' : 'Switched to English successfully', 'success');
+    showToast(currentLang === 'ar' ? 'اللغة العربية' : 'Language Changed', currentLang === 'ar' ? 'تم تحويل الواجهة إلى العربية بنجاح' : 'Switched to English successfully', 'success');
 }
 
 function applyLanguage(lang) {
@@ -755,9 +757,9 @@ function applyLanguage(lang) {
 
     const langBtn = document.getElementById('langBtnText');
     if (langBtn) langBtn.textContent = dict.langBtnText;
-
     const navLanding = document.getElementById('nav-landing');
     if (navLanding) navLanding.innerHTML = `<i class="fa-solid fa-house ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navHome}`;
+
 
     const navExplore = document.getElementById('nav-explore');
     if (navExplore) navExplore.innerHTML = `<i class="fa-solid fa-compass ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navBrowse}`;
@@ -798,10 +800,10 @@ function applyLanguage(lang) {
     if (providerTypeFilter && providerTypeFilter.options.length >= 5) {
         providerTypeFilter.options[0].text = dict.allProviders;
         if (isAr) {
-            providerTypeFilter.options[1].text = 'Ù…Ø·Ø§Ø¹Ù…';
-            providerTypeFilter.options[2].text = 'Ù…Ø®Ø§Ø¨Ø²';
-            providerTypeFilter.options[3].text = 'ÙÙ†Ø§Ø¯Ù‚';
-            providerTypeFilter.options[4].text = 'Ø®Ø¯Ù…Ø§Øª Ø¶ÙŠØ§ÙØ© ÙˆØªØºØ°ÙŠØ©';
+            providerTypeFilter.options[1].text = 'مطاعم';
+            providerTypeFilter.options[2].text = 'مخابز';
+            providerTypeFilter.options[3].text = 'فنادق';
+            providerTypeFilter.options[4].text = 'خدمات ضيافة وتغذية';
         } else {
             providerTypeFilter.options[1].text = 'Restaurants';
             providerTypeFilter.options[2].text = 'Bakeries';
@@ -851,26 +853,26 @@ async function initSignalR() {
             .build();
 
         signalrConnection.onreconnecting((error) => {
-            console.warn('%c[SignalR Warning]%c ðŸ”„ Reconnecting to server...', 'background: #f59e0b; color: black; font-weight: bold; padding: 2px 6px; border-radius: 4px;', 'color: #f59e0b;', error);
+            console.warn('%c[SignalR Warning]%c 🔄 Reconnecting to server...', 'background: #f59e0b; color: black; font-weight: bold; padding: 2px 6px; border-radius: 4px;', 'color: #f59e0b;', error);
             const ind = document.getElementById('signalrIndicator');
             if (ind) { ind.classList.remove('bg-emerald-500'); ind.classList.add('bg-amber-500'); }
         });
 
         signalrConnection.onreconnected((connectionId) => {
-            console.log('%c[SignalR Reconnected]%c âš¡ Live connection restored! Connection ID: ' + connectionId, 'background: #10b981; color: white; font-weight: bold; padding: 2px 6px; border-radius: 4px;', 'color: #10b981;');
+            console.log('%c[SignalR Reconnected]%c ⚡ Live connection restored! Connection ID: ' + connectionId, 'background: #10b981; color: white; font-weight: bold; padding: 2px 6px; border-radius: 4px;', 'color: #10b981;');
             const ind = document.getElementById('signalrIndicator');
             if (ind) { ind.classList.remove('bg-amber-500', 'bg-rose-500'); ind.classList.add('bg-emerald-500'); }
         });
 
         signalrConnection.onclose((error) => {
-            console.error('%c[SignalR Closed]%c âŒ Connection terminated', 'background: #ef4444; color: white; font-weight: bold; padding: 2px 6px; border-radius: 4px;', 'color: #ef4444;', error);
+            console.error('%c[SignalR Closed]%c ❌ Connection terminated', 'background: #ef4444; color: white; font-weight: bold; padding: 2px 6px; border-radius: 4px;', 'color: #ef4444;', error);
             const ind = document.getElementById('signalrIndicator');
             if (ind) { ind.classList.remove('bg-emerald-500'); ind.classList.add('bg-rose-500'); }
         });
 
         signalrConnection.on('ReceiveNotification', (notification) => {
             console.log(
-                '%c[SignalR Push Notification]%c ðŸ”” Received: "' + (notification.title || '') + '" â€” ' + (notification.message || ''),
+                '%c[SignalR Push Notification]%c 🔔 Received: "' + (notification.title || '') + '" — ' + (notification.message || ''),
                 'background: #10b981; color: white; font-weight: bold; padding: 2px 8px; border-radius: 4px;',
                 'color: #059669; font-weight: bold;',
                 notification
@@ -933,7 +935,7 @@ function updateAuthUI() {
         const roleColor = currentUser.role === 'Admin' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200' :
                           currentUser.role === 'Provider' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200';
 
-        const roleText = isAr ? (currentUser.role === 'Admin' ? 'Ù…Ø´Ø±Ù' : currentUser.role === 'Provider' ? 'Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…' : 'Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©') : currentUser.role;
+        const roleText = isAr ? (currentUser.role === 'Admin' ? 'مشرف' : currentUser.role === 'Provider' ? 'مزود طعام' : 'جمعية خيرية') : currentUser.role;
 
         container.innerHTML = `
             <div class="flex items-center space-x-2.5">
@@ -956,8 +958,8 @@ function updateAuthUI() {
                 ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800'
                 : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800';
             pBadge.innerHTML = currentUser.isVerified 
-                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'Ù…Ù†Ø¸Ù…Ø© Ù…ÙˆØ«Ù‚Ø© ÙˆÙ…Ø¹ØªÙ…Ø¯Ø©' : 'Verified Organization'}`
-                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ù…ÙˆØ§ÙÙ‚Ø© Ø§Ù„Ù…Ø´Ø±Ù' : 'Verification Pending Admin Approval'}`;
+                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'منظمة موثقة ومعتمدة' : 'Verified Organization'}`
+                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'بانتظار موافقة المشرف' : 'Verification Pending Admin Approval'}`;
         }
 
         const cBadge = document.getElementById('charityVerificationBadge');
@@ -966,8 +968,8 @@ function updateAuthUI() {
                 ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800'
                 : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800';
             cBadge.innerHTML = currentUser.isVerified 
-                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'Ù…Ù†Ø¸Ù…Ø© Ù…ÙˆØ«Ù‚Ø© ÙˆÙ…Ø¹ØªÙ…Ø¯Ø©' : 'Verified Organization'}`
-                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ù…ÙˆØ§ÙÙ‚Ø© Ø§Ù„Ù…Ø´Ø±Ù' : 'Verification Pending Admin Approval'}`;
+                ? `<i class="fa-solid fa-circle-check ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'منظمة موثقة ومعتمدة' : 'Verified Organization'}`
+                : `<i class="fa-solid fa-clock ${isAr ? 'ml-1' : 'mr-1'}"></i> ${isAr ? 'بانتظار موافقة المشرف' : 'Verification Pending Admin Approval'}`;
         }
 
     } else {
@@ -1048,7 +1050,7 @@ function logout() {
     clearCachedViews();
     updateAuthUI();
     const isAr = currentLang === 'ar';
-    showToast(isAr ? 'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬' : 'Signed Out', isAr ? 'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬ Ø¨Ù†Ø¬Ø§Ø­ ÙˆØªØ£Ù…ÙŠÙ† Ø§Ù„Ø¬Ù„Ø³Ø©.' : 'You have been signed out successfully.', 'info');
+    showToast(isAr ? 'تم تسجيل الخروج' : 'Signed Out', isAr ? 'تم تسجيل الخروج بنجاح وتأمين الجلسة.' : 'You have been signed out successfully.', 'info');
     navigateTo('landing');
     if (signalrConnection) {
         signalrConnection.stop();
@@ -1090,44 +1092,6 @@ async function performLogin(email, password) {
 
 let scrollRevealObserver = null;
 
-function initScrollReveal() {
-    if (!('IntersectionObserver' in window)) return;
-
-    const elements = document.querySelectorAll(
-        '.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale'
-    );
-    if (!elements.length) return;
-
-    if (scrollRevealObserver) {
-        scrollRevealObserver.disconnect();
-    }
-
-    scrollRevealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                entry.target.classList.remove('scroll-hidden');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -30px 0px'
-    });
-
-    elements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top >= window.innerHeight || rect.bottom <= 0) {
-            el.classList.add('scroll-hidden');
-            scrollRevealObserver.observe(el);
-        } else {
-            el.classList.remove('scroll-hidden');
-            el.classList.add('revealed');
-        }
-    });
-
-    init3DTilt();
-}
 
 function init3DTilt() {
     document.querySelectorAll('.card-tilt-hover, .glass-stat-card').forEach(card => {
@@ -1148,6 +1112,44 @@ function init3DTilt() {
         card.addEventListener('mouseleave', () => {
             card.style.transform = '';
         });
+    });
+}
+
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll(
+        '.scroll-reveal:not(.revealed), .scroll-reveal-left:not(.revealed), .scroll-reveal-right:not(.revealed), .scroll-reveal-scale:not(.revealed)'
+    );
+
+    if (!revealElements.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+        revealElements.forEach(el => el.classList.add('revealed'));
+        return;
+    }
+
+    if (scrollRevealObserver) {
+        scrollRevealObserver.disconnect();
+    }
+
+    scrollRevealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('revealed');
+        } else {
+            scrollRevealObserver.observe(el);
+        }
     });
 }
 
@@ -1213,17 +1215,17 @@ function navigateTo(viewName) {
     const isAr = currentLang === 'ar';
 
     if (viewName === 'admin' && (!currentUser || currentUser.role !== 'Admin')) {
-        showToast(isAr ? 'ØªÙ†Ø¨ÙŠÙ‡ Ø£Ù…Ù†ÙŠ' : 'Access Restricted', isAr ? 'Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø´Ø±Ù Ù…Ø®ØµØµØ© Ù„Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠÙ† ÙÙ‚Ø·. ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø´Ø±Ù.' : 'Please sign in with an Administrator account.', 'warning');
+        showToast(isAr ? 'تنبيه أمني' : 'Access Restricted', isAr ? 'لوحة المشرف مخصصة للمسؤولين فقط. يرجى تسجيل الدخول بحساب المشرف.' : 'Please sign in with an Administrator account.', 'warning');
         openAuthModal('login');
         return;
     }
     if (viewName === 'provider' && (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin'))) {
-        showToast(isAr ? 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ø·Ù„ÙˆØ¨' : 'Sign In Required', isAr ? 'Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø²ÙˆØ¯ÙŠÙ† Ù…Ø®ØµØµØ© Ù„Ù…Ø²ÙˆØ¯ÙŠ Ø§Ù„Ø·Ø¹Ø§Ù… Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ÙŠÙ†.' : 'Please sign in with a Provider account.', 'warning');
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة المزودين مخصصة لمزودي الطعام المعتمدين.' : 'Please sign in with a Provider account.', 'warning');
         openAuthModal('login');
         return;
     }
     if (viewName === 'charity' && (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin'))) {
-        showToast(isAr ? 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ø·Ù„ÙˆØ¨' : 'Sign In Required', isAr ? 'Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ù…Ø®ØµØµØ© Ù„Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ© Ø§Ù„Ù…Ø³Ø¬Ù„Ø©.' : 'Please sign in with a Charity account.', 'warning');
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'بوابة الجمعيات مخصصة للجمعيات الخيرية المسجلة.' : 'Please sign in with a Charity account.', 'warning');
         openAuthModal('login');
         return;
     }
@@ -1252,8 +1254,6 @@ function navigateTo(viewName) {
         void targetSection.offsetWidth;
         targetSection.classList.add('fade-in-section');
     }
-
-    applyLanguage(currentLang);
 
     if (viewName === 'explore') loadExploreListings();
     else if (viewName === 'provider') loadProviderPortal();
@@ -1334,7 +1334,7 @@ function renderListingCard(item) {
     const imgUrl = item.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80';
     const ratingDisplay = item.providerAverageRating > 0 
         ? `<span class="inline-flex items-center text-amber-500 font-bold text-xs"><i class="fa-solid fa-star text-[10px] ${isAr ? 'ml-1' : 'mr-1'}"></i>${item.providerAverageRating.toFixed(1)}</span>`
-        : `<span class="text-slate-400 text-[10px]">${isAr ? 'Ù…Ø²ÙˆØ¯ Ø¬Ø¯ÙŠØ¯' : 'New provider'}</span>`;
+        : `<span class="text-slate-400 text-[10px]">${isAr ? 'مزود جديد' : 'New provider'}</span>`;
 
     const deadline = new Date(item.pickupDeadline);
     const deadlineStr = deadline.toLocaleTimeString(isAr ? 'ar-EG' : [], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
@@ -1366,6 +1366,7 @@ function renderListingCard(item) {
                         ${escapeHtml(item.description)}
                     </p>
 
+                    <!-- Key disclosures (FR2.3, FR3.2) -->
                     <div class="flex flex-wrap gap-1.5 mb-4 text-[11px]">
                         <span class="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50 flex items-center">
                             <i class="fa-solid fa-snowflake text-[10px] ${isAr ? 'ml-1' : 'mr-1'} text-blue-500"></i> ${escapeHtml(item.storageConditions)}
@@ -1399,7 +1400,7 @@ async function openListingDetailModal(listingId) {
         currentDetailListing = listing;
 
         document.getElementById('detailModalFoodName').textContent = listing.foodName;
-        document.getElementById('detailModalProviderInfo').textContent = `By ${listing.providerOrganization} (${listing.providerType}) â€¢ â­ ${listing.providerAverageRating > 0 ? listing.providerAverageRating.toFixed(1) : 'New'} (${listing.providerReviewsCount} reviews)`;
+        document.getElementById('detailModalProviderInfo').textContent = `By ${listing.providerOrganization} (${listing.providerType}) • ⭐ ${listing.providerAverageRating > 0 ? listing.providerAverageRating.toFixed(1) : 'New'} (${listing.providerReviewsCount} reviews)`;
         document.getElementById('detailModalQuantity').textContent = `${listing.quantity} ${listing.unitOfMeasurement}`;
         document.getElementById('detailModalDescription').textContent = listing.description;
         document.getElementById('detailModalCategoryBadge').textContent = formatCategory(listing.foodCategory);
@@ -1461,7 +1462,7 @@ async function requestReservationFromModal() {
 async function loadProviderPortal() {
     if (!currentUser || (currentUser.role !== 'Provider' && currentUser.role !== 'Admin')) {
         const isAr = currentLang === 'ar';
-        showToast(isAr ? 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ø·Ù„ÙˆØ¨' : 'Provider Access Only', isAr ? 'ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù….' : 'Please sign in or switch to a Provider profile.', 'info');
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Provider Access Only', isAr ? 'يرجى تسجيل الدخول بحساب مزود طعام.' : 'Please sign in or switch to a Provider profile.', 'info');
         navigateTo('landing');
         return;
     }
@@ -1506,7 +1507,7 @@ async function loadProviderListings() {
         const isAr = currentLang === 'ar';
 
         if (!listings || listings.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="px-5 py-8 text-center text-slate-400 text-xs">${isAr ? 'Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ ØªØ¨Ø±Ø¹Ø§Øª Ø·Ø¹Ø§Ù… Ø¨Ù‡Ø°Ù‡ Ø§Ù„Ø­Ø§Ù„Ø©.' : 'No food donation listings found for this status.'}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="px-5 py-8 text-center text-slate-400 text-xs">${isAr ? 'لم يتم العثور على تبرعات طعام بهذه الحالة.' : 'No food donation listings found for this status.'}</td></tr>`;
             return;
         }
 
@@ -1519,7 +1520,7 @@ async function loadProviderListings() {
 
             const actions = l.status === 'Available' 
                 ? `<button onclick="markListingUnavailable(${l.id})" class="px-2.5 py-1 text-xs rounded-lg text-rose-600 hover:bg-rose-50 border border-rose-200">${dict.markUnavailable}</button>`
-                : `<span class="text-xs text-slate-400">â€”</span>`;
+                : `<span class="text-xs text-slate-400">—</span>`;
 
             return `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
@@ -1555,7 +1556,7 @@ async function loadProviderRequests() {
         if (badge) badge.textContent = pending.length;
 
         if (!requests || requests.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">${isAr ? 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª Ø­Ø¬Ø² ÙˆØ§Ø±Ø¯Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.' : 'No incoming reservation requests.'}</div>`;
+            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">${isAr ? 'لا توجد طلبات حجز واردة حالياً.' : 'No incoming reservation requests.'}</div>`;
             return;
         }
 
@@ -1603,7 +1604,7 @@ async function loadProviderRequests() {
                             <span><i class="fa-solid fa-envelope mr-1 text-slate-400"></i> ${escapeHtml(r.charityEmail)}</span>
                         </div>
                         ${r.charityTargetCommunity ? `<div class="text-[11px] text-slate-500 mt-1.5 bg-slate-50 p-2 rounded-lg border border-slate-100"><strong>Mission:</strong> ${escapeHtml(r.charityTargetCommunity)}</div>` : ''}
-                        ${r.confirmedLocation ? `<div class="text-[11px] text-indigo-700 mt-1"><strong>Agreed Location:</strong> ${escapeHtml(r.confirmedLocation)} â€¢ <strong>Pickup:</strong> ${new Date(r.pickupDateTime).toLocaleString()}</div>` : ''}
+                        ${r.confirmedLocation ? `<div class="text-[11px] text-indigo-700 mt-1"><strong>Agreed Location:</strong> ${escapeHtml(r.confirmedLocation)} • <strong>Pickup:</strong> ${new Date(r.pickupDateTime).toLocaleString()}</div>` : ''}
                     </div>
                     <div class="shrink-0 flex items-center justify-end">
                         ${buttons}
@@ -1842,7 +1843,7 @@ async function markReadyForPickup(id) {
 async function loadCharityPortal() {
     if (!currentUser || (currentUser.role !== 'Charity' && currentUser.role !== 'Admin')) {
         const isAr = currentLang === 'ar';
-        showToast(isAr ? 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ø·Ù„ÙˆØ¨' : 'Charity Access Only', isAr ? 'ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©.' : 'Please sign in or switch to a Charity profile.', 'info');
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Charity Access Only', isAr ? 'يرجى تسجيل الدخول بحساب جمعية خيرية.' : 'Please sign in or switch to a Charity profile.', 'info');
         navigateTo('landing');
         return;
     }
@@ -1883,7 +1884,7 @@ async function loadCharityReservations() {
         const list = await res.json();
 
         if (!list || list.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">${isAr ? 'Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø­Ø¬ÙˆØ²Ø§Øª Ø¨Ù‡Ø°Ù‡ Ø§Ù„Ø­Ø§Ù„Ø©.' : 'No food reservations found for this status.'}</div>`;
+            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">${isAr ? 'لم يتم العثور على حجوزات بهذه الحالة.' : 'No food reservations found for this status.'}</div>`;
             return;
         }
 
@@ -2103,7 +2104,7 @@ async function handleReviewSubmit(e) {
 async function loadAdminPortal() {
     if (!currentUser || currentUser.role !== 'Admin') {
         const isAr = currentLang === 'ar';
-        showToast(isAr ? 'ØªÙ†Ø¨ÙŠÙ‡ Ø£Ù…Ù†ÙŠ' : 'Administrator Required', isAr ? 'ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø´Ø±Ù.' : 'Please switch to the Administrator profile.', 'warning');
+        showToast(isAr ? 'تنبيه أمني' : 'Administrator Required', isAr ? 'يرجى تسجيل الدخول بحساب المشرف.' : 'Please switch to the Administrator profile.', 'warning');
         navigateTo('landing');
         return;
     }
@@ -2112,7 +2113,6 @@ async function loadAdminPortal() {
     await loadAdminVerifications();
     await loadAdminUsers();
     await loadAdminModeration();
-    await loadAdminExpiredListings();
     await loadAdminAuditLogs();
 }
 
@@ -2156,13 +2156,13 @@ async function loadAdminVerifications() {
             headers: { 'Authorization': `Bearer ${currentUser.token}` }
         });
         const users = await res.json();
-        const pending = users.filter(u => u.userType !== 3);
+        const pending = users.filter(u => u.userType !== 3); // Exclude admin
 
         const dict = i18nDict[currentLang] || i18nDict.en;
         const isAr = currentLang === 'ar';
 
         if (!pending || pending.length === 0) {
-            container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">${isAr ? 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª ØªÙˆØ«ÙŠÙ‚ Ù…Ø¹Ù„Ù‚Ø© Ø­Ø§Ù„ÙŠØ§Ù‹. Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù…Ù†Ø¸Ù…Ø§Øª Ù…Ø¹ØªÙ…Ø¯Ø©.' : 'No pending verification requests at this time. All organizations are cleared.'}</div>`;
+            container.innerHTML = `<div class="p-6 text-center text-slate-400 text-xs">${isAr ? 'لا توجد طلبات توثيق معلقة حالياً. جميع المنظمات معتمدة.' : 'No pending verification requests at this time. All organizations are cleared.'}</div>`;
             return;
         }
 
@@ -2171,13 +2171,13 @@ async function loadAdminVerifications() {
                 <div>
                     <div class="flex items-center space-x-2 mb-1">
                         <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.userType === 1 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
-                            ${u.userType === 1 ? (isAr ? 'Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…' : 'Provider') : (isAr ? 'Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©' : 'Charity')}: ${escapeHtml(u.specificType)}
+                            ${u.userType === 1 ? (isAr ? 'مزود طعام' : 'Provider') : (isAr ? 'جمعية خيرية' : 'Charity')}: ${escapeHtml(u.specificType)}
                         </span>
-                        <span class="text-xs text-slate-400">${isAr ? 'ØªØ§Ø±ÙŠØ® Ø§Ù„ØªØ³Ø¬ÙŠÙ„' : 'Registered'} ${new Date(u.createdAt).toLocaleDateString(isAr ? 'ar-EG' : [])}</span>
+                        <span class="text-xs text-slate-400">${isAr ? 'تاريخ التسجيل' : 'Registered'} ${new Date(u.createdAt).toLocaleDateString(isAr ? 'ar-EG' : [])}</span>
                     </div>
                     <h4 class="font-heading font-bold text-sm text-slate-900 dark:text-slate-100">${escapeHtml(u.organizationName)} (${escapeHtml(u.fullName)})</h4>
-                    <div class="text-xs text-slate-600 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-location-dot ${isAr ? 'ml-1' : 'mr-1'} text-slate-400"></i> ${escapeHtml(u.organizationAddress)} â€¢ ${escapeHtml(u.email)}</div>
-                    ${u.targetCommunityDescription ? `<div class="text-[11px] text-slate-500 mt-1.5 bg-white dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700"><strong>${isAr ? 'Ø§Ù„ÙØ¦Ø§Øª Ø§Ù„Ù…Ø³ØªÙÙŠØ¯Ø©:' : 'Served Population:'}</strong> ${escapeHtml(u.targetCommunityDescription)}</div>` : ''}
+                    <div class="text-xs text-slate-600 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-location-dot ${isAr ? 'ml-1' : 'mr-1'} text-slate-400"></i> ${escapeHtml(u.organizationAddress)} • ${escapeHtml(u.email)}</div>
+                    ${u.targetCommunityDescription ? `<div class="text-[11px] text-slate-500 mt-1.5 bg-white dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-700"><strong>${isAr ? 'الفئات المستفيدة:' : 'Served Population:'}</strong> ${escapeHtml(u.targetCommunityDescription)}</div>` : ''}
                 </div>
                 <div class="shrink-0 flex items-center space-x-2">
                     <button onclick="verifyOrganization('${u.id}', true)" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
@@ -2235,28 +2235,28 @@ async function loadAdminUsers() {
         tbody.innerHTML = users.map(u => {
             const isSuspended = u.status === 2 || u.status === 'Suspended';
             const statusBadge = isSuspended ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800';
-            const verifiedBadge = u.isVerified ? `<span class="text-emerald-600"><i class="fa-solid fa-circle-check"></i> ${isAr ? 'Ù…ÙˆØ«Ù‚' : 'Verified'}</span>` : `<span class="text-amber-500"><i class="fa-solid fa-clock"></i> ${isAr ? 'Ù…Ø¹Ù„Ù‚' : 'Pending'}</span>`;
+            const verifiedBadge = u.isVerified ? `<span class="text-emerald-600"><i class="fa-solid fa-circle-check"></i> ${isAr ? 'موثق' : 'Verified'}</span>` : `<span class="text-amber-500"><i class="fa-solid fa-clock"></i> ${isAr ? 'معلق' : 'Pending'}</span>`;
 
             let toggleAction = '';
             if (currentUser && (u.id === currentUser.userId || u.email === currentUser.email)) {
-                toggleAction = `<span class="text-xs text-slate-400 italic">${isAr ? 'Ø­Ø³Ø§Ø¨Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ' : 'Current Account'}</span>`;
+                toggleAction = `<span class="text-xs text-slate-400 italic">${isAr ? 'حسابك الحالي' : 'Current Account'}</span>`;
             } else if (isSuspended) {
                 toggleAction = `<button onclick="setUserStatus('${u.id}', false)" class="px-2.5 py-1 text-xs rounded-lg text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200">${dict.reactivate}</button>`;
             } else {
                 toggleAction = `<button onclick="setUserStatus('${u.id}', true)" class="px-2.5 py-1 text-xs rounded-lg text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200">${dict.suspend}</button>`;
             }
 
-            const uTypeName = u.userType === 1 ? (isAr ? 'Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…' : 'Provider') : u.userType === 2 ? (isAr ? 'Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©' : 'Charity') : (isAr ? 'Ù…Ø´Ø±Ù' : 'Admin');
+            const uTypeName = u.userType === 1 ? (isAr ? 'مزود طعام' : 'Provider') : u.userType === 2 ? (isAr ? 'جمعية خيرية' : 'Charity') : (isAr ? 'مشرف' : 'Admin');
 
             return `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
                     <td class="px-4 py-3">
                         <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(u.organizationName)}</div>
-                        <div class="text-xs text-slate-500">${escapeHtml(u.fullName)} â€¢ ${escapeHtml(u.email)}</div>
+                        <div class="text-xs text-slate-500">${escapeHtml(u.fullName)} • ${escapeHtml(u.email)}</div>
                     </td>
                     <td class="px-4 py-3 text-xs font-semibold text-slate-600 dark:text-slate-300">${uTypeName} (${escapeHtml(u.specificType)})</td>
                     <td class="px-4 py-3 text-xs font-semibold">${verifiedBadge}</td>
-                    <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusBadge}">${isSuspended ? (isAr ? 'Ù…Ø¬Ù…Ù‘Ø¯' : 'Suspended') : (isAr ? 'Ù†Ø´Ø·' : 'Active')}</span></td>
+                    <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusBadge}">${isSuspended ? (isAr ? 'مجمّد' : 'Suspended') : (isAr ? 'نشط' : 'Active')}</span></td>
                     <td class="px-4 py-3 ${isAr ? 'text-left' : 'text-right'}">${toggleAction}</td>
                 </tr>
             `;
@@ -2312,7 +2312,7 @@ async function handleCreateAdminSubmit(e) {
     const originalText = submitBtn ? submitBtn.innerHTML : '';
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> ${isAr ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡...' : 'Creating...'}`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> ${isAr ? 'جاري الإنشاء...' : 'Creating...'}`;
     }
 
     const payload = {
@@ -2336,8 +2336,8 @@ async function handleCreateAdminSubmit(e) {
         if (res.ok) {
             closeCreateAdminModal();
             showToast(
-                isAr ? 'ØªÙ… Ø¨Ù†Ø¬Ø§Ø­' : 'Success',
-                isAr ? `ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø´Ø±Ù (${payload.fullName}) Ø¨Ù†Ø¬Ø§Ø­.` : `Administrator account for '${payload.fullName}' created successfully.`,
+                isAr ? 'تم بنجاح' : 'Success',
+                isAr ? `تم إنشاء حساب المشرف (${payload.fullName}) بنجاح.` : `Administrator account for '${payload.fullName}' created successfully.`,
                 'success'
             );
             await loadAdminStats();
@@ -2346,8 +2346,8 @@ async function handleCreateAdminSubmit(e) {
         } else {
             const errData = await res.json().catch(() => ({}));
             showToast(
-                isAr ? 'Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡' : 'Creation Failed',
-                errData.message || (isAr ? 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø´Ø±Ù. ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.' : 'Failed to create administrator.'),
+                isAr ? 'خطأ في الإنشاء' : 'Creation Failed',
+                errData.message || (isAr ? 'تعذر إنشاء حساب المشرف. يرجى التحقق من البيانات.' : 'Failed to create administrator.'),
                 'error'
             );
         }
@@ -2376,36 +2376,36 @@ async function loadAdminModeration() {
         const problems = await problemsRes.json();
 
         const lContainer = document.getElementById('adminReportedListingsContainer');
-        lContainer.innerHTML = listings.length === 0 ? `<div class="text-slate-400">${isAr ? 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¹Ø±ÙˆØ¶ ØªØ¨Ø±Ø¹ Ù…Ø¨Ù„Ù‘Øº Ø¹Ù†Ù‡Ø§.' : 'No reported listings.'}</div>` : listings.map(l => `
+        lContainer.innerHTML = listings.length === 0 ? `<div class="text-slate-400">${isAr ? 'لا توجد عروض تبرع مبلّغ عنها.' : 'No reported listings.'}</div>` : listings.map(l => `
             <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
                 <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(l.foodName)}</div>
-                <div class="text-rose-600 mt-1">${isAr ? 'Ø³Ø¨Ø¨ Ø§Ù„Ø¨Ù„Ø§Øº:' : 'Reason:'} ${escapeHtml(l.reportReason || (isAr ? 'ÙØ­Øµ ÙˆÙ…Ø±Ø§Ø¬Ø¹Ø©' : 'Policy check'))}</div>
+                <div class="text-rose-600 mt-1">${isAr ? 'سبب البلاغ:' : 'Reason:'} ${escapeHtml(l.reportReason || (isAr ? 'فحص ومراجعة' : 'Policy check'))}</div>
                 <div class="mt-2 flex ${isAr ? 'justify-start' : 'justify-end'}">
-                    <button onclick="removeListingByAdmin(${l.id})" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition">${isAr ? 'Ø­Ø°Ù Ø§Ù„ØªØ¨Ø±Ø¹' : 'Remove Listing'}</button>
+                    <button onclick="removeListingByAdmin(${l.id})" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition">${isAr ? 'حذف التبرع' : 'Remove Listing'}</button>
                 </div>
             </div>
         `).join('');
 
         const rContainer = document.getElementById('adminReportedReviewsContainer');
-        rContainer.innerHTML = reviews.length === 0 ? `<div class="text-slate-400">${isAr ? 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØªÙ‚ÙŠÙŠÙ…Ø§Øª Ù…Ø¨Ù„Ù‘Øº Ø¹Ù†Ù‡Ø§.' : 'No reported reviews.'}</div>` : reviews.map(r => `
+        rContainer.innerHTML = reviews.length === 0 ? `<div class="text-slate-400">${isAr ? 'لا توجد تقييمات مبلّغ عنها.' : 'No reported reviews.'}</div>` : reviews.map(r => `
             <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
-                <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(r.reviewerName)}: â­ ${r.rating}</div>
-                <div class="text-slate-600 dark:text-slate-300 italic mt-1">"${escapeHtml(r.comment || (isAr ? 'Ø¨Ø¯ÙˆÙ† ØªØ¹Ù„ÙŠÙ‚' : 'No text'))}"</div>
-                <div class="text-rose-600 mt-1">${isAr ? 'Ø³Ø¨Ø¨ Ø§Ù„Ø¨Ù„Ø§Øº:' : 'Reason:'} ${escapeHtml(r.reportReason || (isAr ? 'Ù…Ø­ØªÙˆÙ‰ ØºÙŠØ± Ù„Ø§Ø¦Ù‚' : 'Inappropriate'))}</div>
+                <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(r.reviewerName)}: ⭐ ${r.rating}</div>
+                <div class="text-slate-600 dark:text-slate-300 italic mt-1">"${escapeHtml(r.comment || (isAr ? 'بدون تعليق' : 'No text'))}"</div>
+                <div class="text-rose-600 mt-1">${isAr ? 'سبب البلاغ:' : 'Reason:'} ${escapeHtml(r.reportReason || (isAr ? 'محتوى غير لائق' : 'Inappropriate'))}</div>
                 <div class="mt-2 flex ${isAr ? 'justify-start' : 'justify-end'}">
-                    <button onclick="removeReviewByAdmin(${r.id})" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition">${isAr ? 'Ø­Ø°Ù Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'Delete Review'}</button>
+                    <button onclick="removeReviewByAdmin(${r.id})" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition">${isAr ? 'حذف التقييم' : 'Delete Review'}</button>
                 </div>
             </div>
         `).join('');
 
         const pContainer = document.getElementById('adminProblemReportsContainer');
-        pContainer.innerHTML = problems.length === 0 ? `<div class="text-slate-400">${isAr ? 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†Ø²Ø§Ø¹Ø§Øª Ø§Ø³ØªÙ„Ø§Ù… Ø­Ø§Ù„ÙŠØ©.' : 'No active pickup disputes.'}</div>` : problems.map(p => `
+        pContainer.innerHTML = problems.length === 0 ? `<div class="text-slate-400">${isAr ? 'لا توجد نزاعات استلام حالية.' : 'No active pickup disputes.'}</div>` : problems.map(p => `
             <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
                 <div class="font-bold text-slate-800 dark:text-slate-100">${escapeHtml(p.foodName)}</div>
-                <div class="text-xs text-slate-500">${escapeHtml(p.charityOrganization)} ${isAr ? 'Ø¶Ø¯' : 'vs'} ${escapeHtml(p.providerOrganization)}</div>
+                <div class="text-xs text-slate-500">${escapeHtml(p.charityOrganization)} ${isAr ? 'ضد' : 'vs'} ${escapeHtml(p.providerOrganization)}</div>
                 <div class="text-rose-600 mt-1">${escapeHtml(p.problemDescription)}</div>
                 <div class="mt-2 flex ${isAr ? 'justify-start' : 'justify-end'}">
-                    <button onclick="resolveProblemByAdmin(${p.id})" class="px-2.5 py-1 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition">${isAr ? 'Ø­Ù„ Ø§Ù„Ù†Ø²Ø§Ø¹' : 'Resolve Dispute'}</button>
+                    <button onclick="resolveProblemByAdmin(${p.id})" class="px-2.5 py-1 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition">${isAr ? 'حل النزاع' : 'Resolve Dispute'}</button>
                 </div>
             </div>
         `).join('');
@@ -2417,7 +2417,7 @@ async function loadAdminModeration() {
 
 async function removeListingByAdmin(id) {
     const isAr = currentLang === 'ar';
-    const reason = prompt(isAr ? 'ÙŠØ±Ø¬Ù‰ ÙƒØªØ§Ø¨Ø© Ø³Ø¨Ø¨ Ø§Ù„Ø­Ø°Ù Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠ Ù„Ù„ØªØ¨Ø±Ø¹:' : 'Specify administrative removal reason (FR8.7):');
+    const reason = prompt(isAr ? 'يرجى كتابة سبب الحذف الإداري للتبرع:' : 'Specify administrative removal reason (FR8.7):');
     if (!reason) return;
     try {
         const res = await fetch(`${API_BASE}/admin/listings/${id}/remove`, {
@@ -2440,7 +2440,7 @@ async function removeListingByAdmin(id) {
 
 async function removeReviewByAdmin(id) {
     const isAr = currentLang === 'ar';
-    const reason = prompt(isAr ? 'ÙŠØ±Ø¬Ù‰ ÙƒØªØ§Ø¨Ø© Ø³Ø¨Ø¨ Ø­Ø°Ù Ù‡Ø°Ø§ Ø§Ù„ØªÙ‚ÙŠÙŠÙ…:' : 'Specify administrative review deletion reason:');
+    const reason = prompt(isAr ? 'يرجى كتابة سبب حذف هذا التقييم:' : 'Specify administrative review deletion reason:');
     if (!reason) return;
     try {
         const res = await fetch(`${API_BASE}/admin/reviews/${id}/remove`, {
@@ -2463,7 +2463,7 @@ async function removeReviewByAdmin(id) {
 
 async function resolveProblemByAdmin(id) {
     const isAr = currentLang === 'ar';
-    const notes = prompt(isAr ? 'ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ù…Ù„Ø§Ø­Ø¸Ø§Øª ÙˆÙ‚Ø±Ø§Ø± Ø­Ù„ Ù‡Ø°Ø§ Ø§Ù„Ù†Ø²Ø§Ø¹:' : 'Enter resolution notes for this problem dispute:');
+    const notes = prompt(isAr ? 'يرجى إدخال ملاحظات وقرار حل هذا النزاع:' : 'Enter resolution notes for this problem dispute:');
     if (!notes) return;
     try {
         const res = await fetch(`${API_BASE}/admin/problems/${id}/resolve`, {
@@ -2494,29 +2494,18 @@ async function loadAdminAuditLogs() {
         });
         const logs = await res.json();
         if (!logs || logs.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 text-xs">${isAr ? 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø³Ø¬Ù„Ø§Øª ØªØ¯Ù‚ÙŠÙ‚ Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.' : 'No audit records yet.'}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 text-xs">${isAr ? 'لا توجد سجلات تدقيق حتى الآن.' : 'No audit records yet.'}</td></tr>`;
             return;
         }
 
         const actionTranslations = {
-            'ApproveVerification': isAr ? 'اعتماد المنظمة' : 'Approve Verification',
-            'RejectVerification': isAr ? 'رفض الاعتماد' : 'Reject Verification',
-            'SuspendUser': isAr ? 'إيقاف الحساب' : 'Suspend Account',
-            'ReactivateUser': isAr ? 'إعادة تفعيل الحساب' : 'Reactivate Account',
-            'RemoveListing': isAr ? 'إزالة إعلان طعام' : 'Remove Listing',
-            'RemoveReview': isAr ? 'حذف تقييم' : 'Remove Review',
-            'ResolveProblemReport': isAr ? 'حل نزاع استلام' : 'Resolve Dispute',
-            'CreateAdmin': isAr ? 'إنشاء حساب مسؤول' : 'Create Admin',
-            'WarnProviderFoodWaste': isAr ? 'إنذار هدر غذائي' : 'Waste Advisory Warning',
-            'RecordWasteDisposal': isAr ? 'توثيق إتلاف/تدوير' : 'Safe Disposal Logged',
-            'SuspendProviderWasteViolation': isAr ? 'إيقاف لمخالفة الهدر' : 'Suspended for Waste',
-            'VerifyOrganization': 'ØªÙˆØ«ÙŠÙ‚ Ù…Ø¤Ø³Ø³Ø©',
-            'RejectOrganization': 'Ø±ÙØ¶ Ù…Ø¤Ø³Ø³Ø©',
-            'SuspendUser': 'ØªØ¬Ù…ÙŠØ¯ Ù…Ø³ØªØ®Ø¯Ù…',
-            'ReactivateUser': 'ØªÙØ¹ÙŠÙ„ Ù…Ø³ØªØ®Ø¯Ù…',
-            'RemoveListing': 'Ø­Ø°Ù ØªØ¨Ø±Ø¹',
-            'RemoveReview': 'Ø­Ø°Ù ØªÙ‚ÙŠÙŠÙ…',
-            'ResolveProblem': 'Ø­Ù„ Ù†Ø²Ø§Ø¹ Ø§Ø³ØªÙ„Ø§Ù…'
+            'VerifyOrganization': 'توثيق مؤسسة',
+            'RejectOrganization': 'رفض مؤسسة',
+            'SuspendUser': 'تجميد مستخدم',
+            'ReactivateUser': 'تفعيل مستخدم',
+            'RemoveListing': 'حذف تبرع',
+            'RemoveReview': 'حذف تقييم',
+            'ResolveProblem': 'حل نزاع استلام'
         };
 
         tbody.innerHTML = logs.map(l => `
@@ -2535,133 +2524,11 @@ async function loadAdminAuditLogs() {
 
 function switchAdminTab(tab) {
     ['verifications', 'users', 'moderation', 'audit', 'waste'].forEach(t => {
-        const el = document.getElementById(`adminTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
-        const btn = document.getElementById(`atab-${t}`);
-        if (el) el.classList.add('hidden');
-        if (btn) btn.className = 'pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0';
+        document.getElementById(`adminTab${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.add('hidden');
+        document.getElementById(`atab-${t}`).className = 'pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0';
     });
-    const targetEl = document.getElementById(`adminTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
-    const targetBtn = document.getElementById(`atab-${tab}`);
-    if (targetEl) targetEl.classList.remove('hidden');
-    if (targetBtn) targetBtn.className = 'pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0';
-    if (tab === 'waste') {
-        loadAdminExpiredListings();
-    }
-}
-
-async function loadAdminExpiredListings() {
-    if (!currentUser) return;
-    const isAr = currentLang === 'ar';
-    const container = document.getElementById('adminExpiredListingsContainer');
-    if (!container) return;
-
-    try {
-        const res = await fetch(`${API_BASE}/admin/expired-listings`, {
-            headers: { 'Authorization': `Bearer ${currentUser.token}` }
-        });
-        const listings = await res.json();
-
-        if (document.getElementById('adminBadgeExpiredCount')) {
-            document.getElementById('adminBadgeExpiredCount').textContent = listings.length;
-        }
-
-        if (!listings || listings.length === 0) {
-            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">${isAr ? 'لا توجد تبرعات منتهية الصلاحية حالياً. جميع الفوائض تم توزيعها بنجاح!' : 'No expired surplus items currently found. All donations were redistributed on schedule!'}</div>`;
-            return;
-        }
-
-        container.innerHTML = listings.map(item => `
-            <div class="p-4 rounded-2xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/50 dark:bg-amber-950/20 flex flex-col md:flex-row md:items-center justify-between gap-4 transition hover:shadow-md">
-                <div class="flex items-start space-x-3 rtl:space-x-reverse">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold shrink-0">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <h4 class="font-bold text-slate-900 dark:text-white text-sm">${escapeHtml(item.foodName)}</h4>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200">${escapeHtml(formatCategory(item.foodCategory))}</span>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300">${isAr ? 'منتهي الصلاحية' : 'Expired'}</span>
-                        </div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            <span>${escapeHtml(item.providerOrganization)} (${escapeHtml(item.providerName)})</span>
-                            <span class="mx-1">•</span>
-                            <span class="font-bold text-amber-700 dark:text-amber-300">${item.quantity} ${escapeHtml(item.unitOfMeasurement)}</span>
-                            <span class="mx-1">•</span>
-                            <span>${isAr ? 'انتهت المهلة:' : 'Deadline:'} ${new Date(item.pickupDeadline).toLocaleDateString(isAr ? 'ar-EG' : 'en-US')}</span>
-                        </div>
-                        ${item.reportReason ? `<div class="mt-1.5 text-xs text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 p-2 rounded-lg border border-slate-200/50 dark:border-slate-700/50"><i class="fa-solid fa-info-circle text-amber-500 mr-1 rtl:ml-1"></i> ${escapeHtml(item.reportReason)}</div>` : ''}
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 flex-wrap shrink-0">
-                    <button onclick="openAdminWasteActionModal(${item.id}, '${escapeHtml(item.foodName).replace(/'/g, "\\'")}', '${escapeHtml(item.providerOrganization || item.providerName).replace(/'/g, "\\'")}', ${item.quantity}, '${escapeHtml(item.unitOfMeasurement).replace(/'/g, "\\'")}')" class="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition flex items-center">
-                        <i class="fa-solid fa-gavel mr-1.5 rtl:ml-1.5"></i>
-                        <span>${isAr ? 'اتخاذ إجراء إداري' : 'Take Action'}</span>
-                    </button>
-                </div>
-            </div>
-        `).join('');
-
-    } catch (err) {
-        console.error('Error fetching expired listings:', err);
-    }
-}
-
-function openAdminWasteActionModal(listingId, foodName, providerName, quantity, unit) {
-    document.getElementById('wasteActionListingId').value = listingId;
-    document.getElementById('wasteActionFoodName').textContent = foodName;
-    document.getElementById('wasteActionProviderName').textContent = providerName;
-    document.getElementById('wasteActionQuantity').textContent = `${quantity} ${unit}`;
-    document.getElementById('wasteActionNotes').value = '';
-    document.getElementById('wasteActionType').value = 'WarnProvider';
-    document.getElementById('adminWasteActionModal').classList.remove('hidden');
-}
-
-function closeAdminWasteActionModal() {
-    document.getElementById('adminWasteActionModal').classList.add('hidden');
-}
-
-async function handleWasteActionSubmit(event) {
-    event.preventDefault();
-    if (!currentUser) return;
-    const isAr = currentLang === 'ar';
-    const listingId = document.getElementById('wasteActionListingId').value;
-    const actionType = document.getElementById('wasteActionType').value;
-    const notes = document.getElementById('wasteActionNotes').value.trim();
-
-    if (!listingId || !notes) return;
-
-    const btn = document.getElementById('btnSubmitWasteAction');
-    btn.disabled = true;
-
-    try {
-        const res = await fetch(`${API_BASE}/admin/listings/${listingId}/waste-action`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentUser.token}`
-            },
-            body: JSON.stringify({ actionType, notes })
-        });
-
-        if (res.ok) {
-            closeAdminWasteActionModal();
-            showToast(
-                isAr ? 'تم تطبيق الإجراء بنجاح' : 'Action Executed',
-                isAr ? 'تم حفظ الإجراء الإداري وتوثيقه في سجل التدقيق وإشعار الجهة.' : 'Administrative action logged to audit trail and notified to provider.',
-                'success'
-            );
-            await loadAdminStats();
-            await loadAdminExpiredListings();
-            await loadAdminAuditLogs();
-        } else {
-            const err = await res.json();
-            showToast(isAr ? 'خطأ' : 'Error', err.message || (isAr ? 'تعذر تنفيذ الإجراء' : 'Failed to apply action'), 'error');
-        }
-    } catch (err) {
-        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
-    } finally {
-        btn.disabled = false;
-    }
+    document.getElementById(`adminTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
+    document.getElementById(`atab-${tab}`).className = 'pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0';
 }
 
 async function loadImpactStats() {
@@ -2835,15 +2702,15 @@ function setAuthTab(tab) {
     if (tab === 'login') {
         document.getElementById('loginForm').classList.remove('hidden');
         document.getElementById('atab-login').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¥Ù„Ù‰ FoodBridge' : 'Sign In to FoodBridge';
+        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل الدخول إلى FoodBridge' : 'Sign In to FoodBridge';
     } else if (tab === 'reg-provider') {
         document.getElementById('regProviderForm').classList.remove('hidden');
         document.getElementById('atab-reg-provider').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'ØªØ³Ø¬ÙŠÙ„ Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù… Ø¬Ø¯ÙŠØ¯' : 'Register Food Provider';
+        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل مزود طعام جديد' : 'Register Food Provider';
     } else if (tab === 'reg-charity') {
         document.getElementById('regCharityForm').classList.remove('hidden');
         document.getElementById('atab-reg-charity').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'ØªØ³Ø¬ÙŠÙ„ Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ© Ø¬Ø¯ÙŠØ¯Ø©' : 'Register Charitable Organization';
+        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل جمعية خيرية جديدة' : 'Register Charitable Organization';
     }
 }
 
@@ -2908,7 +2775,7 @@ async function handleRegisterProviderSubmit(e) {
         closeAuthModal();
         if (signalrConnection) await signalrConnection.stop();
         await initSignalR();
-        showToast('Account Created! ðŸŽ‰', 'Welcome to FoodBridge! Please check your email to verify your account, then await admin approval.', 'success');
+        showToast('Account Created! 🎉', 'Welcome to FoodBridge! Please check your email to verify your account, then await admin approval.', 'success');
         navigateTo('provider');
     } catch (err) {
         showToast('Error', 'Unable to connect. Please try again.', 'error');
@@ -2962,7 +2829,7 @@ async function handleRegisterCharitySubmit(e) {
         closeAuthModal();
         if (signalrConnection) await signalrConnection.stop();
         await initSignalR();
-        showToast('Account Created! ðŸŽ‰', 'Welcome to FoodBridge! You can now browse and reserve surplus food donations.', 'success');
+        showToast('Account Created! 🎉', 'Welcome to FoodBridge! You can now browse and reserve surplus food donations.', 'success');
         navigateTo('charity');
     } catch (err) {
         showToast('Error', 'Unable to connect. Please try again.', 'error');
@@ -2972,65 +2839,65 @@ async function handleRegisterCharitySubmit(e) {
 }
 
 const toastArDict = {
-    'Signed Out': 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬',
-    'You have been signed out successfully.': 'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬ Ø¨Ù†Ø¬Ø§Ø­.',
-    'Login Failed': 'ÙØ´Ù„ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„',
-    'Invalid email or password.': 'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©.',
-    'Welcome back!': 'Ù…Ø±Ø­Ø¨Ø§Ù‹ Ø¨Ùƒ Ù…Ø¬Ø¯Ø¯Ø§Ù‹!',
-    'Error': 'Ø®Ø·Ø£',
-    'Unable to connect. Please try again.': 'ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù…. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.',
-    'Unable to fetch listing details.': 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ØªØ¨Ø±Ø¹.',
-    'Charity Required': 'Ù…Ø·Ù„ÙˆØ¨ Ø­Ø³Ø§Ø¨ Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ©',
-    'Please switch to a Charity account to request food reservations.': 'ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ø¬Ù…Ø¹ÙŠØ© Ø®ÙŠØ±ÙŠØ© Ù„Ø·Ù„Ø¨ Ø­Ø¬Ø² Ø§Ù„Ø·Ø¹Ø§Ù….',
-    'Reservation Request Blocked': 'ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨ Ø§Ù„Ø­Ø¬Ø²',
-    'Reservation Requested!': 'ØªÙ… Ø·Ù„Ø¨ Ø§Ù„Ø­Ø¬Ø² Ø¨Ù†Ø¬Ø§Ø­!',
-    'Your reservation request was dispatched to the food provider.': 'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø·Ù„Ø¨ Ø§Ù„Ø­Ø¬Ø² Ø¥Ù„Ù‰ Ù…Ø²ÙˆØ¯ Ø§Ù„Ø·Ø¹Ø§Ù… ÙˆØ³ÙŠØªÙ„Ù‚Ù‰ Ø¥Ø´Ø¹Ø§Ø±Ø§Ù‹ ÙÙˆØ±ÙŠØ§Ù‹.',
-    'Provider Access Only': 'Ù…ØªØ§Ø­ Ù„Ù„Ù…Ø²ÙˆØ¯ÙŠÙ† ÙÙ‚Ø·',
-    'Please sign in or switch to a Provider profile.': 'ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù….',
-    'Provider Login Required': 'Ù…Ø·Ù„ÙˆØ¨ Ø­Ø³Ø§Ø¨ Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù…',
-    'Please switch to a Provider profile to create donation listings.': 'ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Ù…Ø²ÙˆØ¯ Ø·Ø¹Ø§Ù… Ù„Ù†Ø´Ø± Ø§Ù„ØªØ¨Ø±Ø¹Ø§Øª.',
-    'Submission Failed': 'ÙØ´Ù„Øª Ø§Ù„Ø¹Ù…Ù„ÙŠØ©',
-    'Donation Published!': 'ØªÙ… Ù†Ø´Ø± Ø§Ù„ØªØ¨Ø±Ø¹ Ø¨Ù†Ø¬Ø§Ø­!',
-    'Your surplus food donation is now discoverable by charities.': 'Ø£ØµØ¨Ø­ ØªØ¨Ø±Ø¹Ùƒ Ù…ØªØ§Ø­Ø§Ù‹ Ø§Ù„Ø¢Ù† Ù„Ù„Ø¬Ù…Ø¹ÙŠØ§Øª Ø§Ù„Ø®ÙŠØ±ÙŠØ© Ù„Ø­Ø¬Ø²Ù‡.',
-    'Updated': 'ØªÙ… Ø§Ù„ØªØ­Ø¯ÙŠØ«',
-    'Listing marked as unavailable.': 'ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„ØªØ¨Ø±Ø¹ ÙƒØºÙŠØ± Ù…ØªØ§Ø­.',
-    'Action Failed': 'ÙØ´Ù„Øª Ø§Ù„Ø¹Ù…Ù„ÙŠØ©',
-    'Reservation Accepted': 'ØªÙ… Ù‚Ø¨ÙˆÙ„ Ø§Ù„Ø­Ø¬Ø²',
-    'Confirmed pickup details transmitted to charity via SignalR.': 'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØªÙØ§ØµÙŠÙ„ ÙˆÙ…ÙˆØ¹Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ Ù„Ù„Ø¬Ù…Ø¹ÙŠØ© ÙÙˆØ±Ø§Ù‹.',
-    'Declined': 'ØªÙ… Ø§Ù„Ø±ÙØ¶',
-    'Reservation request declined.': 'ØªÙ… Ø±ÙØ¶ Ø·Ù„Ø¨ Ø§Ù„Ø­Ø¬Ø².',
-    'Status Updated': 'ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø­Ø§Ù„Ø©',
-    'Food donation marked as ready for pickup.': 'ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„ØªØ¨Ø±Ø¹ ÙƒØ¬Ø§Ù‡Ø² Ù„Ù„Ø§Ø³ØªÙ„Ø§Ù… Ù…Ù† Ù‚Ø¨Ù„ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ©.',
-    'Success': 'Ù†Ø¬Ø§Ø­',
-    'Food donation marked as completed & collected!': 'ØªÙ… ØªØ£ÙƒÙŠØ¯ Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„ØªØ¨Ø±Ø¹ Ø¨Ù†Ø¬Ø§Ø­ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª.',
-    'Reservation Cancelled': 'ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø­Ø¬Ø²',
-    'Problem Reported': 'ØªÙ… Ø§Ù„Ø¥Ø¨Ù„Ø§Øº Ø¹Ù† Ù…Ø´ÙƒÙ„Ø©',
-    'Your pickup problem report has been submitted to platform admins.': 'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØªÙ‚Ø±ÙŠØ± Ø§Ù„Ù…Ø´ÙƒÙ„Ø© Ø¥Ù„Ù‰ Ù…Ø´Ø±ÙÙŠ Ø§Ù„Ù…Ù†ØµØ© Ù„Ù„ØªØ¯Ù‚ÙŠÙ‚ ÙˆØ§Ù„Ø­Ù„.',
-    'Review Submitted': 'ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„ØªÙ‚ÙŠÙŠÙ…',
-    'Thank you for your partner feedback!': 'Ø´ÙƒØ±Ø§Ù‹ Ù„Ùƒ Ø¹Ù„Ù‰ Ù…Ø´Ø§Ø±ÙƒØ© ØªÙ‚ÙŠÙŠÙ…Ùƒ Ù„Ù„Ø´Ø±ÙŠÙƒ.',
-    'Registration Failed': 'ÙØ´Ù„ Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨',
-    'Registration Successful!': 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¨Ù†Ø¬Ø§Ø­!',
-    'Account Created! ðŸŽ‰': 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¨Ù†Ø¬Ø§Ø­! ðŸŽ‰',
-    'Welcome to FoodBridge! You can now browse and reserve surplus food donations.': 'Ø£Ù‡Ù„Ø§Ù‹ Ø¨Ùƒ ÙÙŠ FoodBridge! ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ù„Ø¢Ù† ØªØµÙØ­ ÙˆØ­Ø¬Ø² ØªØ¨Ø±Ø¹Ø§Øª Ø§Ù„Ø·Ø¹Ø§Ù….',
-    'Your provider account was created. Please sign in to verify credentials.': 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø²ÙˆØ¯ Ø¨Ù†Ø¬Ø§Ø­. ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.',
-    'Your charity account was created. Please sign in to proceed with verification.': 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø¨Ù†Ø¬Ø§Ø­. ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.',
-    'User Suspended': 'ØªÙ… ØªØ¬Ù…ÙŠØ¯ Ø§Ù„Ø­Ø³Ø§Ø¨',
-    'User Reactivated': 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨',
-    'Organization Verified': 'ØªÙ… ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¤Ø³Ø³Ø©',
-    'Organization verification approved successfully.': 'ØªÙ… Ø§Ø¹ØªÙ…Ø§Ø¯ ÙˆØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¤Ø³Ø³Ø© Ø¨Ù†Ø¬Ø§Ø­.',
-    'Organization Rejected': 'ØªÙ… Ø±ÙØ¶ Ø§Ù„ØªÙˆØ«ÙŠÙ‚',
-    'Organization verification rejected.': 'ØªÙ… Ø±ÙØ¶ Ø·Ù„Ø¨ ØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ù…Ø¤Ø³Ø³Ø©.',
-    'Content Removed': 'ØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ø­ØªÙˆÙ‰',
-    'Listing Removed': 'ØªÙ… Ø­Ø°Ù Ø§Ù„ØªØ¨Ø±Ø¹',
-    'Item removed and reason logged to AuditLog.': 'ØªÙ… Ø­Ø°Ù Ø§Ù„ØªØ¨Ø±Ø¹ ÙˆØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ø³Ø¨Ø¨ ÙÙŠ Ø³Ø¬Ù„ Ø§Ù„ØªØ¯Ù‚ÙŠÙ‚.',
-    'Review Removed': 'ØªÙ… Ø­Ø°Ù Ø§Ù„ØªÙ‚ÙŠÙŠÙ…',
-    'Review deleted and reason logged.': 'ØªÙ… Ø­Ø°Ù Ø§Ù„ØªÙ‚ÙŠÙŠÙ… ÙˆØªÙˆØ«ÙŠÙ‚ Ø§Ù„Ø³Ø¨Ø¨ ÙÙŠ Ø³Ø¬Ù„ Ø§Ù„ØªØ¯Ù‚ÙŠÙ‚.',
-    'Report Resolved': 'ØªÙ… Ø­Ù„ Ø§Ù„Ø¨Ù„Ø§Øº',
-    'Pickup problem report marked as resolved.': 'ØªÙ… Ø­Ù„ Ø¨Ù„Ø§Øº Ù…Ø´ÙƒÙ„Ø© Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø¨Ù†Ø¬Ø§Ø­.',
-    'Dark Mode': 'Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù„ÙŠÙ„ÙŠ',
-    'Light Mode': 'Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±ÙŠ',
-    'Ø§Ù„Ù„ØºØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©': 'Ø§Ù„Ù„ØºØ© Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©',
-    'Language Changed': 'ØªØºÙŠÙŠØ± Ø§Ù„Ù„ØºØ©'
+    'Signed Out': 'تسجيل الخروج',
+    'You have been signed out successfully.': 'تم تسجيل الخروج بنجاح.',
+    'Login Failed': 'فشل تسجيل الدخول',
+    'Invalid email or password.': 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+    'Welcome back!': 'مرحباً بك مجدداً!',
+    'Error': 'خطأ',
+    'Unable to connect. Please try again.': 'تعذر الاتصال بالخادم. يرجى المحاولة مرة أخرى.',
+    'Unable to fetch listing details.': 'تعذر جلب تفاصيل التبرع.',
+    'Charity Required': 'مطلوب حساب جمعية خيرية',
+    'Please switch to a Charity account to request food reservations.': 'يرجى تسجيل الدخول بحساب جمعية خيرية لطلب حجز الطعام.',
+    'Reservation Request Blocked': 'تعذر إرسال طلب الحجز',
+    'Reservation Requested!': 'تم طلب الحجز بنجاح!',
+    'Your reservation request was dispatched to the food provider.': 'تم إرسال طلب الحجز إلى مزود الطعام وسيتلقى إشعاراً فورياً.',
+    'Provider Access Only': 'متاح للمزودين فقط',
+    'Please sign in or switch to a Provider profile.': 'يرجى تسجيل الدخول بحساب مزود طعام.',
+    'Provider Login Required': 'مطلوب حساب مزود طعام',
+    'Please switch to a Provider profile to create donation listings.': 'يرجى تسجيل الدخول بحساب مزود طعام لنشر التبرعات.',
+    'Submission Failed': 'فشلت العملية',
+    'Donation Published!': 'تم نشر التبرع بنجاح!',
+    'Your surplus food donation is now discoverable by charities.': 'أصبح تبرعك متاحاً الآن للجمعيات الخيرية لحجزه.',
+    'Updated': 'تم التحديث',
+    'Listing marked as unavailable.': 'تم تحديد التبرع كغير متاح.',
+    'Action Failed': 'فشلت العملية',
+    'Reservation Accepted': 'تم قبول الحجز',
+    'Confirmed pickup details transmitted to charity via SignalR.': 'تم إرسال تفاصيل وموعد الاستلام المعتمد للجمعية فوراً.',
+    'Declined': 'تم الرفض',
+    'Reservation request declined.': 'تم رفض طلب الحجز.',
+    'Status Updated': 'تم تحديث الحالة',
+    'Food donation marked as ready for pickup.': 'تم تحديد التبرع كجاهز للاستلام من قبل الجمعية.',
+    'Success': 'نجاح',
+    'Food donation marked as completed & collected!': 'تم تأكيد استلام التبرع بنجاح وتحديث الإحصائيات.',
+    'Reservation Cancelled': 'تم إلغاء الحجز',
+    'Problem Reported': 'تم الإبلاغ عن مشكلة',
+    'Your pickup problem report has been submitted to platform admins.': 'تم إرسال تقرير المشكلة إلى مشرفي المنصة للتدقيق والحل.',
+    'Review Submitted': 'تم إرسال التقييم',
+    'Thank you for your partner feedback!': 'شكراً لك على مشاركة تقييمك للشريك.',
+    'Registration Failed': 'فشل إنشاء الحساب',
+    'Registration Successful!': 'تم إنشاء الحساب بنجاح!',
+    'Account Created! 🎉': 'تم إنشاء الحساب بنجاح! 🎉',
+    'Welcome to FoodBridge! You can now browse and reserve surplus food donations.': 'أهلاً بك في FoodBridge! يمكنك الآن تصفح وحجز تبرعات الطعام.',
+    'Your provider account was created. Please sign in to verify credentials.': 'تم إنشاء حساب المزود بنجاح. يرجى تسجيل الدخول.',
+    'Your charity account was created. Please sign in to proceed with verification.': 'تم إنشاء حساب الجمعية بنجاح. يرجى تسجيل الدخول.',
+    'User Suspended': 'تم تجميد الحساب',
+    'User Reactivated': 'تم تفعيل الحساب',
+    'Organization Verified': 'تم توثيق المؤسسة',
+    'Organization verification approved successfully.': 'تم اعتماد وتوثيق المؤسسة بنجاح.',
+    'Organization Rejected': 'تم رفض التوثيق',
+    'Organization verification rejected.': 'تم رفض طلب توثيق المؤسسة.',
+    'Content Removed': 'تم حذف المحتوى',
+    'Listing Removed': 'تم حذف التبرع',
+    'Item removed and reason logged to AuditLog.': 'تم حذف التبرع وتوثيق السبب في سجل التدقيق.',
+    'Review Removed': 'تم حذف التقييم',
+    'Review deleted and reason logged.': 'تم حذف التقييم وتوثيق السبب في سجل التدقيق.',
+    'Report Resolved': 'تم حل البلاغ',
+    'Pickup problem report marked as resolved.': 'تم حل بلاغ مشكلة الاستلام بنجاح.',
+    'Dark Mode': 'الوضع الليلي',
+    'Light Mode': 'الوضع النهاري',
+    'اللغة العربية': 'اللغة العربية',
+    'Language Changed': 'تغيير اللغة'
 };
 
 function showToast(title, message, type = 'info') {
@@ -3045,7 +2912,7 @@ function showToast(title, message, type = 'info') {
         if (toastArDict[title]) finalTitle = toastArDict[title];
         if (toastArDict[message]) finalMsg = toastArDict[message];
         else if (typeof message === 'string' && message.startsWith('Signed in as ')) {
-            finalMsg = 'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³Ù… ' + message.replace('Signed in as ', '');
+            finalMsg = 'تم تسجيل الدخول باسم ' + message.replace('Signed in as ', '');
         }
     }
 
@@ -3098,4 +2965,119 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+}
+
+
+
+async function loadAdminExpiredListings() {
+    if (!currentUser) return;
+    const isAr = currentLang === 'ar';
+    const container = document.getElementById('adminExpiredListingsContainer');
+    if (!container) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/expired-listings`, {
+            headers: { 'Authorization': `Bearer ${currentUser.token}` }
+        });
+        const listings = await res.json();
+
+        if (document.getElementById('adminBadgeExpiredCount')) {
+            document.getElementById('adminBadgeExpiredCount').textContent = listings.length;
+        }
+
+        if (!listings || listings.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">${isAr ? 'لا توجد تبرعات منتهية الصلاحية حالياً. جميع الفوائض تم توزيعها بنجاح!' : 'No expired surplus items currently found. All donations were redistributed on schedule!'}</div>`;
+            return;
+        }
+
+        container.innerHTML = listings.map(item => `
+            <div class="p-4 rounded-2xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/50 dark:bg-amber-950/20 flex flex-col md:flex-row md:items-center justify-between gap-4 transition hover:shadow-md">
+                <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold shrink-0">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h4 class="font-bold text-slate-900 dark:white text-sm">${escapeHtml(item.foodName)}</h4>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200">${escapeHtml(formatCategory(item.foodCategory))}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300">${isAr ? 'منتهي الصلاحية' : 'Expired'}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                            <span>${escapeHtml(item.providerOrganization)} (${escapeHtml(item.providerName)})</span>
+                            <span class="mx-1">•</span>
+                            <span class="font-bold text-amber-700 dark:text-amber-300">${item.quantity} ${escapeHtml(item.unitOfMeasurement)}</span>
+                            <span class="mx-1">•</span>
+                            <span>${isAr ? 'انتهت المهلة:' : 'Deadline:'} ${new Date(item.pickupDeadline).toLocaleDateString(isAr ? 'ar-EG' : 'en-US')}</span>
+                        </div>
+                        ${item.reportReason ? `<div class="mt-1.5 text-xs text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 p-2 rounded-lg border border-slate-200/50 dark:border-slate-700/50"><i class="fa-solid fa-info-circle text-amber-500 mr-1 rtl:ml-1"></i> ${escapeHtml(item.reportReason)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap shrink-0">
+                    <button onclick="openAdminWasteActionModal(${item.id}, '${escapeHtml(item.foodName).replace(/'/g, "\\'")}', '${escapeHtml(item.providerOrganization || item.providerName).replace(/'/g, "\\'")}', ${item.quantity}, '${escapeHtml(item.unitOfMeasurement).replace(/'/g, "\\'")}')" class="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition flex items-center">
+                        <i class="fa-solid fa-gavel mr-1.5 rtl:ml-1.5"></i> ${isAr ? 'اتخاذ إجراء رقابي' : 'Enforce Action'}
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error('Error fetching expired listings:', err);
+    }
+}
+
+function openAdminWasteActionModal(listingId, foodName, providerName, quantity, unit) {
+    document.getElementById('wasteActionListingId').value = listingId;
+    document.getElementById('wasteActionFoodName').textContent = foodName;
+    document.getElementById('wasteActionProviderName').textContent = providerName;
+    document.getElementById('wasteActionQuantity').textContent = `${quantity} ${unit}`;
+    document.getElementById('wasteActionNotes').value = '';
+    document.getElementById('wasteActionType').value = 'WarnProvider';
+    document.getElementById('adminWasteActionModal').classList.remove('hidden');
+}
+
+function closeAdminWasteActionModal() {
+    document.getElementById('adminWasteActionModal').classList.add('hidden');
+}
+
+async function handleWasteActionSubmit(event) {
+    event.preventDefault();
+    if (!currentUser) return;
+    const isAr = currentLang === 'ar';
+    const listingId = document.getElementById('wasteActionListingId').value;
+    const actionType = document.getElementById('wasteActionType').value;
+    const notes = document.getElementById('wasteActionNotes').value.trim();
+
+    if (!listingId || !notes) return;
+
+    const btn = document.getElementById('btnSubmitWasteAction');
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/listings/${listingId}/waste-action`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentUser.token}`
+            },
+            body: JSON.stringify({ actionType, notes })
+        });
+
+        if (res.ok) {
+            closeAdminWasteActionModal();
+            showToast(
+                isAr ? 'تم تطبيق الإجراء بنجاح' : 'Action Executed',
+                isAr ? 'تم حفظ الإجراء الإداري وتوثيقه في سجل التدقيق وإشعار الجهة.' : 'Administrative action logged to audit trail and notified to provider.',
+                'success'
+            );
+            await loadAdminStats();
+            await loadAdminExpiredListings();
+            await loadAdminAuditLogs();
+        } else {
+            const err = await res.json();
+            showToast(isAr ? 'خطأ' : 'Error', err.message || (isAr ? 'تعذر تنفيذ الإجراء' : 'Failed to apply action'), 'error');
+        }
+    } catch (err) {
+        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
+    } finally {
+        btn.disabled = false;
+    }
 }

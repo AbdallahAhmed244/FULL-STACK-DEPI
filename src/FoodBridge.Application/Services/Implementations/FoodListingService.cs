@@ -53,14 +53,14 @@ public class FoodListingService : IFoodListingService
         }
 
         var unitLower = (dto.UnitOfMeasurement ?? "").Trim().ToLower();
-        if (unitLower.Contains("kg") || unitLower.Contains("ÙƒÙŠÙ„Ùˆ") || unitLower.Contains("kilo"))
+        if (unitLower.Contains("kg") || unitLower.Contains("كيلو") || unitLower.Contains("kilo"))
         {
             if (dto.Quantity < 1m)
             {
                 return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Kilograms (kg) is 1 kg to ensure practical logistics for charity collection.");
             }
         }
-        else if (unitLower.Contains("liter") || unitLower.Contains("litre") || unitLower.Contains("Ù„ØªØ±") || unitLower == "l")
+        else if (unitLower.Contains("liter") || unitLower.Contains("litre") || unitLower.Contains("لتر") || unitLower == "l")
         {
             if (dto.Quantity < 1m)
             {
@@ -141,14 +141,14 @@ public class FoodListingService : IFoodListingService
         }
 
         var updateUnitLower = (dto.UnitOfMeasurement ?? "").Trim().ToLower();
-        if (updateUnitLower.Contains("kg") || updateUnitLower.Contains("ÙƒÙŠÙ„Ùˆ") || updateUnitLower.Contains("kilo"))
+        if (updateUnitLower.Contains("kg") || updateUnitLower.Contains("كيلو") || updateUnitLower.Contains("kilo"))
         {
             if (dto.Quantity < 1m)
             {
                 return Result<FoodListingDto>.Failure("Minimum donation quantity for items measured in Kilograms (kg) is 1 kg to ensure practical logistics for charity collection.");
             }
         }
-        else if (updateUnitLower.Contains("liter") || updateUnitLower.Contains("litre") || updateUnitLower.Contains("Ù„ØªØ±") || updateUnitLower == "l")
+        else if (updateUnitLower.Contains("liter") || updateUnitLower.Contains("litre") || updateUnitLower.Contains("لتر") || updateUnitLower == "l")
         {
             if (dto.Quantity < 1m)
             {
