@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -141,7 +141,7 @@ public class AuthService : IAuthService
 
         if (user.Status == UserStatus.Suspended)
         {
-            return Result<AuthResponseDto>.Failure("Your account has been suspended by an administrator. Please contact support.");
+            return Result<AuthResponseDto>.Failure("Your account has been suspended by an administrator. Please contact support at: support@foodbridge.com");
         }
 
         if (await _userManager.IsLockedOutAsync(user))
@@ -174,7 +174,7 @@ public class AuthService : IAuthService
                 _context.AuditLogs.Add(securityAudit);
                 await _context.SaveChangesAsync();
 
-                return Result<AuthResponseDto>.Failure("Security Alert: Your account has been suspended due to persistent failed login attempts. Please contact a platform administrator to unlock your account.");
+                return Result<AuthResponseDto>.Failure("Security Alert: Your account has been suspended due to persistent failed login attempts. Please contact platform support at: support@foodbridge.com");
             }
 
             if (await _userManager.IsLockedOutAsync(user))
