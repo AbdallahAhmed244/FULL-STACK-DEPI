@@ -1,4 +1,4 @@
-﻿
+
 const API_BASE = '/api';
 let currentUser = JSON.parse(localStorage.getItem('foodbridge_user')) || null;
 let currentView = 'landing';
@@ -795,6 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSignalR();
     navigateTo('landing');
     initScrollReveal();
+    init3DTilt();
 });
 
 async function initSignalR() {
@@ -1085,6 +1086,30 @@ function initScrollReveal() {
             el.classList.add('revealed');
         }
     });
+
+    init3DTilt();
+}
+
+function init3DTilt() {
+    document.querySelectorAll('.card-tilt-hover, .glass-stat-card').forEach(card => {
+        if (card.dataset.tiltInitialized) return;
+        card.dataset.tiltInitialized = 'true';
+
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -6;
+            const rotateY = ((x - centerX) / centerX) * 6;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-8px) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
 }
 
 function animateCounter(elementId, targetValue, duration = 1400) {
@@ -1141,6 +1166,7 @@ async function loadLandingStats() {
     }
     setTimeout(() => {
         initScrollReveal();
+        init3DTilt();
     }, 60);
 }
 

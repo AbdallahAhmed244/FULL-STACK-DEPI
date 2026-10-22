@@ -408,6 +408,71 @@ html[dir="rtl"] {
         .card-tilt-hover:hover {
             transform: translateY(-8px) scale(1.02);
         }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.25); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.18); }
+            70% { transform: scale(1); }
+        }
+        .animate-heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes truckGlide {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        html[dir="rtl"] .truck-glide-hover:hover {
+            transform: translateX(-10px) !important;
+        }
+        .truck-glide-hover:hover {
+            animation: truckGlide 1s ease-in-out infinite;
+        }
+
+        @keyframes badgeHalo {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+        }
+        .animate-halo {
+            animation: badgeHalo 2.2s infinite;
+        }
+
+        .btn-sheen {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-sheen::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+            transform: rotate(25deg) translateY(-100%);
+            transition: transform 0.75s ease-in-out;
+        }
+        .btn-sheen:hover::after {
+            transform: rotate(25deg) translateY(100%);
+        }
+
+        .stat-glow {
+            text-shadow: 0 0 20px rgba(52, 211, 153, 0.45);
+        }
+
+        .hero-aurora-bg {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(20, 184, 166, 0.2) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(5, 150, 105, 0.2) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(13, 148, 136, 0.25) 0px, transparent 50%);
+        }
     </style>
 </head>
 <body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
@@ -493,7 +558,7 @@ html[dir="rtl"] {
 
 <section id="view-landing">
 
-<div class="relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-white overflow-hidden">
+<div class="relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 hero-aurora-bg text-white overflow-hidden">
                 
                 <div class="absolute inset-0 pointer-events-none overflow-hidden">
                     <div class="floating-orb-1 absolute top-10 left-10 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl"></div>
@@ -503,60 +568,80 @@ html[dir="rtl"] {
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 relative z-10">
                     <div class="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <span class="scroll-reveal delay-100 inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 mb-6 backdrop-blur-md shadow-sm animate-bounce-subtle cursor-default">
-                                <span class="relative flex h-2 w-2 mr-2">
+                            <span class="scroll-reveal delay-100 inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 mb-6 backdrop-blur-md shadow-lg shadow-emerald-500/10 animate-bounce-subtle cursor-default group hover:border-emerald-300 transition-colors">
+                                <span class="relative flex h-2.5 w-2.5 mr-2">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-300"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-300"></span>
                                 </span>
                                 <span data-i18n="heroBadge">Connecting Surplus to Need</span>
                             </span>
                             <h1 class="scroll-reveal delay-200 font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6" data-i18n="heroTitle">
-                                Bridge the Gap Between <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-200 animate-gradient-flow">Food Waste</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-amber-200 to-emerald-200 animate-gradient-flow">Hunger</span>
+                                Bridge the Gap Between <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-200 animate-gradient-flow drop-shadow-sm">Food Waste</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-amber-200 to-emerald-200 animate-gradient-flow drop-shadow-sm">Hunger</span>
                             </h1>
                             <p class="scroll-reveal delay-300 text-emerald-100/90 text-lg leading-relaxed mb-8 max-w-xl" data-i18n="heroDesc">
                                 FoodBridge connects restaurants, hotels, and bakeries with verified charities — turning daily food surplus into life-changing meals for thousands in need.
                             </p>
                             <div class="scroll-reveal delay-400 flex flex-wrap gap-4">
-                                <button onclick="openAuthModal('reg-provider')" class="btn-glow px-7 py-3.5 rounded-2xl font-bold bg-white text-emerald-900 hover:bg-emerald-50 shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center">
-                                    <i class="fa-solid fa-user-plus mr-2 text-emerald-600"></i> <span data-i18n="joinFree">Join FoodBridge — Free</span>
+                                <button onclick="openAuthModal('reg-provider')" class="btn-glow btn-sheen px-7 py-3.5 rounded-2xl font-bold bg-white text-emerald-900 hover:bg-emerald-50 shadow-xl shadow-emerald-950/40 transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center group">
+                                    <i class="fa-solid fa-user-plus mr-2 text-emerald-600 group-hover:scale-125 transition-transform"></i> <span data-i18n="joinFree">Join FoodBridge — Free</span>
                                 </button>
-                                <button onclick="openAuthModal('login')" class="btn-glow px-7 py-3.5 rounded-2xl font-bold bg-emerald-600/50 hover:bg-emerald-600/70 text-white border border-emerald-400/40 backdrop-blur-sm shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center">
-                                    <i class="fa-solid fa-right-to-bracket mr-2 text-emerald-300"></i> <span data-i18n="signIn">Sign In</span>
+                                <button onclick="openAuthModal('login')" class="btn-glow btn-sheen px-7 py-3.5 rounded-2xl font-bold bg-emerald-600/50 hover:bg-emerald-600/70 text-white border border-emerald-400/40 backdrop-blur-sm shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center group">
+                                    <i class="fa-solid fa-right-to-bracket mr-2 text-emerald-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform"></i> <span data-i18n="signIn">Sign In</span>
                                 </button>
-                                <button onclick="navigateTo('explore')" class="px-7 py-3.5 rounded-2xl font-bold bg-transparent hover:bg-white/10 text-emerald-200 border border-emerald-400/30 transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center">
-                                    <i class="fa-solid fa-eye mr-2"></i> <span data-i18n="navBrowse">Browse Donations</span>
+                                <button onclick="navigateTo('explore')" class="px-7 py-3.5 rounded-2xl font-bold bg-transparent hover:bg-white/10 text-emerald-200 border border-emerald-400/30 transition-all duration-300 hover:scale-105 active:scale-95 text-sm flex items-center group">
+                                    <i class="fa-solid fa-eye mr-2 group-hover:scale-125 transition-transform"></i> <span data-i18n="navBrowse">Browse Donations</span>
                                 </button>
                             </div>
                         </div>
                         
                         <div class="scroll-reveal-right delay-200 relative">
-                            <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-bold animate-float-slow absolute -top-5 right-2 shadow-xl z-20">
+                            <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-bold animate-float-slow absolute -top-5 right-2 shadow-xl z-20 hover:scale-105 transition-transform cursor-default">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                                 <span>Live Surplus Matching</span>
                             </div>
-                            <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 text-teal-200 text-xs font-bold animate-float-delayed absolute -bottom-5 left-2 shadow-xl z-20">
+                            <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-2xl bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 text-teal-200 text-xs font-bold animate-float-delayed absolute -bottom-5 left-2 shadow-xl z-20 hover:scale-105 transition-transform cursor-default">
                                 <i class="fa-solid fa-bolt text-amber-400 animate-wiggle"></i>
                                 <span>SignalR Instant Alerts</span>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
-                                    <div class="text-4xl font-heading font-extrabold text-emerald-300 mb-1 group-hover:scale-105 group-hover:text-emerald-200 transition-all duration-300" id="landingStatRedistributed">115+</div>
+                                <div class="glass-stat-card card-tilt-hover bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:border-emerald-400/50 hover:bg-white/15 transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <div class="text-4xl font-heading font-extrabold text-emerald-300 stat-glow group-hover:scale-110 group-hover:text-emerald-200 transition-all duration-300" id="landingStatRedistributed">115+</div>
+                                        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm group-hover:rotate-12 group-hover:scale-115 transition-all duration-300">
+                                            <i class="fa-solid fa-wheat-awn"></i>
+                                        </div>
+                                    </div>
                                     <div class="text-emerald-100 text-sm font-medium" data-i18n="statRedistributed">Kg of Food Redistributed</div>
                                     <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statRedistributedDesc">From completed donations</div>
                                 </div>
-                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
-                                    <div class="text-4xl font-heading font-extrabold text-teal-300 mb-1 group-hover:scale-105 group-hover:text-teal-200 transition-all duration-300" id="landingStatDonations">2+</div>
+                                <div class="glass-stat-card card-tilt-hover bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:border-teal-400/50 hover:bg-white/15 transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <div class="text-4xl font-heading font-extrabold text-teal-300 stat-glow group-hover:scale-110 group-hover:text-teal-200 transition-all duration-300" id="landingStatDonations">2+</div>
+                                        <div class="w-9 h-9 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-sm group-hover:rotate-12 group-hover:scale-115 transition-all duration-300">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </div>
+                                    </div>
                                     <div class="text-emerald-100 text-sm font-medium" data-i18n="statCompleted">Completed Donations</div>
                                     <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statCompletedSub">Successfully delivered</div>
                                 </div>
-                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
-                                    <div class="text-4xl font-heading font-extrabold text-amber-300 mb-1 group-hover:scale-105 group-hover:text-amber-200 transition-all duration-300" id="landingStatProviders">5+</div>
+                                <div class="glass-stat-card card-tilt-hover bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:border-amber-400/50 hover:bg-white/15 transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <div class="text-4xl font-heading font-extrabold text-amber-300 stat-glow group-hover:scale-110 group-hover:text-amber-200 transition-all duration-300" id="landingStatProviders">5+</div>
+                                        <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-sm group-hover:rotate-12 group-hover:scale-115 transition-all duration-300">
+                                            <i class="fa-solid fa-store"></i>
+                                        </div>
+                                    </div>
                                     <div class="text-emerald-100 text-sm font-medium" data-i18n="statProviders">Food Providers</div>
                                     <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statProvidersSub">Restaurants, bakeries & hotels</div>
                                 </div>
-                                <div class="glass-stat-card bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:animate-glow-pulse">
-                                    <div class="text-4xl font-heading font-extrabold text-rose-300 mb-1 group-hover:scale-105 group-hover:text-rose-200 transition-all duration-300" id="landingStatCharities">3+</div>
+                                <div class="glass-stat-card card-tilt-hover bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 cursor-default group hover:border-rose-400/50 hover:bg-white/15 transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <div class="text-4xl font-heading font-extrabold text-rose-300 stat-glow group-hover:scale-110 group-hover:text-rose-200 transition-all duration-300" id="landingStatCharities">3+</div>
+                                        <div class="w-9 h-9 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-sm group-hover:scale-115 transition-all duration-300">
+                                            <i class="fa-solid fa-heart animate-heartbeat text-rose-400"></i>
+                                        </div>
+                                    </div>
                                     <div class="text-emerald-100 text-sm font-medium" data-i18n="statCharities">Charity Partners</div>
                                     <div class="text-emerald-300/70 text-xs mt-1" data-i18n="statCharitiesSub">Verified & active</div>
                                 </div>
@@ -569,37 +654,34 @@ html[dir="rtl"] {
 <div class="bg-white py-20">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-14 scroll-reveal">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 mb-4">
-                            <i class="fa-solid fa-gears mr-2"></i> <span data-i18n="howItWorksTitle">How FoodBridge Works</span>
+                        <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 mb-4 shadow-xs">
+                            <i class="fa-solid fa-gears mr-2 animate-spin-slow"></i> <span data-i18n="howItWorksTitle">How FoodBridge Works</span>
                         </span>
                         <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="howItWorksTitle">How FoodBridge Works</h2>
                         <p class="text-slate-500 text-lg max-w-2xl mx-auto" data-i18n="howItWorksSubtitle">A streamlined, secure, and real-time platform for food redistribution — from posting to pickup in minutes.</p>
                     </div>
                     <div class="grid md:grid-cols-3 gap-8">
-                        
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-amber-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
-                            <div class="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
-                                <i class="fa-solid fa-store"></i>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 text-center group cursor-default">
+                            <div class="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-sm shadow-amber-500/20">
+                                <i class="fa-solid fa-store group-hover:animate-wiggle"></i>
                             </div>
-                            <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-white text-xs font-bold mb-4 shadow-sm">1</div>
+                            <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-amber-500 text-white text-xs font-bold mb-4 shadow-md group-hover:animate-halo transition-all">1</div>
                             <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-3 group-hover:text-amber-600 transition-colors" data-i18n="step1Title">Provider Posts Surplus</h3>
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step1Desc">Restaurants, bakeries, and hotels list available food with details — quantity, pickup time, allergens, storage conditions, and photos.</p>
                         </div>
-                        
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-250 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-emerald-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
-                            <div class="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
-                                <i class="fa-solid fa-hand-holding-heart"></i>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-250 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 text-center group cursor-default">
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-125 transition-all duration-300 shadow-sm shadow-emerald-500/20">
+                                <i class="fa-solid fa-hand-holding-heart animate-heartbeat text-emerald-500"></i>
                             </div>
-                            <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500 text-white text-xs font-bold mb-4 shadow-sm">2</div>
+                            <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-emerald-500 text-white text-xs font-bold mb-4 shadow-md group-hover:animate-halo transition-all">2</div>
                             <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 transition-colors" data-i18n="step2Title">Charity Reserves Food</h3>
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step2Desc">Verified charities browse available donations, filter by category and date, and submit a reservation request — all in real time.</p>
                         </div>
-                        
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-teal-400 hover:shadow-xl transition-all duration-300 text-center group cursor-default">
-                            <div class="w-16 h-16 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs">
-                                <i class="fa-solid fa-truck-fast"></i>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 bg-slate-50/90 dark:bg-slate-800/80 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-700 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 text-center group cursor-default">
+                            <div class="w-16 h-16 rounded-2xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mx-auto mb-5 text-2xl group-hover:scale-125 transition-all duration-300 shadow-sm shadow-teal-500/20">
+                                <i class="fa-solid fa-truck-fast truck-glide-hover group-hover:text-teal-500 transition-colors"></i>
                             </div>
-                            <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-teal-500 text-white text-xs font-bold mb-4 shadow-sm">3</div>
+                            <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-teal-500 text-white text-xs font-bold mb-4 shadow-md group-hover:animate-halo transition-all">3</div>
                             <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-3 group-hover:text-teal-600 transition-colors" data-i18n="step3Title">Pickup & Delivery</h3>
                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="step3Desc">Provider confirms pickup details. Charity collects the food and marks the donation as completed. Both parties leave mutual reviews.</p>
                         </div>
@@ -614,43 +696,43 @@ html[dir="rtl"] {
                         <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto" data-i18n="whoUsesSubtitle">Two types of organizations — united by one mission.</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-8">
-                        
-                        <div class="interactive-card card-tilt-hover scroll-reveal-left delay-150 bg-white dark:bg-slate-800 rounded-3xl border border-amber-100 dark:border-amber-900/30 p-8 shadow-sm hover:shadow-xl hover:border-amber-300 transition-all duration-300">
-                            <div class="flex items-start space-x-5">
-                                <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl shrink-0 shadow-xs">
+                        <div class="interactive-card card-tilt-hover scroll-reveal-left delay-150 relative overflow-hidden bg-white dark:bg-slate-800 rounded-3xl border border-amber-100 dark:border-amber-900/30 p-8 shadow-sm hover:shadow-2xl hover:border-amber-400 transition-all duration-300 group">
+                            <div class="absolute -bottom-8 -right-8 text-9xl text-amber-500/5 pointer-events-none group-hover:scale-110 group-hover:rotate-12 transition-all duration-500"><i class="fa-solid fa-utensils"></i></div>
+                            <div class="flex items-start space-x-5 relative z-10">
+                                <div class="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-3xl shrink-0 shadow-sm shadow-amber-500/20 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                                     <i class="fa-solid fa-utensils"></i>
                                 </div>
-                                <div>
-                                    <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-2" data-i18n="providerCardTitle">Food Providers</h3>
+                                <div class="flex-1">
+                                    <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-2 group-hover:text-amber-600 transition-colors" data-i18n="providerCardTitle">Food Providers</h3>
                                     <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-5" data-i18n="providerCardDesc">Restaurants, hotels, bakeries, and catering companies with daily food surplus that would otherwise go to waste.</p>
-                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature1">Post food listings with photos & allergens</span></li>
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature2">Accept or reject charity reservation requests</span></li>
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature3">Confirm exact pickup location and time</span></li>
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2 text-xs"></i> <span data-i18n="pFeature4">Track donation history and impact stats</span></li>
+                                    <ul class="space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform"><i class="fa-solid fa-circle-check text-amber-500 mr-2.5 text-sm"></i> <span data-i18n="pFeature1">Post food listings with photos & allergens</span></li>
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform delay-75"><i class="fa-solid fa-circle-check text-amber-500 mr-2.5 text-sm"></i> <span data-i18n="pFeature2">Accept or reject charity reservation requests</span></li>
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform delay-100"><i class="fa-solid fa-circle-check text-amber-500 mr-2.5 text-sm"></i> <span data-i18n="pFeature3">Confirm exact pickup location and time</span></li>
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform delay-150"><i class="fa-solid fa-circle-check text-amber-500 mr-2.5 text-sm"></i> <span data-i18n="pFeature4">Track donation history and impact stats</span></li>
                                     </ul>
-                                    <button onclick="openAuthModal('register')" class="btn-glow mt-6 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-md hover:shadow-lg transition">
+                                    <button onclick="openAuthModal('register')" class="btn-glow btn-sheen mt-6 px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
                                         <span data-i18n="registerAsProvider">Register as Provider</span> <i class="fa-solid fa-arrow-right ml-1"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="interactive-card card-tilt-hover scroll-reveal-right delay-300 bg-white dark:bg-slate-800 rounded-3xl border border-emerald-100 dark:border-emerald-900/30 p-8 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300">
-                            <div class="flex items-start space-x-5">
-                                <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl shrink-0 shadow-xs">
-                                    <i class="fa-solid fa-heart"></i>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-right delay-300 relative overflow-hidden bg-white dark:bg-slate-800 rounded-3xl border border-emerald-100 dark:border-emerald-900/30 p-8 shadow-sm hover:shadow-2xl hover:border-emerald-400 transition-all duration-300 group">
+                            <div class="absolute -bottom-8 -right-8 text-9xl text-emerald-500/5 pointer-events-none group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500"><i class="fa-solid fa-heart"></i></div>
+                            <div class="flex items-start space-x-5 relative z-10">
+                                <div class="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl shrink-0 shadow-sm shadow-emerald-500/20 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
+                                    <i class="fa-solid fa-heart animate-heartbeat text-emerald-500"></i>
                                 </div>
-                                <div>
-                                    <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-2" data-i18n="charityCardTitle">Charities & NGOs</h3>
+                                <div class="flex-1">
+                                    <h3 class="font-heading font-bold text-xl text-slate-900 dark:text-white mb-2 group-hover:text-emerald-600 transition-colors" data-i18n="charityCardTitle">Charities & NGOs</h3>
                                     <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-5" data-i18n="charityCardDesc">Food banks, shelters, community centers, and relief organizations serving underprivileged communities.</p>
-                                    <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature1">Browse available food by category and date</span></li>
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature2">Reserve donations with one click</span></li>
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature3">Receive real-time notifications via SignalR</span></li>
-                                        <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2 text-xs"></i> <span data-i18n="cFeature4">Track food received and submit partner reviews</span></li>
+                                    <ul class="space-y-2.5 text-sm text-slate-600 dark:text-slate-300">
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform"><i class="fa-solid fa-circle-check text-emerald-500 mr-2.5 text-sm"></i> <span data-i18n="cFeature1">Browse available food by category and date</span></li>
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform delay-75"><i class="fa-solid fa-circle-check text-emerald-500 mr-2.5 text-sm"></i> <span data-i18n="cFeature2">Reserve donations with one click</span></li>
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform delay-100"><i class="fa-solid fa-circle-check text-emerald-500 mr-2.5 text-sm"></i> <span data-i18n="cFeature3">Receive real-time notifications via SignalR</span></li>
+                                        <li class="flex items-center group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform delay-150"><i class="fa-solid fa-circle-check text-emerald-500 mr-2.5 text-sm"></i> <span data-i18n="cFeature4">Track food received and submit partner reviews</span></li>
                                     </ul>
-                                    <button onclick="openAuthModal('register')" class="btn-glow mt-6 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition">
+                                    <button onclick="openAuthModal('register')" class="btn-glow btn-sheen mt-6 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
                                         <span data-i18n="registerAsCharity">Register as Charity</span> <i class="fa-solid fa-arrow-right ml-1"></i>
                                     </button>
                                 </div>
@@ -667,35 +749,35 @@ html[dir="rtl"] {
                         <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl mx-auto" data-i18n="platformFeaturesSubtitle">Built with enterprise-grade technology to ensure security, reliability, and real-time coordination.</p>
                     </div>
                     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-300 hover:bg-emerald-50/30 dark:hover:bg-slate-800 transition group cursor-default">
-                            <div class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-bell"></i></div>
-                            <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat1Title">Real-Time Notifications</h4>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat1Desc">Instant SignalR push alerts for reservation updates, acceptances, pickups, and reviews.</p>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-100 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 text-xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-xs"><i class="fa-solid fa-bell group-hover:animate-wiggle"></i></div>
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-600 transition-colors" data-i18n="feat1Title">Real-Time Notifications</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="feat1Desc">Instant SignalR push alerts for reservation updates, acceptances, pickups, and reviews.</p>
                         </div>
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-200 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-300 hover:bg-indigo-50/30 dark:hover:bg-slate-800 transition group cursor-default">
-                            <div class="w-11 h-11 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-shield-halved"></i></div>
-                            <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat2Title">JWT + Role-Based Auth</h4>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat2Desc">Secure JWT authentication with Admin, Provider, and Charity role-based access control.</p>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-200 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-400 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 text-xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-xs"><i class="fa-solid fa-shield-halved group-hover:scale-110"></i></div>
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors" data-i18n="feat2Title">JWT + Role-Based Auth</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="feat2Desc">Secure JWT authentication with Admin, Provider, and Charity role-based access control.</p>
                         </div>
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-300 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-amber-300 hover:bg-amber-50/30 dark:hover:bg-slate-800 transition group cursor-default">
-                            <div class="w-11 h-11 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-envelope-circle-check"></i></div>
-                            <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat3Title">Email Verification</h4>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat3Desc">All new accounts must verify their email before accessing protected features.</p>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-300 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 text-xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-xs"><i class="fa-solid fa-envelope-circle-check group-hover:rotate-12"></i></div>
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-amber-600 transition-colors" data-i18n="feat3Title">Email Verification</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="feat3Desc">All new accounts must verify their email before accessing protected features.</p>
                         </div>
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-teal-300 hover:bg-teal-50/30 dark:hover:bg-slate-800 transition group cursor-default">
-                            <div class="w-11 h-11 rounded-xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-lock"></i></div>
-                            <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat4Title">Concurrency Protection</h4>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat4Desc">Optimistic concurrency (RowVersion) prevents two charities from reserving the same listing simultaneously.</p>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-400 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-teal-400 hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-4 text-xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-xs"><i class="fa-solid fa-lock group-hover:scale-110"></i></div>
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-600 transition-colors" data-i18n="feat4Title">Concurrency Protection</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="feat4Desc">Optimistic concurrency (RowVersion) prevents two charities from reserving the same listing simultaneously.</p>
                         </div>
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-500 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-rose-300 hover:bg-rose-50/30 dark:hover:bg-slate-800 transition group cursor-default">
-                            <div class="w-11 h-11 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                            <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat5Title">Admin Audit Trail</h4>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat5Desc">Every admin action is logged immutably — verifications, suspensions, removals, and resolutions.</p>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-500 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-rose-400 hover:shadow-xl hover:shadow-rose-500/10 transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 text-xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-xs"><i class="fa-solid fa-clock-rotate-left group-hover:rotate-180 transition-transform duration-700"></i></div>
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-rose-600 transition-colors" data-i18n="feat5Title">Admin Audit Trail</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="feat5Desc">Every admin action is logged immutably — verifications, suspensions, removals, and resolutions.</p>
                         </div>
-                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-600 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-purple-300 hover:bg-purple-50/30 dark:hover:bg-slate-800 transition group cursor-default">
-                            <div class="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 text-lg group-hover:scale-110 transition-transform"><i class="fa-solid fa-robot"></i></div>
-                            <h4 class="font-bold text-slate-900 dark:text-white mb-2" data-i18n="feat6Title">Auto-Expiry Background Service</h4>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="feat6Desc">Hosted background service automatically marks listings as Expired when the pickup deadline passes.</p>
+                        <div class="interactive-card card-tilt-hover scroll-reveal-scale delay-600 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 group cursor-default">
+                            <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 text-xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-xs"><i class="fa-solid fa-robot group-hover:animate-bounce"></i></div>
+                            <h4 class="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-600 transition-colors" data-i18n="feat6Title">Auto-Expiry Background Service</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed" data-i18n="feat6Desc">Hosted background service automatically marks listings as Expired when the pickup deadline passes.</p>
                         </div>
                     </div>
                 </div>
