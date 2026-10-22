@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
@@ -87,9 +87,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
 
-    <!-- Leaflet Map CSS & JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Leaflet Map CSS & JS (Cloudflare CDN - High Availability) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
     <link rel="stylesheet" href="/css/main.css?v=3.0">
     <link rel="stylesheet" href="/css/components.css?v=3.0">
@@ -537,19 +537,33 @@
                         <!-- Map Interactive Canvas (8 Cols) -->
                         <div class="lg:col-span-8 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl relative min-h-[500px] lg:min-h-[560px] bg-slate-200 dark:bg-slate-950 flex flex-col">
                             <!-- Top Map Floating Bar -->
-                            <div class="absolute top-4 left-4 right-4 z-[400] flex items-center justify-between pointer-events-none">
-                                <div class="pointer-events-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-md flex items-center space-x-2 rtl:space-x-reverse text-xs font-bold text-slate-800 dark:text-slate-100">
+                            <div class="absolute top-3 left-3 right-3 z-[400] flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+                                <div class="pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-md flex items-center space-x-2 rtl:space-x-reverse text-xs font-bold text-slate-800 dark:text-slate-100">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
                                     <span data-i18n="liveNetworkStatus">مراكز التوزيع متصلة لحظياً</span>
                                 </div>
-                                <button onclick="resetEgyptMapView()" class="pointer-events-auto px-3.5 py-1.5 rounded-xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md hover:bg-white text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/80 shadow-md transition flex items-center space-x-1.5 rtl:space-x-reverse" data-i18n="btnResetMap">
-                                    <i class="fa-solid fa-arrows-rotate text-emerald-600"></i>
-                                    <span>إعادة ضبط الخريطة</span>
-                                </button>
+
+                                <!-- Map Layer Controls & Switcher -->
+                                <div class="pointer-events-auto flex items-center bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-md gap-1">
+                                    <button onclick="setMapLayer('google')" id="btnLayerGoogle" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white transition flex items-center shadow-xs" title="خريطة Google الرسمية">
+                                        <i class="fa-solid fa-map mr-1 rtl:ml-1 text-[10px]"></i> Google
+                                    </button>
+                                    <button onclick="setMapLayer('satellite')" id="btnLayerSatellite" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center" title="قمر صناعي Satellite">
+                                        <i class="fa-solid fa-satellite mr-1 rtl:ml-1 text-[10px] text-amber-500"></i> <span data-i18n="mapSatellite">ساتلايت</span>
+                                    </button>
+                                    <button onclick="setMapLayer('embed')" id="btnLayerEmbed" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center" title="خريطة Google المباشرة">
+                                        <i class="fa-brands fa-google mr-1 rtl:ml-1 text-[10px] text-rose-500"></i> <span data-i18n="mapDirectGoogle">مباشر</span>
+                                    </button>
+                                    <button onclick="resetEgyptMapView()" class="p-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-emerald-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="إعادة ضبط الخريطة">
+                                        <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- The Leaflet Map Element -->
                             <div id="egyptMap" class="w-full h-full flex-1 min-h-[500px] lg:min-h-[560px] z-10"></div>
+                            <!-- Direct Google Maps Embed View Option -->
+                            <iframe id="googleMapIframe" class="hidden w-full h-full flex-1 min-h-[500px] lg:min-h-[560px] border-0" src="https://maps.google.com/maps?q=27.8,31.0&t=&z=6&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
                         </div>
                     </div>
                 </div>

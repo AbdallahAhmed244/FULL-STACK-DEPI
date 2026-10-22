@@ -450,5 +450,8 @@ function navigateTo(viewName) {
     if (viewName === 'landing') {
         loadLandingStats();
         setTimeout(initScrollReveal, 60);
+        setTimeout(() => {
+            if (typeof initEgyptMap === 'function') initEgyptMap();
+        }, 150);
     }
 }

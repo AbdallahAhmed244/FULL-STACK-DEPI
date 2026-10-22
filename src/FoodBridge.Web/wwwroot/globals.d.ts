@@ -66,5 +66,6 @@ declare function initEgyptMap(): void;
 declare function focusEgyptHub(hubId: string): void;
 declare function filterEgyptMapRegion(region: string, btnElement?: HTMLElement): void;
 declare function resetEgyptMapView(): void;
+declare function setMapLayer(layerType: string): void;
 declare function toggleMobileMenu(forceState?: boolean): void;
 declare function openMobilePortal(): void;

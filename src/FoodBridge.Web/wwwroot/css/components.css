@@ -138,6 +138,26 @@ html.dark .interactive-card:hover {
     border: none !important;
 }
 
+#egyptMap {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 480px !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 480px !important;
+    font-family: inherit !important;
+    background-color: #cbd5e1 !important;
+}
+
+.dark .leaflet-container {
+    background-color: #0f172a !important;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 5px;
     height: 5px;

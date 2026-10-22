@@ -2,6 +2,7 @@
 let egyptMapInstance = null;
 let currentTileLayer = null;
 let egyptMapMarkers = [];
+let currentTileType = 'google'; // 'google', 'satellite', 'osm', 'embed'
 
 const EGYPT_HUBS = [
     {
@@ -127,7 +128,16 @@ const EGYPT_HUBS = [
 
 function initEgyptMap() {
     const mapElement = document.getElementById('egyptMap');
-    if (!mapElement || typeof L === 'undefined') return;
+    const iframeElement = document.getElementById('googleMapIframe');
+    if (!mapElement) return;
+
+    if (typeof L === 'undefined') {
+        // Fallback to official Google Maps embed directly
+        if (mapElement) mapElement.classList.add('hidden');
+        if (iframeElement) iframeElement.classList.remove('hidden');
+        renderEgyptHubCards('all');
+        return;
+    }
 
     if (egyptMapInstance) {
         setTimeout(() => egyptMapInstance.invalidateSize(), 150);
@@ -136,38 +146,97 @@ function initEgyptMap() {
 
     const isDark = document.documentElement.classList.contains('dark');
 
-    // Centered on Egypt
-    egyptMapInstance = L.map('egyptMap', {
-        center: [27.8, 31.0],
-        zoom: 6,
-        minZoom: 5,
-        maxZoom: 16,
-        scrollWheelZoom: false,
-        attributionControl: false
-    });
+    try {
+        // Centered on Egypt
+        egyptMapInstance = L.map('egyptMap', {
+            center: [27.8, 31.0],
+            zoom: 6,
+            minZoom: 5,
+            maxZoom: 18,
+            scrollWheelZoom: false,
+            attributionControl: false
+        });
 
-    applyMapTileLayer(isDark);
-    renderEgyptHubsOnMap();
-    renderEgyptHubCards('all');
+        applyMapTileLayer(isDark);
+        renderEgyptHubsOnMap();
+        renderEgyptHubCards('all');
 
-    // Invalidate size on resize or transition
-    setTimeout(() => {
-        if (egyptMapInstance) egyptMapInstance.invalidateSize();
-    }, 300);
+        setTimeout(() => {
+            if (egyptMapInstance) egyptMapInstance.invalidateSize();
+        }, 250);
+    } catch (err) {
+        console.warn('Leaflet initialization fallback to Google Maps Embed:', err);
+        if (mapElement) mapElement.classList.add('hidden');
+        if (iframeElement) iframeElement.classList.remove('hidden');
+        renderEgyptHubCards('all');
+    }
 }
 
-function applyMapTileLayer(isDark) {
+function applyMapTileLayer(isDark, overrideType) {
     if (!egyptMapInstance) return;
-    if (currentTileLayer) egyptMapInstance.removeLayer(currentTileLayer);
+    if (currentTileLayer) {
+        try { egyptMapInstance.removeLayer(currentTileLayer); } catch (_) {}
+    }
 
-    const tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+    const type = overrideType || (isDark ? 'dark' : (currentTileType || 'google'));
+    let tileUrl = '';
+    let options = {};
 
-    currentTileLayer = L.tileLayer(tileUrl, {
-        subdomains: 'abcd',
-        maxZoom: 19
-    }).addTo(egyptMapInstance);
+    if (type === 'satellite') {
+        tileUrl = 'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}';
+        options = { subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], maxZoom: 20 };
+    } else if (type === 'osm') {
+        tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        options = { subdomains: 'abc', maxZoom: 19 };
+    } else if (type === 'dark' || (isDark && type !== 'satellite')) {
+        tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+        options = { subdomains: 'abcd', maxZoom: 19 };
+    } else { // default 'google' streets
+        tileUrl = 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+        options = { subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], maxZoom: 20 };
+    }
+
+    currentTileLayer = L.tileLayer(tileUrl, options).addTo(egyptMapInstance);
+}
+
+function setMapLayer(layerType) {
+    currentTileType = layerType;
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    const mapEl = document.getElementById('egyptMap');
+    const iframeEl = document.getElementById('googleMapIframe');
+
+    // Update active button styles
+    const btnGoogle = document.getElementById('btnLayerGoogle');
+    const btnSatellite = document.getElementById('btnLayerSatellite');
+    const btnEmbed = document.getElementById('btnLayerEmbed');
+
+    [btnGoogle, btnSatellite, btnEmbed].forEach(btn => {
+        if (btn) btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center';
+    });
+
+    if (layerType === 'embed') {
+        if (btnEmbed) btnEmbed.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white transition flex items-center shadow-xs';
+        if (mapEl) mapEl.classList.add('hidden');
+        if (iframeEl) iframeEl.classList.remove('hidden');
+        return;
+    }
+
+    if (iframeEl) iframeEl.classList.add('hidden');
+    if (mapEl) mapEl.classList.remove('hidden');
+
+    if (layerType === 'satellite') {
+        if (btnSatellite) btnSatellite.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white transition flex items-center shadow-xs';
+    } else {
+        if (btnGoogle) btnGoogle.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white transition flex items-center shadow-xs';
+    }
+
+    if (!egyptMapInstance) {
+        initEgyptMap();
+    } else {
+        applyMapTileLayer(isDark, layerType);
+        setTimeout(() => egyptMapInstance.invalidateSize(), 100);
+    }
 }
 
 function renderEgyptHubsOnMap() {
@@ -268,18 +337,25 @@ function renderEgyptHubCards(region = 'all') {
 
 function focusEgyptHub(hubId) {
     const hub = EGYPT_HUBS.find(h => h.id === hubId);
-    if (!hub || !egyptMapInstance) return;
+    if (!hub) return;
 
-    // Smooth fly to hub
-    egyptMapInstance.flyTo(hub.coords, 12, {
-        animate: true,
-        duration: 1.2
-    });
+    const iframe = document.getElementById('googleMapIframe');
+    if (iframe && !iframe.classList.contains('hidden')) {
+        iframe.src = `https://maps.google.com/maps?q=${hub.coords[0]},${hub.coords[1]}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+    }
 
-    // Open popup
-    const targetMarker = egyptMapMarkers.find(m => m.hubId === hubId);
-    if (targetMarker) {
-        setTimeout(() => targetMarker.openPopup(), 900);
+    if (egyptMapInstance) {
+        // Smooth fly to hub
+        egyptMapInstance.flyTo(hub.coords, 12, {
+            animate: true,
+            duration: 1.2
+        });
+
+        // Open popup
+        const targetMarker = egyptMapMarkers.find(m => m.hubId === hubId);
+        if (targetMarker) {
+            setTimeout(() => targetMarker.openPopup(), 900);
+        }
     }
 
     // Highlight card
@@ -318,6 +394,10 @@ function filterEgyptMapRegion(region, btnElement) {
 }
 
 function resetEgyptMapView() {
+    const iframe = document.getElementById('googleMapIframe');
+    if (iframe && !iframe.classList.contains('hidden')) {
+        iframe.src = 'https://maps.google.com/maps?q=27.8,31.0&t=&z=6&ie=UTF8&iwloc=&output=embed';
+    }
     if (!egyptMapInstance) return;
     egyptMapInstance.flyTo([27.8, 31.0], 6, {
         animate: true,
