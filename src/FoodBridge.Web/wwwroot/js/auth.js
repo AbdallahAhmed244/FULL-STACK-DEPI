@@ -96,6 +96,17 @@ async function performLogin(email, password) {
             return false;
         }
 
+        if (maintenanceStatus.isMaintenanceActive && data.role !== 'Admin') {
+            showToast(
+                isAr ? 'عذراً، المنصة تحت الصيانة' : 'Maintenance Mode Active',
+                isAr
+                    ? 'المنصة متوقفة مؤقتاً لأعمال الصيانة والتحديثات. تسجيل الدخول متاح لمسؤولي النظام فقط.'
+                    : 'Access restricted: Platform is undergoing scheduled maintenance. Sign in is restricted to Administrators only.',
+                'warning'
+            );
+            return false;
+        }
+
         currentUser = data;
         localStorage.setItem('foodbridge_user', JSON.stringify(currentUser));
         closeAuthModal();
@@ -108,11 +119,6 @@ async function performLogin(email, password) {
 
         if (signalrConnection) await signalrConnection.stop();
         await initSignalR();
-
-        if (maintenanceStatus.isMaintenanceActive && currentUser.role !== 'Admin') {
-            showToast(isAr ? 'وضع الصيانة مفعّل' : 'Maintenance Mode Active', isAr ? 'المنصة متوقفة حالياً للصيانة. يرجى الانتظار لحين انتهاء التحديثات.' : 'Platform is paused for maintenance. Operations will resume shortly.', 'info');
-            return true;
-        }
 
         if (currentUser.role === 'Admin') navigateTo('admin');
         else if (currentUser.role === 'Provider') navigateTo('provider');

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FoodBridge.Application.Common.Interfaces;
@@ -14,11 +14,13 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IMaintenanceService _maintenanceService;
 
-    public AuthController(IAuthService authService, ICurrentUserService currentUserService)
+    public AuthController(IAuthService authService, ICurrentUserService currentUserService, IMaintenanceService maintenanceService)
     {
         _authService = authService;
         _currentUserService = currentUserService;
+        _maintenanceService = maintenanceService;
     }
 
     [HttpPost("register-provider")]
@@ -51,6 +53,16 @@ public class AuthController : ControllerBase
         {
             return Unauthorized(new { message = result.Error });
         }
+
+        if (_maintenanceService.IsActive && result.Data?.Role != "Admin")
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
+            {
+                message = "المنصة متوقفة مؤقتاً لأعمال الصيانة المجدولة. تسجيل الدخول متاح لمسؤولي النظام فقط.",
+                messageEn = "Platform is under scheduled maintenance. Sign in is restricted to Administrators only."
+            });
+        }
+
         return Ok(result.Data);
     }
 
