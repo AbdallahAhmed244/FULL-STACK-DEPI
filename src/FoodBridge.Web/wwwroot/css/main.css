@@ -1,3 +1,20 @@
+body {
+    background-color: #f8fafc;
+    color: #0f172a;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: #e2e8f0;
+}
+
+input, select, textarea {
+    background-color: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
 .glass {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);

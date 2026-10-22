@@ -29,6 +29,11 @@ async function initSignalR() {
             if (ind) { ind.classList.remove('bg-emerald-500'); ind.classList.add('bg-rose-500'); }
         });
 
+        signalrConnection.on('MaintenanceModeChanged', status => {
+            console.log('%c[SignalR Push]%c ⚠️ MaintenanceModeChanged received:', 'background: #f59e0b; color: black; font-weight: bold;', 'color: #f59e0b;', status);
+            handleMaintenanceModeChanged(status);
+        });
+
         signalrConnection.on('ReceiveNotification', (notification) => {
             console.log(
                 '%c[SignalR Push Notification]%c 🔔 Received: "' + (notification.title || '') + '" — ' + (notification.message || ''),
@@ -40,9 +45,6 @@ async function initSignalR() {
         });
 
         await signalrConnection.start();
-        signalrConnection.on('MaintenanceModeChanged', status => {
-            handleMaintenanceModeChanged(status);
-        });
         console.log(
             '%c[SignalR Live Hub]%c Connected & Active (Connection ID: ' + signalrConnection.connectionId + ', User: ' + (currentUser ? currentUser.email : 'Guest') + ')',
             'background: #059669; color: white; font-weight: bold; padding: 2px 8px; border-radius: 4px;',

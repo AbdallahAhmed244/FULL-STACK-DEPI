@@ -72,6 +72,9 @@ function handleMaintenanceModeChanged(status) {
             } else {
                 overlay.classList.remove('hidden');
                 renderMaintenanceScreen();
+                document.querySelectorAll('.fixed.inset-0:not(#maintenanceOverlay)').forEach(m => {
+                    m.classList.add('hidden');
+                });
             }
         } else {
             overlay.classList.add('hidden');
@@ -110,6 +113,10 @@ function renderMaintenanceScreen() {
         } else {
             startedDisplay.textContent = '-';
         }
+    }
+
+    if (typeof updateThemeUI === 'function') {
+        updateThemeUI(document.documentElement.classList.contains('dark'));
     }
 }
 
@@ -194,4 +201,8 @@ async function handleAdminMaintenanceSubmit(event) {
         if (btn) btn.disabled = false;
     }
 }
+
+setInterval(() => {
+    checkMaintenanceStatus(false);
+}, 4000);
 

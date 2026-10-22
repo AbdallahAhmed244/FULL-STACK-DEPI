@@ -1,32 +1,65 @@
-function openAuthModal(tab = 'login') {
-    document.getElementById('authModal').classList.remove('hidden');
-    setAuthTab(tab);
+function openAdminSignInModal() {
+    const modal = document.getElementById('authModal');
+    if (modal) modal.classList.remove('hidden');
+
+    const tabsContainer = document.getElementById('authModalTabsContainer');
+    if (tabsContainer) tabsContainer.classList.add('hidden');
+
+    setAuthTab('login', true);
+}
+
+function openAuthModal(tab = 'login', adminOnly = false) {
+    const modal = document.getElementById('authModal');
+    if (modal) modal.classList.remove('hidden');
+
+    const isMaintenance = typeof maintenanceStatus !== 'undefined' && maintenanceStatus.isMaintenanceActive;
+    const tabsContainer = document.getElementById('authModalTabsContainer');
+
+    if (adminOnly || isMaintenance) {
+        if (tabsContainer) tabsContainer.classList.add('hidden');
+        setAuthTab('login', true);
+    } else {
+        if (tabsContainer) tabsContainer.classList.remove('hidden');
+        setAuthTab(tab, false);
+    }
 }
 
 function closeAuthModal() {
-    document.getElementById('authModal').classList.add('hidden');
+    const modal = document.getElementById('authModal');
+    if (modal) modal.classList.add('hidden');
+    const tabsContainer = document.getElementById('authModalTabsContainer');
+    if (tabsContainer) tabsContainer.classList.remove('hidden');
 }
 
-function setAuthTab(tab) {
+function setAuthTab(tab, isExplicitAdmin = false) {
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('regProviderForm').classList.add('hidden');
     document.getElementById('regCharityForm').classList.add('hidden');
 
     ['login', 'reg-provider', 'reg-charity'].forEach(t => {
-        document.getElementById(`atab-${t}`).className = 'py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+        const btn = document.getElementById(`atab-${t}`);
+        if (btn) btn.className = 'py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition';
     });
+
+    const isMaintenance = typeof maintenanceStatus !== 'undefined' && maintenanceStatus.isMaintenanceActive;
+    const isSpecialAdmin = isExplicitAdmin || isMaintenance;
 
     if (tab === 'login') {
         document.getElementById('loginForm').classList.remove('hidden');
-        document.getElementById('atab-login').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
-        document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل الدخول إلى FoodBridge' : 'Sign In to FoodBridge';
+        const loginTabBtn = document.getElementById('atab-login');
+        if (loginTabBtn) loginTabBtn.className = 'py-1.5 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm transition';
+        document.getElementById('authModalTitle').textContent = isSpecialAdmin
+            ? (currentLang === 'ar' ? 'تسجيل دخول مسؤول النظام' : 'Platform Administrator Sign In')
+            : (currentLang === 'ar' ? 'تسجيل الدخول إلى FoodBridge' : 'Sign In to FoodBridge');
     } else if (tab === 'reg-provider') {
         document.getElementById('regProviderForm').classList.remove('hidden');
-        document.getElementById('atab-reg-provider').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
+        const regPBtn = document.getElementById('atab-reg-provider');
+        if (regPBtn) regPBtn.className = 'py-1.5 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm transition';
         document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل مزود طعام جديد' : 'Register Food Provider';
     } else if (tab === 'reg-charity') {
         document.getElementById('regCharityForm').classList.remove('hidden');
-        document.getElementById('atab-reg-charity').className = 'py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition';
+        const regCBtn = document.getElementById('atab-reg-charity');
+        if (regCBtn) regCBtn.className = 'py-1.5 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm transition';
         document.getElementById('authModalTitle').textContent = currentLang === 'ar' ? 'تسجيل جمعية خيرية جديدة' : 'Register Charitable Organization';
     }
 }

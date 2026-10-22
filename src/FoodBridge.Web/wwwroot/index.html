@@ -1231,29 +1231,29 @@
         </div>
     </div>
 
-<div id="authModal" class="hidden fixed inset-0 z-[70] overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div id="authModal" class="hidden fixed inset-0 z-[70] overflow-y-auto bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="modal-card-animated bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-700">
             <div class="flex items-center justify-between mb-4">
-                <h3 id="authModalTitle" class="font-heading font-bold text-xl text-slate-900" data-i18n="authSignInTitle">Sign In to FoodBridge</h3>
-                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600">
+                <h3 id="authModalTitle" class="font-heading font-bold text-xl text-slate-900 dark:text-white" data-i18n="authSignInTitle">Sign In to FoodBridge</h3>
+                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-<div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl text-xs font-semibold mb-6">
-                <button onclick="setAuthTab('login')" id="atab-login" class="py-1.5 rounded-lg bg-white text-slate-800 shadow-sm transition" data-i18n="signInTab">Sign In</button>
-                <button onclick="setAuthTab('reg-provider')" id="atab-reg-provider" class="py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition" data-i18n="providerTab">Provider</button>
-                <button onclick="setAuthTab('reg-charity')" id="atab-reg-charity" class="py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition" data-i18n="charityTab">Charity</button>
+            <div id="authModalTabsContainer" class="grid grid-cols-3 gap-1 p-1 bg-slate-100 dark:bg-slate-900 rounded-xl text-xs font-semibold mb-6">
+                <button onclick="setAuthTab('login')" id="atab-login" class="py-1.5 rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm transition" data-i18n="signInTab">Sign In</button>
+                <button onclick="setAuthTab('reg-provider')" id="atab-reg-provider" class="py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition" data-i18n="providerTab">Provider</button>
+                <button onclick="setAuthTab('reg-charity')" id="atab-reg-charity" class="py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition" data-i18n="charityTab">Charity</button>
             </div>
 
-<form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelEmail">Email Address</label>
-                    <input type="email" id="loginEmail" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelEmail">Email Address</label>
+                    <input type="email" id="loginEmail" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1" data-i18n="labelPassword">Password</label>
-                    <input type="password" id="loginPassword" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelPassword">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full px-3.5 py-2 rounded-xl text-sm border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <button type="submit" class="w-full py-2.5 rounded-xl font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow text-sm transition flex items-center justify-center"><i class="fa-solid fa-right-to-bracket mr-2"></i> <span data-i18n="signIn">Sign In</span></button>
             </form>
@@ -1526,7 +1526,7 @@
     </div>
 
     <!-- Fullscreen Bilingual Maintenance Screen -->
-    <div id="maintenanceOverlay" class="hidden fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8">
+    <div id="maintenanceOverlay" class="hidden fixed inset-0 z-50 bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8 transition-colors duration-300">
         <!-- Top Bar -->
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -1534,32 +1534,32 @@
                     <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
                 </div>
                 <div>
-                    <div class="font-heading font-bold text-xl text-white">Food<span class="text-amber-400">Bridge</span></div>
-                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest" data-i18n="maintenanceBadgeSub">System Maintenance</p>
+                    <div class="font-heading font-bold text-xl text-slate-900 dark:text-white">Food<span class="text-amber-500 dark:text-amber-400">Bridge</span></div>
+                    <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest" data-i18n="maintenanceBadgeSub">System Maintenance</p>
                 </div>
             </div>
             <div class="flex items-center space-x-2 rtl:space-x-reverse">
                 <!-- Language toggle button -->
-                <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition flex items-center">
-                    <i class="fa-solid fa-globe mr-1.5 rtl:ml-1.5 text-amber-400"></i>
+                <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 text-slate-800 dark:text-white border border-slate-200 dark:border-white/20 transition flex items-center shadow-xs">
+                    <i class="fa-solid fa-globe mr-1.5 rtl:ml-1.5 text-amber-500 dark:text-amber-400"></i>
                     <span id="maintenanceLangBtnText">English</span>
                 </button>
                 <!-- Theme toggle button -->
-                <button onclick="toggleTheme()" class="p-2 rounded-xl text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition">
-                    <i class="fa-solid fa-moon"></i>
+                <button onclick="toggleTheme()" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white/80 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 border border-slate-200 dark:border-white/20 transition shadow-xs" title="تبديل المظهر / Toggle Theme">
+                    <i id="maintenanceThemeToggleIcon" class="fa-solid fa-moon"></i>
                 </button>
             </div>
         </div>
 
         <!-- Center Card -->
         <div class="max-w-2xl w-full mx-auto my-8">
-            <div class="bg-slate-900/90 border border-amber-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden text-center text-white">
+            <div class="bg-white/95 dark:bg-slate-900/90 border border-amber-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl shadow-slate-300/60 dark:shadow-2xl relative overflow-hidden text-center text-slate-900 dark:text-white transition-colors duration-300">
                 <div class="absolute -top-24 -left-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
                 <!-- Pulsing Gear / Maintenance Icon -->
                 <div class="relative inline-flex items-center justify-center mb-6">
-                    <div class="w-24 h-24 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-inner">
+                    <div class="w-24 h-24 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 dark:text-amber-400 shadow-inner">
                         <i class="fa-solid fa-gears text-4xl animate-spin-slow"></i>
                     </div>
                     <span class="absolute -top-1 -right-1 flex h-4 w-4">
@@ -1570,58 +1570,58 @@
 
                 <!-- Badge -->
                 <div class="mb-4">
-                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/15 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30">
                         <i class="fa-solid fa-clock mr-1.5 rtl:ml-1.5"></i>
                         <span id="maintenanceBadgeLabel" data-i18n="maintenanceBadgeLabel">أعمال ترقية وصيانة مجدولة</span>
                     </span>
                 </div>
 
                 <!-- Main Heading -->
-                <h1 id="maintenanceTitle" class="font-heading text-2xl sm:text-3xl font-bold mb-3 text-white tracking-tight" data-i18n="maintenanceTitle">
+                <h1 id="maintenanceTitle" class="font-heading text-2xl sm:text-3xl font-bold mb-3 text-slate-900 dark:text-white tracking-tight" data-i18n="maintenanceTitle">
                     المنصة تحت الصيانة والتطوير حالياً
                 </h1>
 
                 <!-- Subtitle Description -->
-                <p id="maintenanceDesc" class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto mb-6" data-i18n="maintenanceDesc">
+                <p id="maintenanceDesc" class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto mb-6" data-i18n="maintenanceDesc">
                     نقوم حالياً بإجراء تحديثات وتحسينات تقنية لضمان أفضل استقرار وأمان لشركائنا من المزودين والجمعيات. نعتذر عن هذا التوقف المؤقت وسنستأنف الخدمة قريباً جداً.
                 </p>
 
                 <!-- Dynamic Reason & Info Box -->
-                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5 text-left rtl:text-right mb-6 space-y-2.5">
+                <div class="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 text-left rtl:text-right mb-6 space-y-2.5">
                     <div class="flex items-start justify-between gap-2 text-xs">
-                        <span class="text-slate-400 font-semibold" data-i18n="maintenanceReasonLabel">سبب التحديث:</span>
-                        <span id="maintenanceReasonDisplay" class="font-bold text-amber-300 text-right rtl:text-left">تحديثات أمنية وترقية قاعدة البيانات</span>
+                        <span class="text-slate-500 dark:text-slate-400 font-semibold" data-i18n="maintenanceReasonLabel">سبب التحديث:</span>
+                        <span id="maintenanceReasonDisplay" class="font-bold text-amber-600 dark:text-amber-300 text-right rtl:text-left">تحديثات أمنية وترقية قاعدة البيانات</span>
                     </div>
-                    <div class="flex items-center justify-between text-xs border-t border-slate-700/60 pt-2">
-                        <span class="text-slate-400 font-semibold" data-i18n="maintenanceDurationLabel">الوقت المتوقع للاستئناف:</span>
-                        <span id="maintenanceDurationDisplay" class="font-bold text-emerald-400">30-45 دقيقة</span>
+                    <div class="flex items-center justify-between text-xs border-t border-slate-200 dark:border-slate-700/60 pt-2">
+                        <span class="text-slate-500 dark:text-slate-400 font-semibold" data-i18n="maintenanceDurationLabel">الوقت المتوقع للاستئناف:</span>
+                        <span id="maintenanceDurationDisplay" class="font-bold text-emerald-600 dark:text-emerald-400">30-45 دقيقة</span>
                     </div>
-                    <div class="flex items-center justify-between text-xs border-t border-slate-700/60 pt-2">
-                        <span class="text-slate-400 font-semibold" data-i18n="maintenanceStartedLabel">بدأت الصيانة:</span>
-                        <span id="maintenanceStartedDisplay" class="text-slate-300 font-mono text-[11px]">-</span>
+                    <div class="flex items-center justify-between text-xs border-t border-slate-200 dark:border-slate-700/60 pt-2">
+                        <span class="text-slate-500 dark:text-slate-400 font-semibold" data-i18n="maintenanceStartedLabel">بدأت الصيانة:</span>
+                        <span id="maintenanceStartedDisplay" class="text-slate-700 dark:text-slate-300 font-mono text-[11px]">-</span>
                     </div>
                 </div>
 
                 <!-- Actions -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <button onclick="checkMaintenanceStatus(true)" id="btnCheckMaintenance" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 transition shadow-lg flex items-center justify-center">
+                    <button onclick="checkMaintenanceStatus(true)" id="btnCheckMaintenance" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 transition shadow-lg shadow-amber-500/20 flex items-center justify-center font-heading">
                         <i class="fa-solid fa-arrows-rotate mr-2 rtl:ml-2"></i>
                         <span data-i18n="btnCheckMaintenance">فحص الحالة الآن</span>
                     </button>
                 </div>
 
-                <div class="mt-4 flex items-center justify-center text-[11px] text-slate-400 space-x-1.5 rtl:space-x-reverse">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <div class="mt-4 flex items-center justify-center text-[11px] text-slate-500 dark:text-slate-400 space-x-1.5 rtl:space-x-reverse">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                     <span data-i18n="maintenanceAutoSyncNotice">المزامنة اللحظية مفعلة — سيتم فتح المنصة تلقائياً فور انتهاء المشرف.</span>
                 </div>
             </div>
         </div>
 
         <!-- Bottom Bar with Admin Login Link -->
-        <div class="max-w-6xl w-full mx-auto text-center text-xs text-slate-400 pb-2">
+        <div class="max-w-6xl w-full mx-auto text-center text-xs text-slate-500 dark:text-slate-400 pb-2">
             <span>© 2026 FoodBridge. All rights reserved.</span>
             <span class="mx-2">•</span>
-            <button onclick="openAuthModal('login')" class="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-4" data-i18n="adminSignInLink">
+            <button onclick="openAdminSignInModal()" class="text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-semibold underline underline-offset-4" data-i18n="adminSignInLink">
                 تسجيل دخول مسؤول النظام
             </button>
         </div>
