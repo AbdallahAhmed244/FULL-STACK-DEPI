@@ -580,12 +580,17 @@
                             <div class="text-[10px] text-slate-500" data-i18n="brandSubtitle">Surplus Redistribution Platform</div>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
-                        <a href="mailto:ahlawy.ahmed25@gmail.com" class="text-slate-400 hover:text-emerald-400 transition flex items-center" title="Support Email">
-                            <i class="fa-solid fa-envelope mr-1.5 rtl:ml-1.5 text-emerald-500"></i> ahlawy.ahmed25@gmail.com
-                        </a>
-                        <span class="text-slate-600 hidden sm:inline">•</span>
-                        <span data-i18n="footerArch">Developed by Abdallah Sharaf using ASP.NET Core &amp; Clean Architecture</span>
+                    <div class="flex flex-col items-center md:items-start text-xs space-y-1">
+                        <div class="flex flex-wrap items-center justify-center gap-1.5" data-i18n="footerSupportContact">
+                            <span>للدعم تواصل عن طريق الإيميل:</span>
+                            <a href="mailto:ahlawy.ahmed25@gmail.com" class="text-emerald-400 font-semibold hover:underline inline-flex items-center">
+                                <i class="fa-solid fa-envelope ml-1 text-emerald-500"></i> ahlawy.ahmed25@gmail.com
+                            </a>
+                            <span class="text-slate-500">(أو الافتراضي: <a href="mailto:support@foodbridge.com" class="text-slate-300 hover:underline">support@foodbridge.com</a>)</span>
+                        </div>
+                        <div class="text-[11px] text-slate-500" data-i18n="footerArch">
+                            Developed by Abdallah Sharaf using ASP.NET Core &amp; Clean Architecture (Domain, Application, Infrastructure, Web API)
+                        </div>
                     </div>
                     <div class="text-xs" data-i18n="copyright">© 2026 FoodBridge • Developed by Abdallah Sharaf. All rights reserved.</div>
                 </div>
