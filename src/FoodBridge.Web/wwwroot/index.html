@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
@@ -1108,7 +1108,7 @@ html[dir="rtl"] {
                 <p class="text-slate-500 text-sm mt-1" data-i18n="adminSuiteDesc">Verify food provider and charity organizations, moderate platform content, resolve problem reports, and audit administrative events.</p>
             </div>
 
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                 <div class="interactive-card group cursor-default bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm">
                     <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1" data-i18n="registeredUsers">Registered Users</div>
                     <div id="adminStatUsers" class="font-heading text-2xl font-bold text-indigo-900 dark:text-indigo-300 group-hover:scale-105 transition-transform duration-200">0</div>
@@ -1129,6 +1129,11 @@ html[dir="rtl"] {
                     <div id="adminStatReports" class="font-heading text-2xl font-bold text-rose-600 dark:text-rose-400 group-hover:scale-105 transition-transform duration-200">0</div>
                     <div class="text-[11px] text-rose-500 mt-1" data-i18n="moderationIssuesDesc">Listings, reviews, and pickup issues</div>
                 </div>
+                <div class="interactive-card group cursor-default bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700 shadow-sm">
+                    <div class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1" data-i18n="wastedSurplusStat">Wasted Surplus</div>
+                    <div id="adminStatWastedQuantity" class="font-heading text-2xl font-bold text-amber-700 dark:text-amber-400 group-hover:scale-105 transition-transform duration-200">0 kg</div>
+                    <div class="text-[11px] text-amber-600 mt-1"><span id="adminStatExpiredCount">0</span> <span data-i18n="expiredDonationsLabel">Expired donations</span></div>
+                </div>
             </div>
 
 <div class="flex border-b border-slate-200 mb-6 space-x-4 overflow-x-auto">
@@ -1143,6 +1148,9 @@ html[dir="rtl"] {
                 </button>
                 <button onclick="switchAdminTab('audit')" id="atab-audit" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0">
                     <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> <span data-i18n="tabAudit">Administrative Audit Trail</span>
+                </button>
+                <button onclick="switchAdminTab('waste')" id="atab-waste" class="pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0">
+                    <i class="fa-solid fa-trash-can mr-1.5 text-amber-500"></i> <span data-i18n="tabWaste">Food Waste & Expirations</span> (<span id="adminBadgeExpiredCount">0</span>)
                 </button>
             </div>
 
@@ -1247,6 +1255,23 @@ html[dir="rtl"] {
                                 
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="adminTabWaste" class="hidden">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div>
+                            <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white" data-i18n="expiredSurplusTitle">Expired Food Listings & Waste Management</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5" data-i18n="expiredSurplusDesc">Audit past-deadline donations, issue compliance warnings to providers, log certified disposal, or suspend chronic waste offenders.</p>
+                        </div>
+                        <button onclick="loadAdminExpiredListings()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center transition self-start sm:self-auto">
+                            <i class="fa-solid fa-rotate mr-1.5"></i> <span data-i18n="refreshList">Refresh</span>
+                        </button>
+                    </div>
+                    <div id="adminExpiredListingsContainer" class="space-y-3">
+                        
                     </div>
                 </div>
             </div>
@@ -1717,6 +1742,60 @@ html[dir="rtl"] {
                     <button type="button" onclick="closeCreateAdminModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">Cancel</button>
                     <button type="submit" id="btnSubmitNewAdmin" class="px-5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow transition flex items-center">
                         <i class="fa-solid fa-user-shield mr-1.5"></i> <span data-i18n="btnCreateAdminSubmit">Create Administrator</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminWasteActionModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="modal-card-animated bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <div class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-gavel"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white" data-i18n="wasteActionModalTitle">Take Waste Action</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" id="wasteActionModalSubtitle" data-i18n="wasteActionModalSubtitle">Enforce platform compliance or log certified disposal.</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminWasteActionModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form onsubmit="handleWasteActionSubmit(event)" class="space-y-3.5">
+                <input type="hidden" id="wasteActionListingId" value="">
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs space-y-1">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 dark:text-slate-400" data-i18n="foodItemLabel">Food Item:</span>
+                        <span id="wasteActionFoodName" class="font-bold text-slate-800 dark:text-white">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 dark:text-slate-400" data-i18n="providerLabel">Provider:</span>
+                        <span id="wasteActionProviderName" class="font-semibold text-slate-700 dark:text-slate-300">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500 dark:text-slate-400" data-i18n="wastedQuantityLabel">Wasted Quantity:</span>
+                        <span id="wasteActionQuantity" class="font-bold text-amber-600 dark:text-amber-400">-</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelActionType">Enforcement Action *</label>
+                    <select id="wasteActionType" required class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <option value="WarnProvider" data-i18n="actionWarnProvider">Issue Food Waste Advisory Warning</option>
+                        <option value="RecordDisposal" data-i18n="actionRecordDisposal">Log Safe Disposal / Composting Trail</option>
+                        <option value="SuspendProvider" data-i18n="actionSuspendProvider">Suspend Provider Account</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1" data-i18n="labelActionNotes">Administrative Notes / Reason *</label>
+                    <textarea id="wasteActionNotes" rows="3" required placeholder="Specify details, disposal certifier, or compliance advisory..." data-i18n-placeholder="wasteNotesPlaceholder" class="w-full px-3.5 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+                <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <button type="button" onclick="closeAdminWasteActionModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" data-i18n="cancel">Cancel</button>
+                    <button type="submit" id="btnSubmitWasteAction" class="px-5 py-2 rounded-xl text-xs font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow transition flex items-center">
+                        <i class="fa-solid fa-check mr-1.5"></i> <span data-i18n="btnConfirmAction">Apply Action</span>
                     </button>
                 </div>
             </form>

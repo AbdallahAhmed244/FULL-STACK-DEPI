@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FoodBridge.Application.Common.Interfaces;
@@ -98,6 +98,27 @@ public class AdminController : ControllerBase
     {
         var problems = await _adminService.GetProblemReportsAsync();
         return Ok(problems);
+    }
+
+    [HttpGet("expired-listings")]
+    public async Task<IActionResult> GetExpiredListings()
+    {
+        var listings = await _adminService.GetExpiredListingsAsync();
+        return Ok(listings);
+    }
+
+    [HttpPost("listings/{id}/waste-action")]
+    public async Task<IActionResult> HandleWasteAction(int id, [FromBody] ExpiredListingActionDto dto)
+    {
+        var adminId = _currentUserService.UserId;
+        if (string.IsNullOrEmpty(adminId)) return Unauthorized();
+
+        var result = await _adminService.HandleExpiredListingActionAsync(adminId, id, dto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { message = result.Error });
+        }
+        return Ok(new { message = "Administrative action applied and audit log created." });
     }
 
     [HttpPost("listings/{id}/remove")]

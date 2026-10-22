@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +54,11 @@ public class AdminService : IAdminService
         var reportedReviews = await _context.Reviews.CountAsync(r => r.IsReported);
         var reportedProblems = await _context.Reservations.CountAsync(r => r.Status == ReservationStatus.ProblemReported);
 
+        var expiredDonationsCount = await _context.FoodListings.CountAsync(l => l.Status == FoodListingStatus.Expired);
+        var totalWastedQuantity = await _context.FoodListings
+            .Where(l => l.Status == FoodListingStatus.Expired)
+            .SumAsync(l => (decimal?)l.Quantity) ?? 0m;
+
         return new AdminDashboardStatsDto
         {
             TotalUsers = totalUsers,
@@ -66,7 +71,9 @@ public class AdminService : IAdminService
             TotalRedistributedQuantity = totalRedistributed,
             ReportedListingsCount = reportedListings,
             ReportedReviewsCount = reportedReviews,
-            ReportedProblemsCount = reportedProblems
+            ReportedProblemsCount = reportedProblems,
+            ExpiredDonationsCount = expiredDonationsCount,
+            TotalWastedQuantity = totalWastedQuantity
         };
     }
 
@@ -401,6 +408,112 @@ public class AdminService : IAdminService
             $"Administrator investigated and resolved your reported issue: {notes}",
             $"reservation:{reservationId}");
 
+        return Result.Success();
+    }
+
+    public async Task<List<FoodListingDto>> GetExpiredListingsAsync()
+    {
+        var listings = await _context.FoodListings
+            .Include(l => l.Provider)
+            .Where(l => l.Status == FoodListingStatus.Expired)
+            .OrderByDescending(l => l.PickupDeadline)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return listings.Select(l => new FoodListingDto
+        {
+            Id = l.Id,
+            ProviderId = l.ProviderId,
+            ProviderName = l.Provider?.FullName ?? "Unknown",
+            ProviderOrganization = l.Provider?.OrganizationName ?? "Unknown",
+            ProviderType = l.Provider?.SpecificType ?? "Provider",
+            FoodName = l.FoodName,
+            Description = l.Description,
+            FoodCategory = l.FoodCategory,
+            Quantity = l.Quantity,
+            UnitOfMeasurement = l.UnitOfMeasurement,
+            PreparationDate = l.PreparationDate,
+            PickupDeadline = l.PickupDeadline,
+            PickupAddress = l.PickupAddress,
+            StorageConditions = l.StorageConditions,
+            Allergens = l.Allergens,
+            ImageUrl = l.ImageUrl,
+            Status = l.Status,
+            IsReported = l.IsReported,
+            ReportReason = l.ReportReason,
+            CreatedAt = l.CreatedAt
+        }).ToList();
+    }
+
+    public async Task<Result> HandleExpiredListingActionAsync(string adminId, int listingId, ExpiredListingActionDto dto)
+    {
+        var listing = await _context.FoodListings
+            .Include(l => l.Provider)
+            .FirstOrDefaultAsync(l => l.Id == listingId);
+
+        if (listing == null)
+        {
+            return Result.Failure("Listing not found.");
+        }
+
+        if (dto.ActionType == "SuspendProvider")
+        {
+            if (listing.Provider != null)
+            {
+                listing.Provider.Status = UserStatus.Suspended;
+            }
+            var audit = new AuditLog
+            {
+                AdminId = adminId,
+                Action = "SuspendProviderWasteViolation",
+                TargetEntity = "ApplicationUser",
+                TargetId = listing.ProviderId,
+                Details = $"Provider suspended due to waste/expiry violation on listing '{listing.FoodName}' (ID: {listingId}). Notes: {dto.Notes}",
+                Timestamp = DateTimeOffset.UtcNow
+            };
+            _context.AuditLogs.Add(audit);
+
+            await _notificationService.SendNotificationAsync(
+                listing.ProviderId,
+                "Account Suspended - Food Waste Policy",
+                $"Your provider account was suspended following administrative review of expired listing '{listing.FoodName}'. Reason: {dto.Notes}",
+                $"listing:{listingId}");
+        }
+        else if (dto.ActionType == "RecordDisposal")
+        {
+            listing.ReportReason = $"Disposal Logged: {dto.Notes}";
+            var audit = new AuditLog
+            {
+                AdminId = adminId,
+                Action = "RecordWasteDisposal",
+                TargetEntity = "FoodListing",
+                TargetId = listingId.ToString(),
+                Details = $"Safe disposal audit logged for expired surplus '{listing.FoodName}' ({listing.Quantity} {listing.UnitOfMeasurement}). Notes: {dto.Notes}",
+                Timestamp = DateTimeOffset.UtcNow
+            };
+            _context.AuditLogs.Add(audit);
+        }
+        else
+        {
+            var audit = new AuditLog
+            {
+                AdminId = adminId,
+                Action = "WarnProviderFoodWaste",
+                TargetEntity = "FoodListing",
+                TargetId = listingId.ToString(),
+                Details = $"Official advisory sent to provider for expired surplus '{listing.FoodName}' ({listing.Quantity} {listing.UnitOfMeasurement}). Notes: {dto.Notes}",
+                Timestamp = DateTimeOffset.UtcNow
+            };
+            _context.AuditLogs.Add(audit);
+
+            await _notificationService.SendNotificationAsync(
+                listing.ProviderId,
+                "Food Waste Advisory Warning",
+                $"Administrative Notice: Listing '{listing.FoodName}' ({listing.Quantity} {listing.UnitOfMeasurement}) expired without redistribution. Please schedule earlier pickup windows. Notes: {dto.Notes}",
+                $"listing:{listingId}");
+        }
+
+        await _context.SaveChangesAsync();
         return Result.Success();
     }
 

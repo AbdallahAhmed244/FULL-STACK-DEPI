@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using FoodBridge.Domain.Enums;
@@ -18,6 +18,8 @@ public class AdminDashboardStatsDto
     public int ReportedListingsCount { get; set; }
     public int ReportedReviewsCount { get; set; }
     public int ReportedProblemsCount { get; set; }
+    public int ExpiredDonationsCount { get; set; }
+    public decimal TotalWastedQuantity { get; set; }
 }
 
 public class AdminUserListItemDto
@@ -51,6 +53,15 @@ public class ModerationActionDto
 {
     [Required, StringLength(500)]
     public string Reason { get; set; } = string.Empty;
+}
+
+public class ExpiredListingActionDto
+{
+    [Required]
+    public string ActionType { get; set; } = "WarnProvider";
+
+    [Required, StringLength(500)]
+    public string Notes { get; set; } = string.Empty;
 }
 
 public class CreateAdminDto

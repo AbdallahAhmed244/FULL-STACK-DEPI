@@ -317,6 +317,23 @@ const i18nDict = {
         adminNamePlaceholder: 'e.g. Sara Ahmed',
         adminDeptPlaceholder: 'e.g. Compliance & Moderation',
         administrators: 'Administrators',
+        wastedSurplusStat: 'Wasted Surplus',
+        expiredDonationsLabel: 'Expired donations',
+        tabWaste: 'Food Waste & Expirations',
+        expiredSurplusTitle: 'Expired Food Listings & Waste Management',
+        expiredSurplusDesc: 'Audit past-deadline donations, issue compliance warnings to providers, log certified disposal, or suspend chronic waste offenders.',
+        wasteActionModalTitle: 'Take Waste Action',
+        wasteActionModalSubtitle: 'Enforce platform compliance or log certified disposal.',
+        foodItemLabel: 'Food Item:',
+        providerLabel: 'Provider:',
+        wastedQuantityLabel: 'Wasted Quantity:',
+        labelActionType: 'Enforcement Action *',
+        actionWarnProvider: 'Issue Food Waste Advisory Warning',
+        actionRecordDisposal: 'Log Safe Disposal / Composting Trail',
+        actionSuspendProvider: 'Suspend Provider Account',
+        labelActionNotes: 'Administrative Notes / Reason *',
+        wasteNotesPlaceholder: 'Specify details, disposal certifier, or compliance advisory...',
+        btnConfirmAction: 'Apply Action',
         langBtnText: 'Ø¹Ø±Ø¨ÙŠ'
     },
     ar: {
@@ -625,6 +642,23 @@ const i18nDict = {
         adminNamePlaceholder: 'Ù…Ø«Ø§Ù„: Ø³Ø§Ø±Ø© Ø£Ø­Ù…Ø¯',
         adminDeptPlaceholder: 'Ù…Ø«Ø§Ù„: Ø§Ù„Ø±Ù‚Ø§Ø¨Ø© ÙˆØ§Ù„Ø§Ù…ØªØ«Ø§Ù„',
         administrators: 'Ø§Ù„Ù…Ø´Ø±ÙÙˆÙ†',
+        wastedSurplusStat: 'الفائض المهدر',
+        expiredDonationsLabel: 'تبرعات منتهية الصلاحية',
+        tabWaste: 'الفائض المهدر والصلاحيات',
+        expiredSurplusTitle: 'إعلانات الطعام منتهية الصلاحية وإدارة الهدر',
+        expiredSurplusDesc: 'تدقيق التبرعات المنتهية، توجيه إنذارات امتثال للمزودين، توثيق الإتلاف المعتمد، أو إيقاف المخالفين.',
+        wasteActionModalTitle: 'اتخاذ إجراء بشأن الهدر الغذائي',
+        wasteActionModalSubtitle: 'تطبيق سياسات الامتثال أو توثيق التخلص الآمن.',
+        foodItemLabel: 'صنف الطعام:',
+        providerLabel: 'الجهة المزودة:',
+        wastedQuantityLabel: 'الكمية المهدرة:',
+        labelActionType: 'نوع الإجراء الرقابي *',
+        actionWarnProvider: 'توجيه إنذار/تنبيه رسمي بشأن الهدر',
+        actionRecordDisposal: 'توثيق سجل إتلاف/تدوير آمن',
+        actionSuspendProvider: 'إيقاف حساب المزود نهائياً',
+        labelActionNotes: 'ملاحظات وتفاصيل الإجراء *',
+        wasteNotesPlaceholder: 'أدخل تفاصيل الإجراء، جهة الإتلاف المعتمدة، أو نص الإنذار...',
+        btnConfirmAction: 'تأكيد وتنفيذ الإجراء',
         langBtnText: 'English'
     }
 };
@@ -1325,7 +1359,6 @@ function renderListingCard(item) {
                         ${escapeHtml(item.description)}
                     </p>
 
-                    <!-- Key disclosures (FR2.3, FR3.2) -->
                     <div class="flex flex-wrap gap-1.5 mb-4 text-[11px]">
                         <span class="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50 flex items-center">
                             <i class="fa-solid fa-snowflake text-[10px] ${isAr ? 'ml-1' : 'mr-1'} text-blue-500"></i> ${escapeHtml(item.storageConditions)}
@@ -2072,6 +2105,7 @@ async function loadAdminPortal() {
     await loadAdminVerifications();
     await loadAdminUsers();
     await loadAdminModeration();
+    await loadAdminExpiredListings();
     await loadAdminAuditLogs();
 }
 
@@ -2091,6 +2125,15 @@ async function loadAdminStats() {
             document.getElementById('adminStatCompleted').textContent = data.completedDonations;
             document.getElementById('adminStatRedistributed').textContent = `${data.totalRedistributedQuantity} units`;
             document.getElementById('adminStatReports').textContent = data.reportedListingsCount + data.reportedReviewsCount + data.reportedProblemsCount;
+            if (document.getElementById('adminStatWastedQuantity')) {
+                document.getElementById('adminStatWastedQuantity').textContent = `${data.totalWastedQuantity} kg`;
+            }
+            if (document.getElementById('adminStatExpiredCount')) {
+                document.getElementById('adminStatExpiredCount').textContent = data.expiredDonationsCount;
+            }
+            if (document.getElementById('adminBadgeExpiredCount')) {
+                document.getElementById('adminBadgeExpiredCount').textContent = data.expiredDonationsCount;
+            }
         }
     } catch (err) {
         console.error('Error fetching admin dashboard:', err);
@@ -2448,6 +2491,17 @@ async function loadAdminAuditLogs() {
         }
 
         const actionTranslations = {
+            'ApproveVerification': isAr ? 'اعتماد المنظمة' : 'Approve Verification',
+            'RejectVerification': isAr ? 'رفض الاعتماد' : 'Reject Verification',
+            'SuspendUser': isAr ? 'إيقاف الحساب' : 'Suspend Account',
+            'ReactivateUser': isAr ? 'إعادة تفعيل الحساب' : 'Reactivate Account',
+            'RemoveListing': isAr ? 'إزالة إعلان طعام' : 'Remove Listing',
+            'RemoveReview': isAr ? 'حذف تقييم' : 'Remove Review',
+            'ResolveProblemReport': isAr ? 'حل نزاع استلام' : 'Resolve Dispute',
+            'CreateAdmin': isAr ? 'إنشاء حساب مسؤول' : 'Create Admin',
+            'WarnProviderFoodWaste': isAr ? 'إنذار هدر غذائي' : 'Waste Advisory Warning',
+            'RecordWasteDisposal': isAr ? 'توثيق إتلاف/تدوير' : 'Safe Disposal Logged',
+            'SuspendProviderWasteViolation': isAr ? 'إيقاف لمخالفة الهدر' : 'Suspended for Waste',
             'VerifyOrganization': 'ØªÙˆØ«ÙŠÙ‚ Ù…Ø¤Ø³Ø³Ø©',
             'RejectOrganization': 'Ø±ÙØ¶ Ù…Ø¤Ø³Ø³Ø©',
             'SuspendUser': 'ØªØ¬Ù…ÙŠØ¯ Ù…Ø³ØªØ®Ø¯Ù…',
@@ -2472,12 +2526,134 @@ async function loadAdminAuditLogs() {
 }
 
 function switchAdminTab(tab) {
-    ['verifications', 'users', 'moderation', 'audit'].forEach(t => {
-        document.getElementById(`adminTab${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.add('hidden');
-        document.getElementById(`atab-${t}`).className = 'pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0';
+    ['verifications', 'users', 'moderation', 'audit', 'waste'].forEach(t => {
+        const el = document.getElementById(`adminTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const btn = document.getElementById(`atab-${t}`);
+        if (el) el.classList.add('hidden');
+        if (btn) btn.className = 'pb-3 text-sm font-semibold text-slate-500 hover:text-slate-800 border-b-2 border-transparent shrink-0';
     });
-    document.getElementById(`adminTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
-    document.getElementById(`atab-${tab}`).className = 'pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0';
+    const targetEl = document.getElementById(`adminTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+    const targetBtn = document.getElementById(`atab-${tab}`);
+    if (targetEl) targetEl.classList.remove('hidden');
+    if (targetBtn) targetBtn.className = 'pb-3 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 shrink-0';
+    if (tab === 'waste') {
+        loadAdminExpiredListings();
+    }
+}
+
+async function loadAdminExpiredListings() {
+    if (!currentUser) return;
+    const isAr = currentLang === 'ar';
+    const container = document.getElementById('adminExpiredListingsContainer');
+    if (!container) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/expired-listings`, {
+            headers: { 'Authorization': `Bearer ${currentUser.token}` }
+        });
+        const listings = await res.json();
+
+        if (document.getElementById('adminBadgeExpiredCount')) {
+            document.getElementById('adminBadgeExpiredCount').textContent = listings.length;
+        }
+
+        if (!listings || listings.length === 0) {
+            container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">${isAr ? 'لا توجد تبرعات منتهية الصلاحية حالياً. جميع الفوائض تم توزيعها بنجاح!' : 'No expired surplus items currently found. All donations were redistributed on schedule!'}</div>`;
+            return;
+        }
+
+        container.innerHTML = listings.map(item => `
+            <div class="p-4 rounded-2xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/50 dark:bg-amber-950/20 flex flex-col md:flex-row md:items-center justify-between gap-4 transition hover:shadow-md">
+                <div class="flex items-start space-x-3 rtl:space-x-reverse">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold shrink-0">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h4 class="font-bold text-slate-900 dark:text-white text-sm">${escapeHtml(item.foodName)}</h4>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200">${escapeHtml(formatCategory(item.foodCategory))}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300">${isAr ? 'منتهي الصلاحية' : 'Expired'}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                            <span>${escapeHtml(item.providerOrganization)} (${escapeHtml(item.providerName)})</span>
+                            <span class="mx-1">•</span>
+                            <span class="font-bold text-amber-700 dark:text-amber-300">${item.quantity} ${escapeHtml(item.unitOfMeasurement)}</span>
+                            <span class="mx-1">•</span>
+                            <span>${isAr ? 'انتهت المهلة:' : 'Deadline:'} ${new Date(item.pickupDeadline).toLocaleDateString(isAr ? 'ar-EG' : 'en-US')}</span>
+                        </div>
+                        ${item.reportReason ? `<div class="mt-1.5 text-xs text-slate-600 dark:text-slate-300 bg-white/70 dark:bg-slate-800/70 p-2 rounded-lg border border-slate-200/50 dark:border-slate-700/50"><i class="fa-solid fa-info-circle text-amber-500 mr-1 rtl:ml-1"></i> ${escapeHtml(item.reportReason)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap shrink-0">
+                    <button onclick="openAdminWasteActionModal(${item.id}, '${escapeHtml(item.foodName).replace(/'/g, "\\'")}', '${escapeHtml(item.providerOrganization || item.providerName).replace(/'/g, "\\'")}', ${item.quantity}, '${escapeHtml(item.unitOfMeasurement).replace(/'/g, "\\'")}')" class="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition flex items-center">
+                        <i class="fa-solid fa-gavel mr-1.5 rtl:ml-1.5"></i>
+                        <span>${isAr ? 'اتخاذ إجراء إداري' : 'Take Action'}</span>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+    } catch (err) {
+        console.error('Error fetching expired listings:', err);
+    }
+}
+
+function openAdminWasteActionModal(listingId, foodName, providerName, quantity, unit) {
+    document.getElementById('wasteActionListingId').value = listingId;
+    document.getElementById('wasteActionFoodName').textContent = foodName;
+    document.getElementById('wasteActionProviderName').textContent = providerName;
+    document.getElementById('wasteActionQuantity').textContent = `${quantity} ${unit}`;
+    document.getElementById('wasteActionNotes').value = '';
+    document.getElementById('wasteActionType').value = 'WarnProvider';
+    document.getElementById('adminWasteActionModal').classList.remove('hidden');
+}
+
+function closeAdminWasteActionModal() {
+    document.getElementById('adminWasteActionModal').classList.add('hidden');
+}
+
+async function handleWasteActionSubmit(event) {
+    event.preventDefault();
+    if (!currentUser) return;
+    const isAr = currentLang === 'ar';
+    const listingId = document.getElementById('wasteActionListingId').value;
+    const actionType = document.getElementById('wasteActionType').value;
+    const notes = document.getElementById('wasteActionNotes').value.trim();
+
+    if (!listingId || !notes) return;
+
+    const btn = document.getElementById('btnSubmitWasteAction');
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`${API_BASE}/admin/listings/${listingId}/waste-action`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentUser.token}`
+            },
+            body: JSON.stringify({ actionType, notes })
+        });
+
+        if (res.ok) {
+            closeAdminWasteActionModal();
+            showToast(
+                isAr ? 'تم تطبيق الإجراء بنجاح' : 'Action Executed',
+                isAr ? 'تم حفظ الإجراء الإداري وتوثيقه في سجل التدقيق وإشعار الجهة.' : 'Administrative action logged to audit trail and notified to provider.',
+                'success'
+            );
+            await loadAdminStats();
+            await loadAdminExpiredListings();
+            await loadAdminAuditLogs();
+        } else {
+            const err = await res.json();
+            showToast(isAr ? 'خطأ' : 'Error', err.message || (isAr ? 'تعذر تنفيذ الإجراء' : 'Failed to apply action'), 'error');
+        }
+    } catch (err) {
+        showToast(isAr ? 'خطأ في الاتصال' : 'Connection Error', err.message, 'error');
+    } finally {
+        btn.disabled = false;
+    }
 }
 
 async function loadImpactStats() {

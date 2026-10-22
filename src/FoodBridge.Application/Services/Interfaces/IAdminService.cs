@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FoodBridge.Application.Common;
 using FoodBridge.Application.DTOs;
@@ -17,6 +17,8 @@ public interface IAdminService
     Task<Result> RemoveListingAsync(string adminId, int listingId, string reason);
     Task<Result> RemoveReviewAsync(string adminId, int reviewId, string reason);
     Task<Result> ResolveProblemReportAsync(string adminId, int reservationId, string notes);
+    Task<List<FoodListingDto>> GetExpiredListingsAsync();
+    Task<Result> HandleExpiredListingActionAsync(string adminId, int listingId, ExpiredListingActionDto dto);
     Task<Result<AdminUserListItemDto>> CreateAdminAsync(string adminId, CreateAdminDto dto);
     Task<List<AuditLogDto>> GetAuditLogsAsync(int take = 100);
 }

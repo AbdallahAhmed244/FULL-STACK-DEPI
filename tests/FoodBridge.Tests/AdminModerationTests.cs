@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 using FoodBridge.Application.Common.Interfaces;
+using FoodBridge.Application.DTOs;
 using FoodBridge.Application.Services.Implementations;
 using FoodBridge.Domain.Entities;
 using FoodBridge.Domain.Enums;
@@ -84,5 +85,129 @@ public class AdminModerationTests
 
         Assert.False(result.Succeeded);
         Assert.Contains("cannot suspend their own account", result.Error);
+    }
+
+    [Fact]
+    public async Task GetExpiredListingsAsync_And_DashboardStats_CalculatesWastedSurplusAccurately()
+    {
+        var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
+        var adminService = new AdminService(db, _mockNotification.Object);
+
+        var provider = new ApplicationUser { Id = "prov-waste", FullName = "Chef Mark", OrganizationName = "Bistro", UserType = UserType.FoodProvider };
+        var listing1 = new FoodListing
+        {
+            Id = 101,
+            ProviderId = "prov-waste",
+            FoodName = "Overripe Bananas",
+            Quantity = 15m,
+            UnitOfMeasurement = "kg",
+            Status = FoodListingStatus.Expired,
+            PickupDeadline = DateTime.UtcNow.AddHours(-3)
+        };
+        var listing2 = new FoodListing
+        {
+            Id = 102,
+            ProviderId = "prov-waste",
+            FoodName = "Unsold Sandwiches",
+            Quantity = 20m,
+            UnitOfMeasurement = "portions",
+            Status = FoodListingStatus.Expired,
+            PickupDeadline = DateTime.UtcNow.AddHours(-1)
+        };
+        var listing3 = new FoodListing
+        {
+            Id = 103,
+            ProviderId = "prov-waste",
+            FoodName = "Fresh Apples",
+            Quantity = 50m,
+            UnitOfMeasurement = "kg",
+            Status = FoodListingStatus.Available,
+            PickupDeadline = DateTime.UtcNow.AddHours(5)
+        };
+
+        db.Users.Add(provider);
+        db.FoodListings.AddRange(listing1, listing2, listing3);
+        await db.SaveChangesAsync();
+
+        var expiredListings = await adminService.GetExpiredListingsAsync();
+        Assert.Equal(2, expiredListings.Count);
+
+        var stats = await adminService.GetDashboardStatsAsync();
+        Assert.Equal(2, stats.ExpiredDonationsCount);
+        Assert.Equal(35m, stats.TotalWastedQuantity);
+    }
+
+    [Fact]
+    public async Task HandleExpiredListingActionAsync_WarnProvider_SendsAdvisoryAndCreatesAudit()
+    {
+        var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
+        var adminService = new AdminService(db, _mockNotification.Object);
+
+        var provider = new ApplicationUser { Id = "prov-warn", FullName = "Baker Sam", OrganizationName = "Sam Bakery", UserType = UserType.FoodProvider };
+        var listing = new FoodListing
+        {
+            Id = 201,
+            ProviderId = "prov-warn",
+            FoodName = "Pastries",
+            Quantity = 10m,
+            UnitOfMeasurement = "boxes",
+            Status = FoodListingStatus.Expired
+        };
+
+        db.Users.Add(provider);
+        db.FoodListings.Add(listing);
+        await db.SaveChangesAsync();
+
+        var actionDto = new ExpiredListingActionDto
+        {
+            ActionType = "WarnProvider",
+            Notes = "Please reduce quantities or post listings sooner."
+        };
+
+        var result = await adminService.HandleExpiredListingActionAsync("admin-1", 201, actionDto);
+
+        Assert.True(result.Succeeded);
+
+        var audit = await db.AuditLogs.FirstOrDefaultAsync(a => a.TargetId == "201" && a.Action == "WarnProviderFoodWaste");
+        Assert.NotNull(audit);
+        Assert.Contains("Official advisory sent", audit!.Details);
+    }
+
+    [Fact]
+    public async Task HandleExpiredListingActionAsync_SuspendProvider_SuspendsUserAccount()
+    {
+        var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
+        var adminService = new AdminService(db, _mockNotification.Object);
+
+        var provider = new ApplicationUser { Id = "prov-suspend", FullName = "Chronic Waster", Status = UserStatus.Active, UserType = UserType.FoodProvider };
+        var listing = new FoodListing
+        {
+            Id = 301,
+            ProviderId = "prov-suspend",
+            FoodName = "Bulk Meat",
+            Quantity = 40m,
+            UnitOfMeasurement = "kg",
+            Status = FoodListingStatus.Expired
+        };
+
+        db.Users.Add(provider);
+        db.FoodListings.Add(listing);
+        await db.SaveChangesAsync();
+
+        var actionDto = new ExpiredListingActionDto
+        {
+            ActionType = "SuspendProvider",
+            Notes = "Repeated waste non-compliance."
+        };
+
+        var result = await adminService.HandleExpiredListingActionAsync("admin-1", 301, actionDto);
+
+        Assert.True(result.Succeeded);
+
+        var updatedProvider = await db.Users.FindAsync("prov-suspend");
+        Assert.Equal(UserStatus.Suspended, updatedProvider!.Status);
+
+        var audit = await db.AuditLogs.FirstOrDefaultAsync(a => a.TargetId == "prov-suspend" && a.Action == "SuspendProviderWasteViolation");
+        Assert.NotNull(audit);
     }
 }
