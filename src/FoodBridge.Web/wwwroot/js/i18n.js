@@ -1,4 +1,4 @@
-﻿const i18nDict = {
+const i18nDict = {
     en: {
         brandName: 'FoodBridge',
         brandSubtitle: 'Surplus Redistribution Platform',
@@ -8,6 +8,8 @@
         navCharity: 'Charity Portal',
         navAdmin: 'Admin Suite',
         navImpact: 'Impact & Stats',
+        navMap: 'Map',
+        navPortal: 'My Portal',
         signIn: 'Sign In',
         register: 'Register',
         signOut: 'Sign Out',
@@ -387,6 +389,8 @@
         navCharity: 'بوابة الجمعيات',
         navAdmin: 'لوحة المشرف',
         navImpact: 'الأثر والإحصائيات',
+        navMap: 'الخريطة',
+        navPortal: 'لوحتي',
         signIn: 'تسجيل الدخول',
         register: 'إنشاء حساب',
         signOut: 'تسجيل الخروج',

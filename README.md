@@ -1,106 +1,228 @@
-# FoodBridge Platform — Food Surplus Management & Charity Donation Platform
+# 🥗 FoodBridge Platform — المنظومة الذكية لإدارة وإعادة توزيع فائض الطعام في مصر
 
-> **DEPI Graduation Project — Enterprise Full-Stack .NET Solution**  
-> Architected according to **Clean Architecture** principles, featuring ASP.NET Core, Entity Framework Core with SQL Server, ASP.NET Core Identity with JWT Authentication, SignalR Real-Time Notifications, Background Hosted Services, and a Responsive Web UI.
+> **مشروع تخرج مبادرة مصر الرقمية (DEPI Graduation Project) — حل برمجي سحابي متكامل للمؤسسات (Enterprise Full-Stack .NET Solution)**  
+> مبني وفق أعلى معايير هندسة البرمجيات وبنية **Clean Architecture** المعتمدة من مايكروسوفت، مع واجهة مستخدم متجاوبة بالكامل لجميع أحجام الشاشات (Mobile, Tablet, Desktop)، وخريطة تفاعلية لتغطية محافظات مصر، وإشعارات لحظية عبر SignalR، ونظام صيانة لحظي، وتوافق تام بين اللغتين العربية والإنجليزية.
 
 ---
 
-## 🏛 Clean Architecture Overview
+## 📌 جدول المحتويات (Table of Contents)
+1. [ماهو نظام FoodBridge؟ (System Overview & Mission)](#-ماهو-نظام-foodbridge)
+2. [رحلة المستخدم والأدوار (User Roles & Workflows)](#-رحلة-المستخدم-والأدوار)
+3. [جميع التقنيات المستخدمة (Technology Stack)](#-جميع-التقنيات-المستخدمة)
+4. [الهيكلية البرمجية (Clean Architecture Structure)](#-الهيكلية-البرمجية-clean-architecture)
+5. [الميزات المتقدمة المنفذة حديثاً (Key Advanced Features)](#-الميزات-المتقدمة-المنفذة-حديثا)
+6. [التجاوب الكامل مع الشاشات (Full Responsive Design)](#-التجاوب-الكامل-مع-الشاشات)
+7. [الكيانات وقواعد البيانات (Entities & Database Schema)](#-الكيانات-وقواعد-البيانات)
+8. [الحسابات التجريبية الجاهزة (Demo Accounts)](#-الحسابات-التجريبية-الجاهزة)
+9. [دليل التشغيل والاختبارات (Getting Started & Tests)](#-دليل-التشغيل-والاختبارات)
 
-The solution follows strict separation of concerns across 4 architectural layers:
+---
+
+## 🌍 ماهو نظام FoodBridge؟
+
+**FoodBridge (جسر الغذاء)** هي منصة تقنية مصرية تهدف إلى حل واحدة من أكبر المشاكل الإنسانية والبيئية والاقتصادية: **هدر الطعام وسد فجوة الجوع**.
+
+### 🛑 المشكلة في مصر:
+* تهدر المطاعم، الفنادق، المخابز، وشركات التموين والضيافة يومياً آلاف الأطنان من الأطعمة والوجبات الصالحة تماماً للاستهلاك الآدمي.
+* في الوقت نفسه، تبذل الجمعيات الخيرية وبنوك الطعام ودور الرعاية جهوداً مضنية لتوفير وجبات للأسر المستحقة، وتواجه صعوبة في تنسيق التبرعات العينية وتتبعها في الوقت المناسب قبل تلفها.
+* يسبب التخلص التقليدي من الطعام في مكبات النفايات انبعاثات ضخمة لغاز الميثان المضر بالبيئة ويزيد من البصمة الكربونية.
+
+### 💡 الحل الذي تقدمه المنصة:
+تعمل **FoodBridge** كحلقة وصل تقنية فورية وآمنة بين:
+1. **مزودي الطعام (Food Providers):** عرض وجباتهم وفائضهم اليومي بكل دقة (الكمية، وقت الاستلام، شروط الحفظ، مسببات الحساسية، والصور).
+2. **الجمعيات والمؤسسات الأهلية (Charities & NGOs):** استكشاف التبرعات المتاحة جغرافياً وحجزها بضغطة زر واحدة لمنع تلفها.
+3. **إدارة المنصة (Platform Administration):** التحقق الصارم من الهويات القانونية، مراقبة الجودة، متابعة أثر إعادة التوزيع، وتأمين النظام.
+
+---
+
+## 👥 رحلة المستخدم والأدوار
+
+```mermaid
+flowchart LR
+    A["مزود الطعام (Provider)"] -->|"نشر فائض الطعام"| B["قاعدة بيانات FoodBridge"]
+    C["الجمعية الخيرية (Charity)"] -->|"استكشاف وحجز التبرع"| B
+    B -->|"إشعار فوري SignalR"| A
+    A -->|"قبول الطلب وتأكيد الموعد"| C
+    C -->|"استلام الطعام وتأكيد الإنجاز"| B
+    A <-->|"تقييم متبادل موثق"| C
+    D["مشرف النظام (Admin)"] -->|"مراجعة وتدقيق واعتماد"| B
+```
+
+### 1. مزودو الطعام (Food Providers):
+* إضافة عروض التبرع ببيانات تفصيلية وصور وروابط مسببات الحساسية وشروط التبريد.
+* إدارة طلبات الحجز الواردة من الجمعيات (قبول / رفض مع ذكر السبب).
+* تحديد موعد الاستلام وتنبيه الجمعية فور تجهيز وتغليف الشحنة.
+* الاطلاع على سجل العمليات وإحصائيات الأثر البيئي (كيلوجرامات الطعام المعاد توجيهها).
+
+### 2. الجمعيات والمؤسسات الخيرية (Charities):
+* تصفح عروض التبرع الحية مع الفلترة حسب التصنيف، المسافة، وتاريخ الصلاحية.
+* طلب حجز الوجبات بضغطة زر واحدة (محمية بآلية منع التكرار المتزامن).
+* استلام الإشعارات اللحظية فور قبول المزود أو تجهيز الوجبات للاستلام.
+* تقييم جودة الوجبات ودقة المزود وتوثيق توزيعها على المستفيدين.
+
+### 3. مشرفو النظام (System Administrators):
+* اعتماد الجمعيات والمزودين بعد فحص السجلات الرسمية أو رفض الحسابات وتجميدها.
+* إدارة المحتوى والإشراف على التقييمات والبلاغات ومشاكل الاستلام.
+* تفعيل **وضع الصيانة اللحظي (Maintenance Mode)** وإخراج المستخدمين تلقائياً.
+* سجل تدقيق رقمي متكامل (Audit Logs) لجميع الإجراءات الإدارية.
+
+---
+
+## 🛠 جميع التقنيات المستخدمة
+
+تم بناء النظام بالكامل وفق أحدث معايير هندسة البرمجيات المؤسسية:
+
+### 🖥️ الباك إند (Backend):
+* **.NET 10 (C# 13):** أحدث إصدار من بيئة عمل مايكروسوفت مع أداء فائق وسرعة معالجة عالية.
+* **ASP.NET Core Web API:** بنية RESTful API منظمة مع تشفير وحماية كاملة.
+* **Entity Framework Core 10:** لإدارة التعامل مع قاعدة البيانات، مع دعم العمليات المعقدة والـ Migrations التلقائية.
+* **Microsoft SQL Server:** قاعدة البيانات العلاقية الأساسية لحفظ البيانات والبيانات المحاسبية والتدقيقية.
+* **ASP.NET Core Identity & JWT:** إدارة المستخدمين وتوليد توكنات الأمان المشفرة (HMAC-SHA256) مع صلاحيات مبنية على الأدوار (Role-Based Authorization).
+* **SignalR Core:** اتصالات WebSocket لحظية ثنائية الاتجاه لنظام الإشعارات المباشرة وتزامن الصيانة.
+* **Background Hosted Services:**
+  * `ListingExpirationHostedService`: خدمة خلفية دورية تفحص تلقائياً تبرعات الطعام وتحول المنتهية منها إلى حالة `Expired`.
+  * `PickupReminderHostedService`: خدمة خلفية ترسل تنبيهات تذكيرية قبل موعد الاستلام بساعتين للطرفين.
+* **Optimistic Concurrency Control:** حماية التزامن المتفائل باستخدام `RowVersion` لمنع حجز نفس الوجبة من أكثر من جمعية في نفس الجزء من الثانية.
+
+### 🎨 الفرونت إند وتجربة المستخدم (Frontend & UI):
+* **Modular Clean Architecture JS:** تم تفكيك الكود البرمجي من ملف أحادي ضخم إلى 12 وحدة برمجية منفصلة تتبع معايير Clean Code و Single Responsibility Principle:
+  * `config.js`: المتغيرات العامة ونقاط النهاية.
+  * `i18n.js`: قاموس الترجمة الفورية وثنائية اللغة (عربي / إنجليزي).
+  * `theme.js`: إدارة الوضع الليلي والنهاري.
+  * `animations.js`: التحكم في انيميشن الظهور السلس وتأثيرات البطاقات.
+  * `ui.js`: التوجيه بين الصفحات، القوائم المتجاوبة، وعرض الـ Toasts.
+  * `auth.js`: جلسات الدخول والتوكنات والتحقق من الأدوار.
+  * `signalr-client.js`: الربط اللحظي واستقبال التنبيهات.
+  * `maintenance.js`: فحص حالة الصيانة والطرد التلقائي للمستخدمين.
+  * `map.js`: تشغيل وإدارة خريطة محافظات مصر التفاعلية.
+  * `portals/explore.js`: تصفح التبرعات والفلترة والبحث المتقدم.
+  * `portals/provider.js`: لوحة تحكم المزودين وإدارة التبرعات.
+  * `portals/charity.js`: لوحة تحكم الجمعيات ومتابعة الحجوزات.
+  * `portals/admin.js`: لوحة المشرف، الاعتمادات، وحفظ العمليات.
+  * `portals/impact.js`: إحصائيات الأثر وحساب النعمة والرسوم البيانية.
+* **Tailwind CSS:** تصميم حديث وجذاب مع دعم كامل للـ Responsive Breakpoints والتنسيق المخصص.
+* **Leaflet.js:** خريطة جغرافية تفاعلية لمصر تدعم الوضعين الليلي والنهاري والمواقع التفاعلية.
+* **Chart.js:** رسوم بيانية ديناميكية لعرض كميات الطعام الموزعة وتوزيع الفئات.
+* **FontAwesome 6 Pro Icons:** أيقونات حديثة تمنح التطبيق طابعاً عصرياً.
+
+---
+
+## 🏛 الهيكلية البرمجية (Clean Architecture)
+
+تم تقسيم المشروع إلى 4 طبقات رئيسية منفصلة وفق Clean Architecture:
 
 ```
 FoodBridge/
 ├── src/
-│   ├── FoodBridge.Domain/          # Core Domain Entities, Enums, Value Objects
+│   ├── FoodBridge.Domain/          # الطبقة المركزية: الكيانات الأساسية، Enums، وقواعد الأعمال
 │   │   ├── Entities/               # ApplicationUser, FoodListing, Reservation, Review, Notification, AuditLog
 │   │   └── Enums/                  # UserType, UserStatus, FoodCategory, FoodListingStatus, ReservationStatus
 │   │
-│   ├── FoodBridge.Application/     # Use Cases, Business Logic, Interfaces, DTOs
-│   │   ├── Common/                 # Result<T> pattern, Interfaces (IApplicationDbContext, INotificationService, etc.)
-│   │   ├── DTOs/                   # Request/Response data transfer models
-│   │   └── Services/               # AuthService, FoodListingService, ReservationService, ReviewService, AdminService, ReportingService
+│   ├── FoodBridge.Application/     # طبقة التطبيق: حالات الاستخدام (Use Cases)، واجهات الخدمات، ونماذج DTOs
+│   │   ├── Common/                 # Result<T> pattern, IApplicationDbContext, Interfaces
+│   │   ├── DTOs/                   # Data Transfer Objects لنقل البيانات بأمان
+│   │   └── Services/               # منطق الأعمال: AuthService, FoodListingService, ReservationService, AdminService...
 │   │
-│   ├── FoodBridge.Infrastructure/  # External Concerns, Database Persistence, Identity
-│   │   ├── Data/                   # FoodBridgeDbContext, Fluent API Mappings, DbInitializer & Seed Data
-│   │   ├── Services/               # JwtTokenGenerator, LocalFileStorageService, EmailSenderService, NotificationService
+│   ├── FoodBridge.Infrastructure/  # طبقة البنية التحتية: الاتصال بقاعدة البيانات، Identity، والخدمات الخارجية
+│   │   ├── Data/                   # FoodBridgeDbContext, Fluent API Mappings, DbInitializer
+│   │   ├── Services/               # JwtTokenGenerator, LocalFileStorage, EmailSender, NotificationService
 │   │   ├── Hubs/                   # SignalR NotificationHub (/hubs/notifications)
 │   │   └── BackgroundServices/     # ListingExpirationHostedService, PickupReminderHostedService
 │   │
-│   └── FoodBridge.Web/             # Presentation Layer, REST API Controllers, SPA Web Frontend
+│   └── FoodBridge.Web/             # طبقة العرض والواجهة: REST API Controllers وواجهة الويب المتجاوبة
 │       ├── Controllers/            # Auth, FoodListings, Reservations, Reviews, Notifications, Admin, Reports
-│       ├── Services/               # CurrentUserService (IHttpContextAccessor wrapper)
-│       └── wwwroot/                # Responsive Frontend (HTML5, Tailwind CSS, SignalR client, Chart.js)
+│       └── wwwroot/                # أصول الفرونت إند (HTML, CSS, Modular JS)
 │
 └── tests/
-    └── FoodBridge.Tests/           # Unit & Integration Tests (xUnit, Moq, EF Core InMemory)
+    └── FoodBridge.Tests/           # اختبارات الوحدة والتكامل (xUnit, Moq, EF InMemory)
 ```
 
 ---
 
-## 🗄 Domain Entities & Relationships
+## 🌟 الميزات المتقدمة المنفذة حديثاً
 
-| Entity | Primary Key | Key Fields & Audit Columns | Relationships |
+### 1. خريطة تغطية محافظات مصر التفاعلية (Egypt Coverage Map):
+* تغطية 7 مراكز ومحطات توزيع إقليمية (القاهرة والجيزة، الإسكندرية والساحل، الدلتا، مدن القناة، شمال ووسط الصعيد، البحر الأحمر والمنتجعات، وجنوب الصعيد والأقصر وأسوان).
+* بطاقات تفاعلية تتيح الانتقال الفوري بالخريطة (`flyTo`) مع أنيميشن سلس ومؤشرات ملونة وفق حجم النشاط.
+* إمكانية الفلترة حسب الإقليم الجغرافي، مع تبديل تلقائي لخرائط Alidade Smooth في الوضع النهاري و Dark Matter في الوضع الليلي.
+
+### 2. نظام وضع الصيانة اللحظي مع الإخلاء الفوري (Maintenance Mode):
+* إمكانية قيام المشرف بتفعيل الصيانة وتحديد موعد العودة المتوقع وسبب الصيانة باللغتين.
+* **طرد لحظي للمستخدمين النشطين:** فور تفعيل الصيانة، يبث الـ SignalR Hub إشعاراً فورياً يغلق جلسات جميع المزودين والجمعيات ويوجههم إلى صفحة الصيانة دون الحاجة لإعادة تحميل الصفحة.
+* منع أي مستخدم غير المشرف من تسجيل الدخول أثناء الصيانة برسالة واضحة بلغة الموقع المحددة.
+* شريط تنبيهي خاص بالمشرف يسمح له بالتصفح وإدارة المنصة أثناء الصيانة وفك الحظر بضغطة زر.
+
+### 3. تدقيق واعتماد المنظمات ومسار الرفض (Admin Moderation & Rejection):
+* عرض طلبات اعتماد الجمعيات والمزودين غير الموثقين.
+* إمكانية القبول وتفعيل الحساب فوراً، أو الرفض مع تجميد الحساب وتوثيق الإجراء الإداري في الـ Audit Log.
+* تصفية تلقائية للطلبات المعلقة في الإحصائيات بحيث تُستبعد الحسابات المجمدة.
+
+---
+
+## 📱 التجاوب الكامل مع الشاشات (Full Responsive Design)
+
+تم تصميم واجهات FoodBridge لتقديم تجربة استخدام مثالية على مختلف أنواع الأجهزة:
+
+| نوع الجهاز | مقاس الشاشة | الميزات والتكيف البرمجي |
+| :--- | :--- | :--- |
+| **الهواتف الذكية (Mobile)** | `< 640px` | • قائمة جانبية منسدلة (Slide-down Drawer) عبر زر الهامبرغر.<br>• شريط تنقل سفلي ثابت (Bottom Navigation Bar) للوصول بلمسة واحدة للرئيسية، الاستكشاف، الخريطة، الأثر، والبوابة.<br>• ترتيب عمودي ذكي: عرض الخريطة أولاً ثم البطاقات الإقليمية أسفلها.<br>• حماية المساحة السفلية مع Safe-Area Padding لمنع تداخل الأزرار. |
+| **الأجهزة اللوحية (Tablet)** | `640px - 1024px` | • شبكة شبيهة بـ Grid ثنائية الأعمدة للبطاقات والتبرعات.<br>• جداول بيانات مع شريط تمرير أفقي مخصص فائق السلاسة.<br>• إحصائيات متجاوبة تعرض في شبكة 2×2. |
+| **الشاشات الكبيرة (Desktop)** | `> 1024px` | • شريط تنقل علوي كامل مع القوائم والمؤشرات اللحظية.<br>• عرض الخريطة والبطاقات جنباً إلى جنب في شبكة 12 عموداً.<br>• تجربة مريحة لإدارة البيانات واللوحات المتقدمة للمشرف والمزودين. |
+
+---
+
+## 🗄 الكيانات وقواعد البيانات (Entities & Database Schema)
+
+| الكيان (Entity) | المفتاح الأساسي | الحقول الرئيسية والأعمدة التدقيقية | العلاقات (Relationships) |
 | :--- | :--- | :--- | :--- |
-| **`ApplicationUser`** | `string Id` (Identity) | `FullName`, `OrganizationName`, `OrganizationAddress`, `UserType` (Provider/Charity/Admin), `SpecificType`, `TargetCommunityDescription`, `IsVerified`, `Status` (Active/Suspended), `CreatedAt` | 1-to-N with `FoodListing`, `Reservation`, `Review`, `Notification`, `AuditLog` |
-| **`FoodListing`** | `int Id` | `FoodName`, `Description`, `FoodCategory`, `Quantity`, `UnitOfMeasurement`, `PreparationDate`, `PickupDeadline`, `PickupAddress`, `StorageConditions`, `Allergens`, `ImageUrl`, `Status` (Available, Reserved, Completed, Expired, Cancelled, Unavailable), `RowVersion` (Timestamp) | N-to-1 with Provider (`ApplicationUser`), 1-to-N with `Reservation` |
-| **`Reservation`** | `int Id` | `FoodListingId`, `CharityId`, `RequestDate`, `PickupDateTime`, `ConfirmedLocation`, `Status` (Pending, Accepted, Rejected, ReadyForPickup, Completed, Cancelled, ProblemReported), `CancellationReason`, `ProblemDescription`, `CompletedAt`, `RowVersion` | N-to-1 with `FoodListing`, N-to-1 with Charity (`ApplicationUser`), 1-to-N with `Review` |
-| **`Review`** | `int Id` | `ReservationId`, `ReviewerId`, `RevieweeId`, `Rating` (1-5), `Comment`, `IsReported`, `ReportReason`, `CreatedAt` | Unique index on `(ReservationId, ReviewerId)` preventing duplicate reviews |
-| **`Notification`** | `int Id` | `UserId`, `Title`, `Message`, `IsRead`, `RelatedEntityId`, `CreatedAt` | N-to-1 with `ApplicationUser`, indexed on `(UserId, IsRead)` |
-| **`AuditLog`** | `int Id` | `AdminId`, `Action`, `TargetEntity`, `TargetId`, `Details`, `Timestamp` | N-to-1 with Admin (`ApplicationUser`), indexed on `Timestamp` |
+| **`ApplicationUser`** | `string Id` | `FullName`, `OrganizationName`, `OrganizationAddress`, `UserType`, `SpecificType`, `IsVerified`, `Status` (Active/Suspended), `CreatedAt` | 1 إلى N مع التبرعات، الحجوزات، التقييمات، والإشعارات |
+| **`FoodListing`** | `int Id` | `FoodName`, `FoodCategory`, `Quantity`, `UnitOfMeasurement`, `PickupDeadline`, `StorageConditions`, `Allergens`, `Status`, `RowVersion` | N إلى 1 مع المزود، 1 إلى N مع الحجوزات |
+| **`Reservation`** | `int Id` | `FoodListingId`, `CharityId`, `RequestDate`, `PickupDateTime`, `ConfirmedLocation`, `Status`, `RowVersion` | N إلى 1 مع التبرع، N إلى 1 مع الجمعية، 1 إلى N مع التقييمات |
+| **`Review`** | `int Id` | `ReservationId`, `ReviewerId`, `RevieweeId`, `Rating` (1-5), `Comment`, `CreatedAt` | فهرس فريد يمنع تكرار التقييم لنفس الحجز |
+| **`AuditLog`** | `int Id` | `AdminId`, `Action`, `TargetEntity`, `TargetId`, `Details`, `Timestamp` | توثيق غير قابل للحذف لجميع قرارات المشرفين |
+| **`Notification`** | `int Id` | `UserId`, `Title`, `Message`, `IsRead`, `RelatedEntityId`, `CreatedAt` | N إلى 1 مع المستخدم |
 
 ---
 
-## ⚡ Concurrency & Business Rules
+## 🔑 الحسابات التجريبية الجاهزة (Demo Accounts)
 
-1. **Optimistic Concurrency**:
-   - Both `FoodListing` and `Reservation` configure `byte[] RowVersion` with EF Core's `.IsRowVersion()`.
-   - Prevents race conditions where two charities reserve the exact same listing simultaneously (FR4.2).
-2. **Mutual Reviews**:
-   - Charity can review Provider and Provider can review Charity, only for reservations in `Completed` status (FR7.1).
-   - Strict database unique constraint and service validation guarantees 1 review per party per completed reservation (FR7.3).
-3. **Automatic Reservation Cancellation & Reversion**:
-   - If a reservation is cancelled prior to pickup deadline, the food listing status automatically reverts to `Available` (FR4.8, FR4.9).
-4. **Calculated Platform Statistics**:
-   - Platform-wide redistributed food metrics (kg/portions) are calculated strictly using **completed donations only**, excluding cancelled, rejected, and expired items (FR9.5).
-5. **Background Scheduled Services**:
-   - `ListingExpirationHostedService`: Periodically transitions past-deadline listings from `Available`/`Reserved` to `Expired` and notifies providers (FR2.8).
-   - `PickupReminderHostedService`: Periodically checks upcoming confirmed pickups within 2 hours and issues reminders to both provider and charity (FR6.4).
+تم تجهيز قاعدة البيانات بحسابات تجريبية مسبقة تغطي كافة السيناريوهات:
 
----
-
-## 🔐 Pre-Seeded Demonstration Accounts
-
-For convenient evaluation, the database automatically provisions the following accounts:
-
-| Role | Email | Password | Organization & Notes |
+| الدور (Role) | البريد الإلكتروني | كلمة المرور | المنظمة / الوصف |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@foodbridge.com` | `Admin@123456` | Platform Operations (Full Admin Dashboard & Moderation) |
-| **Food Provider** | `chef.mario@bellaitalia.com` | `Provider@123` | Bella Italia Ristorante (Verified Restaurant) |
-| **Food Provider** | `sarah@lebreadcraft.com` | `Provider@123` | Artisan Bread & Pastry Co. (Verified Bakery) |
-| **Food Provider** | `banquets@grandpalace.com` | `Provider@123` | Grand Palace Hotel (Unverified — shows Admin approval workflow) |
-| **Charity** | `coordinator@hopefoodbank.org` | `Charity@123` | Hope Community Food Bank (Verified Food Bank) |
-| **Charity** | `shelter@stjude-care.org` | `Charity@123` | St. Jude Family Shelter (Verified Shelter) |
-| **Charity** | `youth@alnoor-foundation.org` | `Charity@123` | Al-Noor Refugee Relief (Unverified — shows Admin approval workflow) |
+| **مشرف النظام (Admin)** | `admin@foodbridge.com` | `Admin@123456` | إدارة النظام بالكامل، التدقيق، واعتماد الحسابات والصيانة |
+| **مزود طعام (Provider)** | `chef.mario@bellaitalia.com` | `Provider@123` | مطعم بيلا إيطاليا (مزود معتمد ونشط) |
+| **مزود طعام (Provider)** | `sarah@lebreadcraft.com` | `Provider@123` | مخبز الحرفيين (مزود معتمد ونشط) |
+| **مزود غير معتمد (Pending)** | `banquets@grandpalace.com` | `Provider@123` | فندق جراند بالاس (حساب بانتظار موافقة أو رفض المشرف) |
+| **جمعية خيرية (Charity)** | `coordinator@hopefoodbank.org` | `Charity@123` | بنك طعام الأمل (جمعية معتمدة لحجز واستلام التبرعات) |
+| **جمعية خيرية (Charity)** | `shelter@stjude-care.org` | `Charity@123` | دار رعاية سانت جود (جمعية معتمدة) |
+| **جمعية غير معتمدة (Pending)**| `youth@alnoor-foundation.org` | `Charity@123` | مؤسسة النور للإغاثة (حساب بانتظار فحص المشرف) |
 
 ---
 
-## 🚀 Running the Project & Tests
+## 🚀 دليل التشغيل والاختبارات (Getting Started & Tests)
 
-### Run Automated Tests (xUnit)
+### المتطلبات المسبقة:
+* مثبت [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+* قاعدة بيانات [Microsoft SQL Server](https://www.microsoft.com/sql-server/) (أو LocalDB)
+
+### 1. تشغيل الاختبارات الآلية (Automated Tests):
+يحتوي المشروع على **17 اختبار وحدة وتكامل** شاملة:
 ```powershell
 cd FoodBridge
-dotnet test tests/FoodBridge.Tests/FoodBridge.Tests.csproj
+dotnet test
 ```
-*(All 10 unit and integration tests verify concurrency handling, expiration background logic, mutual review prevention, admin audit logging, and platform calculation exclusions).*
+> النتيجة المتوقعة: **Passed! - Failed: 0, Passed: 17, Skipped: 0**
 
-### Run Full-Stack Web Application
+### 2. تشغيل المشروع (Full-Stack Run):
 ```powershell
 cd FoodBridge
 dotnet run --project src/FoodBridge.Web/FoodBridge.Web.csproj --urls "http://localhost:5000"
 ```
+افتح المتصفح وتوجه إلى: `http://localhost:5000`
 
-Access points:
-- **Web User Interface**: `http://localhost:5000`
-- **Interactive Swagger / OpenAPI UI**: `http://localhost:5000/swagger`
-- **SignalR Real-Time Notifications Hub**: `http://localhost:5000/hubs/notifications`
+---
+
+## 📄 الترخيص وحقوق الملكية
+تم تطوير هذا المشروع كجزء من متطلبات التخرج من **مبادرة مصر الرقمية (Digital Egypt Pioneers Initiative - DEPI)**.  
+جميع الحقوق محفوظة © 2026 **FoodBridge Platform**.

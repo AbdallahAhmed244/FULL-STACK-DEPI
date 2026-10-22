@@ -1,4 +1,4 @@
-﻿const toastI18n = {
+const toastI18n = {
     enToAr: {
         'Success': 'تم بنجاح',
         'Error': 'خطأ',
@@ -276,28 +276,87 @@ function clearCachedViews() {
     });
 }
 
+function toggleMobileMenu(forceState) {
+    const menu = document.getElementById('mobileNavMenu');
+    if (!menu) return;
+    const shouldOpen = typeof forceState === 'boolean' ? forceState : menu.classList.contains('hidden');
+    if (shouldOpen) {
+        menu.classList.remove('hidden');
+    } else {
+        menu.classList.add('hidden');
+    }
+}
+
+function openMobilePortal() {
+    toggleMobileMenu(false);
+    if (!currentUser) {
+        openAuthModal('login');
+        return;
+    }
+    if (currentUser.role === 'Admin') {
+        navigateTo('admin');
+    } else if (currentUser.role === 'Provider') {
+        navigateTo('provider');
+    } else if (currentUser.role === 'Charity') {
+        navigateTo('charity');
+    } else {
+        navigateTo('landing');
+    }
+}
+
 function updateNavLinks() {
     const navProvider = document.getElementById('nav-provider');
     const navCharity = document.getElementById('nav-charity');
     const navAdmin = document.getElementById('nav-admin');
 
+    const mNavProvider = document.getElementById('mobile-nav-provider');
+    const mNavCharity = document.getElementById('mobile-nav-charity');
+    const mNavAdmin = document.getElementById('mobile-nav-admin');
+    const bnavPortalLabel = document.getElementById('bnav-portal-label');
+
+    const isAr = currentLang === 'ar';
+
     if (!currentUser) {
         if (navAdmin) navAdmin.classList.add('hidden');
         if (navProvider) navProvider.classList.add('hidden');
         if (navCharity) navCharity.classList.add('hidden');
+
+        if (mNavAdmin) mNavAdmin.classList.add('hidden');
+        if (mNavProvider) mNavProvider.classList.add('hidden');
+        if (mNavCharity) mNavCharity.classList.add('hidden');
+
+        if (bnavPortalLabel) bnavPortalLabel.textContent = isAr ? 'حسابي' : 'Portal';
     } else {
         if (currentUser.role === 'Admin') {
             if (navAdmin) navAdmin.classList.remove('hidden');
             if (navProvider) navProvider.classList.remove('hidden');
             if (navCharity) navCharity.classList.remove('hidden');
+
+            if (mNavAdmin) mNavAdmin.classList.remove('hidden');
+            if (mNavProvider) mNavProvider.classList.remove('hidden');
+            if (mNavCharity) mNavCharity.classList.remove('hidden');
+
+            if (bnavPortalLabel) bnavPortalLabel.textContent = isAr ? 'الإدارة' : 'Admin';
         } else if (currentUser.role === 'Provider') {
             if (navAdmin) navAdmin.classList.add('hidden');
             if (navProvider) navProvider.classList.remove('hidden');
             if (navCharity) navCharity.classList.add('hidden');
+
+            if (mNavAdmin) mNavAdmin.classList.add('hidden');
+            if (mNavProvider) mNavProvider.classList.remove('hidden');
+            if (mNavCharity) mNavCharity.classList.add('hidden');
+
+            if (bnavPortalLabel) bnavPortalLabel.textContent = isAr ? 'المزود' : 'Provider';
         } else if (currentUser.role === 'Charity') {
             if (navAdmin) navAdmin.classList.add('hidden');
             if (navProvider) navProvider.classList.add('hidden');
             if (navCharity) navCharity.classList.remove('hidden');
+
+            if (mNavAdmin) mNavAdmin.classList.add('hidden');
+            if (mNavProvider) mNavProvider.classList.add('hidden');
+            if (mNavCharity) mNavCharity.classList.remove('hidden');
+
+            if (bnavPortalLabel) bnavPortalLabel.textContent = isAr ? 'الجمعية' : 'Charity';
         }
     }
 }
@@ -323,12 +382,48 @@ function navigateTo(viewName) {
 
     currentView = viewName;
 
+    // Desktop nav link highlight
     document.querySelectorAll('.nav-link').forEach(link => {
         link.className = 'nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center transition';
     });
     const activeNav = document.getElementById(`nav-${viewName}`);
     if (activeNav) {
         activeNav.className = 'nav-link px-3.5 py-2 rounded-lg text-sm font-semibold text-emerald-700 bg-emerald-50 flex items-center shadow-xs';
+    }
+
+    // Mobile menu links highlight
+    const mobileViews = ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'];
+    mobileViews.forEach(v => {
+        const mLink = document.getElementById(`mobile-nav-${v}`);
+        if (mLink) {
+            if (v === viewName) {
+                mLink.className = 'w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 flex items-center justify-between transition';
+            } else {
+                mLink.className = 'w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition';
+            }
+        }
+    });
+
+    // Mobile bottom bar highlight
+    const bottomNavIds = ['bnav-landing', 'bnav-explore', 'bnav-impact', 'bnav-portal'];
+    bottomNavIds.forEach(bid => {
+        const btn = document.getElementById(bid);
+        if (btn) {
+            btn.className = 'flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 hover:text-emerald-600 text-[10px] font-semibold transition px-2 py-1';
+        }
+    });
+    if (viewName === 'landing') {
+        const btn = document.getElementById('bnav-landing');
+        if (btn) btn.className = 'flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1';
+    } else if (viewName === 'explore') {
+        const btn = document.getElementById('bnav-explore');
+        if (btn) btn.className = 'flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1';
+    } else if (viewName === 'impact') {
+        const btn = document.getElementById('bnav-impact');
+        if (btn) btn.className = 'flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1';
+    } else if (['provider', 'charity', 'admin'].includes(viewName)) {
+        const btn = document.getElementById('bnav-portal');
+        if (btn) btn.className = 'flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1';
     }
 
     ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'].forEach(v => {

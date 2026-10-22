@@ -95,7 +95,7 @@
     <link rel="stylesheet" href="/css/components.css?v=3.0">
     <link rel="stylesheet" href="/css/animations.css?v=3.0">
 </head>
-<body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
+<body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-14 md:pb-0">
 
 <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -169,8 +169,41 @@
                         
                     </div>
 
+                    <!-- Mobile Hamburger Menu Button -->
+                    <button onclick="toggleMobileMenu()" id="btnMobileMenu" class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-xs" title="القائمة / Menu">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+
                 </div>
             </div>
+        </div>
+
+        <!-- Slide-down Mobile Navigation Menu -->
+        <div id="mobileNavMenu" class="hidden md:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 px-4 py-3 space-y-1.5 shadow-xl transition-all duration-300">
+            <button onclick="navigateTo('landing'); toggleMobileMenu(false);" id="mobile-nav-landing" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 flex items-center justify-between transition">
+                <span class="flex items-center"><i class="fa-solid fa-house mr-2 rtl:ml-2 text-emerald-600"></i> <span data-i18n="navHome">الرئيسية</span></span>
+                <i class="fa-solid fa-chevron-left rtl:fa-chevron-left ltr:fa-chevron-right text-xs opacity-60"></i>
+            </button>
+            <button onclick="navigateTo('explore'); toggleMobileMenu(false);" id="mobile-nav-explore" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition">
+                <span class="flex items-center"><i class="fa-solid fa-compass mr-2 rtl:ml-2 text-emerald-600"></i> <span data-i18n="navBrowse">تصفح التبرعات</span></span>
+                <i class="fa-solid fa-chevron-left rtl:fa-chevron-left ltr:fa-chevron-right text-xs opacity-60"></i>
+            </button>
+            <button onclick="navigateTo('provider'); toggleMobileMenu(false);" id="mobile-nav-provider" class="hidden w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition">
+                <span class="flex items-center"><i class="fa-solid fa-store mr-2 rtl:ml-2 text-amber-500"></i> <span data-i18n="navProvider">بوابة المزودين</span></span>
+                <i class="fa-solid fa-chevron-left rtl:fa-chevron-left ltr:fa-chevron-right text-xs opacity-60"></i>
+            </button>
+            <button onclick="navigateTo('charity'); toggleMobileMenu(false);" id="mobile-nav-charity" class="hidden w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition">
+                <span class="flex items-center"><i class="fa-solid fa-hand-holding-heart mr-2 rtl:ml-2 text-emerald-600"></i> <span data-i18n="navCharity">بوابة الجمعيات</span></span>
+                <i class="fa-solid fa-chevron-left rtl:fa-chevron-left ltr:fa-chevron-right text-xs opacity-60"></i>
+            </button>
+            <button onclick="navigateTo('admin'); toggleMobileMenu(false);" id="mobile-nav-admin" class="hidden w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition">
+                <span class="flex items-center"><i class="fa-solid fa-gauge-high mr-2 rtl:ml-2 text-indigo-600"></i> <span data-i18n="navAdmin">لوحة المشرف</span></span>
+                <i class="fa-solid fa-chevron-left rtl:fa-chevron-left ltr:fa-chevron-right text-xs opacity-60"></i>
+            </button>
+            <button onclick="navigateTo('impact'); toggleMobileMenu(false);" id="mobile-nav-impact" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition">
+                <span class="flex items-center"><i class="fa-solid fa-chart-pie mr-2 rtl:ml-2 text-blue-500"></i> <span data-i18n="navImpact">إحصائيات الأثر</span></span>
+                <i class="fa-solid fa-chevron-left rtl:fa-chevron-left ltr:fa-chevron-right text-xs opacity-60"></i>
+            </button>
         </div>
     </header>
 
@@ -1721,7 +1754,31 @@
         </div>
     </div>
 
-<div id="toastContainer" class="fixed bottom-4 right-4 z-[90] flex flex-col space-y-2 pointer-events-none"></div>
+<!-- Mobile Bottom Navigation Bar -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/90 dark:border-slate-800/90 py-2 px-2 flex items-center justify-around shadow-2xl safe-area-pb">
+        <button onclick="navigateTo('landing')" id="bnav-landing" class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1">
+            <i class="fa-solid fa-house text-base mb-0.5"></i>
+            <span data-i18n="navHome">الرئيسية</span>
+        </button>
+        <button onclick="navigateTo('explore')" id="bnav-explore" class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 hover:text-emerald-600 text-[10px] font-semibold transition px-2 py-1">
+            <i class="fa-solid fa-compass text-base mb-0.5"></i>
+            <span data-i18n="navBrowse">استكشاف</span>
+        </button>
+        <button onclick="navigateTo('landing'); setTimeout(() => { const el = document.getElementById('egypt-coverage-section'); if (el) el.scrollIntoView({behavior: 'smooth'}); }, 150);" class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 hover:text-emerald-600 text-[10px] font-semibold transition px-2 py-1">
+            <i class="fa-solid fa-map-location-dot text-base mb-0.5"></i>
+            <span data-i18n="navMap">الخريطة</span>
+        </button>
+        <button onclick="navigateTo('impact')" id="bnav-impact" class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 hover:text-blue-500 text-[10px] font-semibold transition px-2 py-1">
+            <i class="fa-solid fa-chart-pie text-base mb-0.5"></i>
+            <span data-i18n="navImpact">الأثر</span>
+        </button>
+        <button onclick="openMobilePortal()" id="bnav-portal" class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 hover:text-amber-500 text-[10px] font-semibold transition px-2 py-1">
+            <i class="fa-solid fa-user-circle text-base mb-0.5"></i>
+            <span id="bnav-portal-label" data-i18n="navPortal">لوحتي</span>
+        </button>
+    </div>
+
+<div id="toastContainer" class="fixed bottom-16 sm:bottom-4 right-4 z-[90] flex flex-col space-y-2 pointer-events-none"></div>
 
 <script src="/js/config.js?v=3.0"></script>
 <script src="/js/i18n.js?v=3.0"></script>
