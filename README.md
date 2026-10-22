@@ -279,4 +279,6 @@ http://localhost:5000
 
 ## 📄 License & Attribution
 Developed as a Graduation Capstone Project for the **Digital Egypt Pioneers Initiative (DEPI)**.  
+* **Lead Developer / Author**: Abdallah Sharaf
+* **Support & Contact**: [ahlawy.ahmed25@gmail.com](mailto:ahlawy.ahmed25@gmail.com)  
 All rights reserved © 2026 **FoodBridge Platform**.

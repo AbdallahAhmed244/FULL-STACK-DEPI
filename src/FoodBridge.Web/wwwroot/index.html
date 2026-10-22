@@ -571,7 +571,7 @@
 
 <footer class="bg-slate-900 text-slate-400 py-10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-3 rtl:space-x-reverse">
                         <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white">
                             <i class="fa-solid fa-seedling text-sm"></i>
                         </div>
@@ -580,7 +580,13 @@
                             <div class="text-[10px] text-slate-500" data-i18n="brandSubtitle">Surplus Redistribution Platform</div>
                         </div>
                     </div>
-                    <div class="text-xs text-center" data-i18n="footerArch">Developed by Abdallah Sharaf using ASP.NET Core &amp; Clean Architecture</div>
+                    <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
+                        <a href="mailto:ahlawy.ahmed25@gmail.com" class="text-slate-400 hover:text-emerald-400 transition flex items-center" title="Support Email">
+                            <i class="fa-solid fa-envelope mr-1.5 rtl:ml-1.5 text-emerald-500"></i> ahlawy.ahmed25@gmail.com
+                        </a>
+                        <span class="text-slate-600 hidden sm:inline">•</span>
+                        <span data-i18n="footerArch">Developed by Abdallah Sharaf using ASP.NET Core &amp; Clean Architecture</span>
+                    </div>
                     <div class="text-xs" data-i18n="copyright">© 2026 FoodBridge • Developed by Abdallah Sharaf. All rights reserved.</div>
                 </div>
             </footer>
