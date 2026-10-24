@@ -1,4 +1,4 @@
-﻿function openAdminSignInModal() {
+function openAdminSignInModal() {
     const modal = document.getElementById('authModal');
     if (modal) modal.classList.remove('hidden');
 
@@ -93,6 +93,12 @@ async function performLogin(email, password) {
         const data = await res.json();
 
         if (!res.ok) {
+            if ((res.status === 403 || res.status === 401) && data.isSuspended) {
+                closeAuthModal();
+                showSuspendedScreen(data);
+                return false;
+            }
+
             if (res.status === 503) {
                 const title = isAr ? 'النظام قيد التطوير والتحديثات' : 'System Under Development & Upgrades';
                 const msg = isAr
@@ -329,4 +335,78 @@ function logout() {
         signalrConnection.stop();
     }
 }
+
+let currentSuspensionData = null;
+
+function showSuspendedScreen(data) {
+    currentSuspensionData = data;
+    const overlay = document.getElementById('suspendedOverlay');
+    if (!overlay) return;
+
+    const isAr = currentLang === 'ar';
+
+    const nameEl = document.getElementById('suspendedUserName');
+    if (nameEl) nameEl.textContent = data.fullName || 'User';
+
+    const orgEl = document.getElementById('suspendedUserOrg');
+    if (orgEl) orgEl.textContent = data.organizationName || data.email || 'Partner Account';
+
+    const reasonEl = document.getElementById('suspendedReasonDisplay');
+    if (reasonEl) {
+        reasonEl.textContent = data.reason || (isAr ? 'تم تعليق الحساب لمخالفة معايير واستخدام منصة FoodBridge.' : 'Account suspended due to policy violation.');
+    }
+
+    const emailLink = document.getElementById('suspendedSupportEmailLink');
+    const contactBtn = document.getElementById('btnContactSupportEmail');
+    const supportEmail = data.supportEmail || 'ahlawy.ahmed25@gmail.com';
+
+    if (emailLink) {
+        emailLink.textContent = supportEmail;
+        emailLink.href = `mailto:${supportEmail}?subject=${encodeURIComponent('FoodBridge Account Suspension Appeal - ' + (data.email || data.fullName || ''))}`;
+    }
+
+    if (contactBtn) {
+        contactBtn.href = `mailto:${supportEmail}?subject=${encodeURIComponent('FoodBridge Account Suspension Appeal - ' + (data.email || data.fullName || ''))}`;
+    }
+
+    const dateEl = document.getElementById('suspendedDateDisplay');
+    if (dateEl) {
+        const date = data.suspendedAt ? new Date(data.suspendedAt) : new Date();
+        dateEl.textContent = date.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }) + ' (' + date.toLocaleDateString(isAr ? 'ar-EG' : 'en-US') + ')';
+    }
+
+    const langBtn = document.getElementById('suspendedLangBtnText');
+    if (langBtn) {
+        langBtn.textContent = isAr ? 'English' : 'عربي';
+    }
+
+    if (typeof updateThemeUI === 'function') {
+        updateThemeUI(document.documentElement.classList.contains('dark'));
+    }
+
+    // Close any other open modals
+    document.querySelectorAll('.fixed.inset-0:not(#suspendedOverlay)').forEach(m => {
+        m.classList.add('hidden');
+    });
+
+    overlay.classList.remove('hidden');
+}
+
+function closeSuspendedScreen() {
+    const overlay = document.getElementById('suspendedOverlay');
+    if (overlay) overlay.classList.add('hidden');
+    navigateTo('landing');
+}
+
+function copySupportEmail() {
+    const email = currentSuspensionData?.supportEmail || 'ahlawy.ahmed25@gmail.com';
+    navigator.clipboard.writeText(email).then(() => {
+        const isAr = currentLang === 'ar';
+        showToast(isAr ? 'تم النسخ!' : 'Copied!', isAr ? 'تم نسخ البريد الإلكتروني للحافظة.' : 'Support email copied to clipboard.', 'success');
+    }).catch(() => {
+        const isAr = currentLang === 'ar';
+        showToast(isAr ? 'تنبيه' : 'Notice', email, 'info');
+    });
+}
+
 

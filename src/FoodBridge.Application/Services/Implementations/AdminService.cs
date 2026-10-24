@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -174,7 +174,7 @@ public class AdminService : IAdminService
         return Result.Success();
     }
 
-    public async Task<Result> SetUserStatusAsync(string adminId, string targetUserId, bool suspend)
+    public async Task<Result> SetUserStatusAsync(string adminId, string targetUserId, bool suspend, string? reason = null)
     {
         if (targetUserId == adminId && suspend)
         {
@@ -194,25 +194,33 @@ public class AdminService : IAdminService
             await _userManager.SetLockoutEndDateAsync(user, null);
         }
 
+        var cleanReason = !string.IsNullOrWhiteSpace(reason) ? reason.Trim() : null;
+
         var audit = new AuditLog
         {
             AdminId = adminId,
             Action = suspend ? "SuspendUser" : "ReactivateUser",
             TargetEntity = "ApplicationUser",
             TargetId = targetUserId,
-            Details = $"User '{user.FullName}' ({user.OrganizationName}) was {(suspend ? "suspended" : "reactivated")}.",
+            Details = suspend && cleanReason != null
+                ? $"User '{user.FullName}' ({user.OrganizationName}) was suspended. Reason: {cleanReason}"
+                : $"User '{user.FullName}' ({user.OrganizationName}) was {(suspend ? "suspended" : "reactivated")}.",
             Timestamp = DateTimeOffset.UtcNow
         };
         _context.AuditLogs.Add(audit);
 
         await _context.SaveChangesAsync();
 
+        var notifMessage = suspend
+            ? (cleanReason != null 
+                ? $"Your FoodBridge account has been suspended. Reason: {cleanReason}"
+                : "Your FoodBridge account has been suspended due to platform policy review.")
+            : "Your FoodBridge account has been reactivated. You may now continue using the platform.";
+
         await _notificationService.SendNotificationAsync(
             targetUserId,
             suspend ? "Account Suspended" : "Account Reactivated",
-            suspend 
-                ? "Your FoodBridge account has been suspended due to platform policy review."
-                : "Your FoodBridge account has been reactivated. You may now continue using the platform.",
+            notifMessage,
             $"user:{targetUserId}");
 
         return Result.Success();

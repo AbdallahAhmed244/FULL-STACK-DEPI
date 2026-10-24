@@ -66,6 +66,25 @@ async function initSignalR() {
 }
 
 function handleIncomingNotification(notification) {
+    if (notification.title && notification.title.toLowerCase().includes('suspended') && currentUser && currentUser.role !== 'Admin') {
+        const suspendedInfo = {
+            isSuspended: true,
+            fullName: currentUser.fullName,
+            organizationName: currentUser.organizationName,
+            email: currentUser.email,
+            reason: notification.message,
+            supportEmail: 'ahlawy.ahmed25@gmail.com',
+            suspendedAt: new Date().toISOString()
+        };
+        currentUser = null;
+        localStorage.removeItem('foodbridge_user');
+        updateAuthUI();
+        if (typeof showSuspendedScreen === 'function') {
+            showSuspendedScreen(suspendedInfo);
+        }
+        return;
+    }
+
     showToast(notification.title, notification.message, 'info');
 
     prependNotificationItem(notification);

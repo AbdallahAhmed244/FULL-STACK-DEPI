@@ -1,9 +1,11 @@
-﻿function updateThemeUI(isDark) {
+function updateThemeUI(isDark) {
     const icon1 = document.getElementById('themeToggleIcon');
     const icon2 = document.getElementById('maintenanceThemeToggleIcon');
+    const icon3 = document.getElementById('suspendedThemeToggleIcon');
     const iconClass = isDark ? 'fa-solid fa-sun text-base text-amber-400' : 'fa-solid fa-moon text-base text-amber-500';
     if (icon1) icon1.className = iconClass;
     if (icon2) icon2.className = iconClass;
+    if (icon3) icon3.className = iconClass;
     if (typeof window.updateEgyptMapTheme === 'function') {
         window.updateEgyptMapTheme(isDark);
     }

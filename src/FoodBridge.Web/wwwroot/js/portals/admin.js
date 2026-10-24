@@ -1,4 +1,4 @@
-﻿async function loadAdminPortal() {
+async function loadAdminPortal() {
     if (!currentUser || currentUser.role !== 'Admin') {
         const isAr = currentLang === 'ar';
         showToast(isAr ? 'تنبيه أمني' : 'Administrator Required', isAr ? 'يرجى تسجيل الدخول بحساب المشرف.' : 'Please switch to the Administrator profile.', 'warning');
@@ -184,22 +184,37 @@ async function loadAdminUsers() {
 }
 
 async function setUserStatus(userId, suspend) {
-    if (!confirm(suspend ? 'Suspend this account from accessing platform features?' : 'Reactivate this account?')) return;
+    const isAr = currentLang === 'ar';
+    let reason = '';
+    if (suspend) {
+        reason = prompt(isAr 
+            ? 'يرجى كتابة سبب تعليق الحساب (سيظهر للمستخدم عند محاولة تسجيل الدخول):' 
+            : 'Enter suspension reason (will be displayed to the user when logging in):');
+        if (reason === null) return;
+    } else {
+        if (!confirm(isAr ? 'هل أنت متأكد من إعادة تفعيل هذا الحساب؟' : 'Reactivate this account?')) return;
+    }
+
     try {
-        const res = await fetch(`${API_BASE}/admin/users/${userId}/status?suspend=${suspend}`, {
+        const query = `suspend=${suspend}` + (reason ? `&reason=${encodeURIComponent(reason.trim())}` : '');
+        const res = await fetch(`${API_BASE}/admin/users/${userId}/status?${query}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${currentUser.token}` }
         });
         if (res.ok) {
-            showToast('Account Status Updated', suspend ? 'User suspended.' : 'User reactivated.', 'info');
+            showToast(
+                isAr ? 'تم تحديث حالة الحساب' : 'Account Status Updated',
+                suspend ? (isAr ? 'تم تعليق الحساب وحفظ السبب.' : 'User suspended.') : (isAr ? 'تمت إعادة تفعيل الحساب بنجاح.' : 'User reactivated.'),
+                'info'
+            );
             loadAdminUsers();
             loadAdminAuditLogs();
         } else {
             const errData = await res.json().catch(() => ({}));
-            showToast('Operation Blocked', errData.message || 'Failed to update user status.', 'warning');
+            showToast(isAr ? 'عملية مرفوضة' : 'Operation Blocked', errData.message || 'Failed to update user status.', 'warning');
         }
     } catch (err) {
-        showToast('Error', err.message, 'error');
+        showToast(isAr ? 'خطأ' : 'Error', err.message, 'error');
     }
 }
 

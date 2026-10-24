@@ -10,7 +10,7 @@ public interface IAdminService
     Task<AdminDashboardStatsDto> GetDashboardStatsAsync();
     Task<List<AdminUserListItemDto>> GetUsersAsync(AdminUserFilterDto filter);
     Task<Result> VerifyOrganizationAsync(string adminId, string targetUserId, bool isApproved);
-    Task<Result> SetUserStatusAsync(string adminId, string targetUserId, bool suspend);
+    Task<Result> SetUserStatusAsync(string adminId, string targetUserId, bool suspend, string? reason = null);
     Task<List<FoodListingDto>> GetReportedListingsAsync();
     Task<List<ReviewDto>> GetReportedReviewsAsync();
     Task<List<ReservationDto>> GetProblemReportsAsync();

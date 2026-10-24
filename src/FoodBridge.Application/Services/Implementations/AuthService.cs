@@ -141,7 +141,39 @@ public class AuthService : IAuthService
 
         if (user.Status == UserStatus.Suspended)
         {
-            return Result<AuthResponseDto>.Failure("Your account has been suspended by an administrator. Please contact support at: ahlawy.ahmed25@gmail.com");
+            var audit = await _context.AuditLogs
+                .Where(a => (a.TargetEntity == "ApplicationUser" && a.TargetId == user.Id)
+                         || (a.AdminId == user.Id && a.Action == "AutoSecuritySuspension")
+                         || (a.TargetEntity == "FoodListing" && a.Action == "SuspendProviderWasteViolation" && a.Details.Contains(user.FullName)))
+                .OrderByDescending(a => a.Timestamp)
+                .FirstOrDefaultAsync();
+
+            string suspensionReason = audit?.Details ?? "";
+            if (string.IsNullOrWhiteSpace(suspensionReason))
+            {
+                var notif = await _context.Notifications
+                    .Where(n => n.UserId == user.Id && n.Title.Contains("Suspended"))
+                    .OrderByDescending(n => n.CreatedAt)
+                    .FirstOrDefaultAsync();
+                suspensionReason = notif?.Message ?? "";
+            }
+
+            if (string.IsNullOrWhiteSpace(suspensionReason))
+            {
+                suspensionReason = "تم تعليق الحساب بقرار إداري لمراجعة سياسات المنصة ومعايير الالتزام.";
+            }
+
+            if (suspensionReason.Contains("Reason: "))
+            {
+                var idx = suspensionReason.IndexOf("Reason: ");
+                suspensionReason = suspensionReason.Substring(idx + "Reason: ".Length).Trim();
+            }
+
+            var cleanReason = suspensionReason.Replace("||", " - ");
+            var supportEmail = "ahlawy.ahmed25@gmail.com";
+            var suspendedAt = audit?.Timestamp.ToString("o") ?? DateTimeOffset.UtcNow.ToString("o");
+
+            return Result<AuthResponseDto>.Failure($"SUSPENDED||{cleanReason}||{supportEmail}||{user.FullName}||{user.OrganizationName}||{suspendedAt}");
         }
 
         if (await _userManager.IsLockedOutAsync(user))
@@ -174,7 +206,8 @@ public class AuthService : IAuthService
                 _context.AuditLogs.Add(securityAudit);
                 await _context.SaveChangesAsync();
 
-                return Result<AuthResponseDto>.Failure("Security Alert: Your account has been suspended due to persistent failed login attempts. Please contact platform support at: ahlawy.ahmed25@gmail.com");
+                var autoReason = "تم تعليق الحساب تلقائياً لأسباب أمنية بعد 10 محاولات دخول غير صحيحة متتالية (Security alert: 10 failed login attempts).";
+                return Result<AuthResponseDto>.Failure($"SUSPENDED||{autoReason}||ahlawy.ahmed25@gmail.com||{user.FullName}||{user.OrganizationName}||{DateTimeOffset.UtcNow:o}");
             }
 
             if (await _userManager.IsLockedOutAsync(user))

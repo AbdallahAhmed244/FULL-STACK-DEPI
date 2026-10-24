@@ -69,12 +69,12 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("users/{id}/status")]
-    public async Task<IActionResult> SetUserStatus(string id, [FromQuery] bool suspend = true)
+    public async Task<IActionResult> SetUserStatus(string id, [FromQuery] bool suspend = true, [FromQuery] string? reason = null)
     {
         var adminId = _currentUserService.UserId;
         if (string.IsNullOrEmpty(adminId)) return Unauthorized();
 
-        var result = await _adminService.SetUserStatusAsync(adminId, id, suspend);
+        var result = await _adminService.SetUserStatusAsync(adminId, id, suspend, reason);
         if (!result.Succeeded)
         {
             return BadRequest(new { message = result.Error });

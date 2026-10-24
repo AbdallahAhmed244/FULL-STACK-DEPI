@@ -51,6 +51,30 @@ public class AuthController : ControllerBase
         var result = await _authService.LoginAsync(dto);
         if (!result.Succeeded)
         {
+            if (result.Error != null && result.Error.StartsWith("SUSPENDED||"))
+            {
+                var parts = result.Error.Split("||");
+                var reason = parts.Length > 1 ? parts[1] : "تم تعليق الحساب لمخالفة معايير وسياسات المنصة.";
+                var supportEmail = parts.Length > 2 ? parts[2] : "ahlawy.ahmed25@gmail.com";
+                var fullName = parts.Length > 3 ? parts[3] : "";
+                var organizationName = parts.Length > 4 ? parts[4] : "";
+                var suspendedAt = parts.Length > 5 ? parts[5] : "";
+
+                return StatusCode(StatusCodes.Status403Forbidden, new
+                {
+                    isSuspended = true,
+                    title = "تم تعليق الحساب",
+                    titleEn = "Account Suspended",
+                    reason = reason,
+                    supportEmail = supportEmail,
+                    fullName = fullName,
+                    organizationName = organizationName,
+                    email = dto.Email,
+                    suspendedAt = suspendedAt,
+                    message = $"تم تعليق حسابك. السبب: {reason}. للتواصل مع الدعم الفني: {supportEmail}"
+                });
+            }
+
             return Unauthorized(new { message = result.Error });
         }
 

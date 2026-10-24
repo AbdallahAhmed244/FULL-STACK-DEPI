@@ -1779,6 +1779,120 @@
         </div>
     </div>
 
+    <!-- Fullscreen Bilingual Suspended Account Screen -->
+    <div id="suspendedOverlay" class="hidden fixed inset-0 z-50 bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8 transition-colors duration-300">
+        <!-- Top Bar -->
+        <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-600 flex items-center justify-center text-white shadow-lg">
+                    <i class="fa-solid fa-shield-halved text-lg"></i>
+                </div>
+                <div>
+                    <div class="font-heading font-bold text-xl text-white">Food<span class="text-rose-500">Bridge</span></div>
+                    <p class="text-[10px] font-semibold text-rose-300 uppercase tracking-widest" data-i18n="securityNoticeSub">حالة الأمان والحساب</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition flex items-center shadow-xs">
+                    <i class="fa-solid fa-globe mr-1.5 rtl:ml-1.5 text-rose-400"></i>
+                    <span id="suspendedLangBtnText">English</span>
+                </button>
+                <button onclick="toggleTheme()" class="p-2 rounded-xl text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 transition shadow-xs" title="تبديل المظهر / Toggle Theme">
+                    <i id="suspendedThemeToggleIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Center Card -->
+        <div class="max-w-2xl w-full mx-auto my-8">
+            <div class="bg-white dark:bg-slate-900 border border-rose-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden text-center text-slate-900 dark:text-white transition-colors duration-300">
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Banned Icon -->
+                <div class="relative inline-flex items-center justify-center mb-6">
+                    <div class="w-24 h-24 rounded-3xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-600 dark:text-rose-400 shadow-inner">
+                        <i class="fa-solid fa-user-slash text-4xl"></i>
+                    </div>
+                    <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-4 w-4 bg-rose-600"></span>
+                    </span>
+                </div>
+
+                <!-- Badge -->
+                <div class="mb-4">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-rose-500/15 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-500/30">
+                        <i class="fa-solid fa-ban mr-1.5 rtl:ml-1.5"></i>
+                        <span data-i18n="accountSuspendedBadge">حساب معلّق</span>
+                    </span>
+                </div>
+
+                <!-- Main Heading -->
+                <h1 class="font-heading text-2xl sm:text-3xl font-bold mb-2 text-slate-900 dark:text-white tracking-tight" data-i18n="accountSuspendedTitle">
+                    تم تعليق هذا الحساب
+                </h1>
+
+                <!-- User identity line -->
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-6 font-medium">
+                    <span id="suspendedUserName">User</span> • <span id="suspendedUserOrg" class="text-slate-700 dark:text-slate-200">Organization</span>
+                </p>
+
+                <!-- Dynamic Reason & Info Box -->
+                <div class="bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/60 rounded-2xl p-4 sm:p-5 text-left rtl:text-right mb-6 space-y-3">
+                    <div>
+                        <div class="flex items-center text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-circle-exclamation mr-1.5 rtl:ml-1.5"></i>
+                            <span data-i18n="suspensionReasonLabel">سبب تعليق الحساب:</span>
+                        </div>
+                        <div id="suspendedReasonDisplay" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 leading-relaxed bg-white/80 dark:bg-slate-900/80 p-3 rounded-xl border border-rose-100 dark:border-rose-950">
+                            -
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs border-t border-rose-200/60 dark:border-rose-900/40 pt-2.5">
+                        <span class="text-slate-500 dark:text-slate-400 font-semibold" data-i18n="suspendedDateLabel">تاريخ التعليق:</span>
+                        <span id="suspendedDateDisplay" class="text-slate-700 dark:text-slate-300 font-mono text-[11px]">-</span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs border-t border-rose-200/60 dark:border-rose-900/40 pt-2.5">
+                        <span class="text-slate-500 dark:text-slate-400 font-semibold" data-i18n="supportEmailLabel">البريد الإلكتروني للتواصل والدعم:</span>
+                        <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <a id="suspendedSupportEmailLink" href="mailto:ahlawy.ahmed25@gmail.com" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                ahlawy.ahmed25@gmail.com
+                            </a>
+                            <button onclick="copySupportEmail()" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition" title="نسخ البريد">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explanation / Appeal text -->
+                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed max-w-lg mx-auto mb-6" data-i18n="suspensionAppealDesc">
+                    إذا كنت تعتقد أن هذا التعليق تم عن طريق الخطأ أو قمت بتسوية أسباب المخالفة، يرجى مراسلة فريق إدارة المنصة عبر البريد الإلكتروني أعلاه مع إرفاق تفاصيل حسابك لإعادة المراجعة.
+                </p>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a id="btnContactSupportEmail" href="mailto:ahlawy.ahmed25@gmail.com?subject=FoodBridge%20Account%20Suspension%20Appeal" class="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition shadow-lg shadow-rose-600/25 flex items-center justify-center font-heading">
+                        <i class="fa-solid fa-envelope mr-2 rtl:ml-2"></i>
+                        <span data-i18n="btnEmailSupport">مراسلة الدعم الفني الآن</span>
+                    </a>
+                    <button onclick="closeSuspendedScreen()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition flex items-center justify-center">
+                        <i class="fa-solid fa-arrow-right rtl:fa-arrow-left mr-2 rtl:ml-2"></i>
+                        <span data-i18n="btnReturnHome">العودة للصفحة الرئيسية</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Notice -->
+        <div class="max-w-6xl w-full mx-auto text-center text-[11px] text-slate-400 dark:text-slate-500 py-2">
+            FoodBridge Platform Compliance & Operations Suite © 2026
+        </div>
+    </div>
+
 <!-- Mobile Bottom Navigation Bar -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200/90 dark:border-slate-800/90 py-2 px-2 flex items-center justify-around shadow-2xl safe-area-pb">
         <button onclick="navigateTo('landing')" id="bnav-landing" class="flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1">

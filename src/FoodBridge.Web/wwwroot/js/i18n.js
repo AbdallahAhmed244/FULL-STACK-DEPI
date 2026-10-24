@@ -361,6 +361,15 @@ const i18nDict = {
         btnCheckMaintenance: 'Check Status Now',
         maintenanceAutoSyncNotice: 'Live sync active — screen will close automatically once maintenance ends.',
         adminSignInLink: 'Platform Administrator? Sign In',
+        securityNoticeSub: 'Security & Account Status',
+        accountSuspendedBadge: 'Account Suspended',
+        accountSuspendedTitle: 'Your Account Has Been Suspended',
+        suspensionReasonLabel: 'Suspension Reason:',
+        suspendedDateLabel: 'Suspension Date:',
+        supportEmailLabel: 'Support & Appeal Contact:',
+        suspensionAppealDesc: 'If you believe this suspension is in error or you have resolved the underlying issue, please contact platform operations via the support email above to appeal.',
+        btnEmailSupport: 'Contact Support Team',
+        btnReturnHome: 'Return to Home',
         langBtnText: 'عربي',
         mapBadge: 'Nationwide Presence & Logistics Hubs',
         mapHeading: 'FoodBridge Network Across Egypt',
@@ -745,6 +754,15 @@ const i18nDict = {
         btnCheckMaintenance: 'فحص الحالة الآن',
         maintenanceAutoSyncNotice: 'المزامنة اللحظية مفعلة — سيتم فتح المنصة تلقائياً فور انتهاء المشرف.',
         adminSignInLink: 'تسجيل دخول مسؤول النظام',
+        securityNoticeSub: 'حالة الأمان والحساب',
+        accountSuspendedBadge: 'حساب معلّق',
+        accountSuspendedTitle: 'تم تعليق هذا الحساب',
+        suspensionReasonLabel: 'سبب تعليق الحساب:',
+        suspendedDateLabel: 'تاريخ التعليق:',
+        supportEmailLabel: 'البريد الإلكتروني للتواصل والدعم:',
+        suspensionAppealDesc: 'إذا كنت تعتقد أن هذا التعليق تم عن طريق الخطأ أو قمت بتسوية أسباب المخالفة، يرجى مراسلة فريق إدارة المنصة عبر البريد الإلكتروني أعلاه مع إرفاق تفاصيل حسابك لإعادة المراجعة.',
+        btnEmailSupport: 'مراسلة الدعم الفني الآن',
+        btnReturnHome: 'العودة للصفحة الرئيسية',
         langBtnText: 'English',
         mapBadge: 'تغطيتنا ومراكزنا اللوجستية في مصر',
         mapHeading: 'شبكة FoodBridge في محافظات مصر',
@@ -837,6 +855,10 @@ function applyLanguage(lang) {
 
     const langBtn = document.getElementById('langBtnText');
     if (langBtn) langBtn.textContent = dict.langBtnText;
+    const maintLangBtn = document.getElementById('maintenanceLangBtnText');
+    if (maintLangBtn) maintLangBtn.textContent = isAr ? 'English' : 'عربي';
+    const suspLangBtn = document.getElementById('suspendedLangBtnText');
+    if (suspLangBtn) suspLangBtn.textContent = isAr ? 'English' : 'عربي';
     const navLanding = document.getElementById('nav-landing');
     if (navLanding) navLanding.innerHTML = `<i class="fa-solid fa-house ${isAr ? 'ml-2' : 'mr-2'} text-emerald-600"></i> ${dict.navHome}`;
 
