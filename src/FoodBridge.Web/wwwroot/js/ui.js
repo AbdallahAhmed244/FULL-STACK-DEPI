@@ -398,7 +398,7 @@ function navigateTo(viewName) {
     }
 
     // Mobile menu links highlight
-    const mobileViews = ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'];
+    const mobileViews = ['landing', 'explore', 'provider', 'charity', 'admin', 'impact', 'suspended'];
     mobileViews.forEach(v => {
         const mLink = document.getElementById(`mobile-nav-${v}`);
         if (mLink) {
@@ -432,7 +432,7 @@ function navigateTo(viewName) {
         if (btn) btn.className = 'flex flex-col items-center justify-center text-emerald-600 dark:text-emerald-400 text-[10px] font-bold transition px-2 py-1';
     }
 
-    ['landing', 'explore', 'provider', 'charity', 'admin', 'impact'].forEach(v => {
+    ['landing', 'explore', 'provider', 'charity', 'admin', 'impact', 'suspended'].forEach(v => {
         const section = document.getElementById(`view-${v}`);
         if (section) {
             section.classList.add('hidden');

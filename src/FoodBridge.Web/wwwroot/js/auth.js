@@ -93,7 +93,10 @@ async function performLogin(email, password) {
         const data = await res.json();
 
         if (!res.ok) {
-            if ((res.status === 403 || res.status === 401) && data.isSuspended) {
+            const isSuspended = data.isSuspended || 
+                                res.status === 403 || 
+                                (data.message && (data.message.includes('تعليق') || data.message.includes('suspended') || data.message.includes('Suspended')));
+            if (isSuspended) {
                 closeAuthModal();
                 showSuspendedScreen(data);
                 return false;
@@ -340,56 +343,90 @@ let currentSuspensionData = null;
 
 function showSuspendedScreen(data) {
     currentSuspensionData = data;
-    const overlay = document.getElementById('suspendedOverlay');
-    if (!overlay) return;
+
+    // Force close login modal and any background open modals
+    closeAuthModal();
+    document.querySelectorAll('.fixed.inset-0').forEach(m => {
+        m.classList.add('hidden');
+    });
 
     const isAr = currentLang === 'ar';
-
-    const nameEl = document.getElementById('suspendedUserName');
-    if (nameEl) nameEl.textContent = data.fullName || 'User';
-
-    const orgEl = document.getElementById('suspendedUserOrg');
-    if (orgEl) orgEl.textContent = data.organizationName || data.email || 'Partner Account';
-
-    const reasonEl = document.getElementById('suspendedReasonDisplay');
-    if (reasonEl) {
-        reasonEl.textContent = data.reason || (isAr ? 'تم تعليق الحساب لمخالفة معايير واستخدام منصة FoodBridge.' : 'Account suspended due to policy violation.');
-    }
-
-    const emailLink = document.getElementById('suspendedSupportEmailLink');
-    const contactBtn = document.getElementById('btnContactSupportEmail');
     const supportEmail = data.supportEmail || 'ahlawy.ahmed25@gmail.com';
-
-    if (emailLink) {
-        emailLink.textContent = supportEmail;
-        emailLink.href = `mailto:${supportEmail}?subject=${encodeURIComponent('FoodBridge Account Suspension Appeal - ' + (data.email || data.fullName || ''))}`;
+    let reasonText = data.reason || '';
+    if (!reasonText && data.message) {
+        reasonText = data.message;
+    }
+    if (!reasonText) {
+        reasonText = isAr ? 'تم تعليق الحساب لمخالفة معايير واستخدام منصة FoodBridge.' : 'Account suspended due to platform policy review.';
     }
 
-    if (contactBtn) {
-        contactBtn.href = `mailto:${supportEmail}?subject=${encodeURIComponent('FoodBridge Account Suspension Appeal - ' + (data.email || data.fullName || ''))}`;
+    const userName = data.fullName || 'User';
+    const userOrg = data.organizationName || data.email || 'Partner Account';
+    const dateObj = data.suspendedAt ? new Date(data.suspendedAt) : new Date();
+    const dateStr = dateObj.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }) + ' (' + dateObj.toLocaleDateString(isAr ? 'ar-EG' : 'en-US') + ')';
+    const mailtoUrl = `mailto:${supportEmail}?subject=${encodeURIComponent('FoodBridge Account Suspension Appeal - ' + (data.email || userName))}`;
+
+    // 1. Populate Full Dedicated Page (#view-suspended)
+    const pageName = document.getElementById('pageSuspendedUserName');
+    if (pageName) pageName.textContent = userName;
+
+    const pageOrg = document.getElementById('pageSuspendedUserOrg');
+    if (pageOrg) pageOrg.textContent = userOrg;
+
+    const pageReason = document.getElementById('pageSuspensionReason');
+    if (pageReason) pageReason.textContent = reasonText;
+
+    const pageEmailLink = document.getElementById('pageSupportEmailLink');
+    if (pageEmailLink) {
+        pageEmailLink.textContent = supportEmail;
+        pageEmailLink.href = mailtoUrl;
     }
 
-    const dateEl = document.getElementById('suspendedDateDisplay');
-    if (dateEl) {
-        const date = data.suspendedAt ? new Date(data.suspendedAt) : new Date();
-        dateEl.textContent = date.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }) + ' (' + date.toLocaleDateString(isAr ? 'ar-EG' : 'en-US') + ')';
+    const pageEmailBtn = document.getElementById('pageBtnEmailSupport');
+    if (pageEmailBtn) pageEmailBtn.href = mailtoUrl;
+
+    const pageDate = document.getElementById('pageSuspendedDate');
+    if (pageDate) pageDate.textContent = dateStr;
+
+    // 2. Populate Fullscreen Overlay Screen (#suspendedOverlay)
+    const overlayName = document.getElementById('suspendedUserName');
+    if (overlayName) overlayName.textContent = userName;
+
+    const overlayOrg = document.getElementById('suspendedUserOrg');
+    if (overlayOrg) overlayOrg.textContent = userOrg;
+
+    const overlayReason = document.getElementById('suspendedReasonDisplay');
+    if (overlayReason) overlayReason.textContent = reasonText;
+
+    const overlayEmailLink = document.getElementById('suspendedSupportEmailLink');
+    if (overlayEmailLink) {
+        overlayEmailLink.textContent = supportEmail;
+        overlayEmailLink.href = mailtoUrl;
     }
+
+    const overlayContactBtn = document.getElementById('btnContactSupportEmail');
+    if (overlayContactBtn) overlayContactBtn.href = mailtoUrl;
+
+    const overlayDate = document.getElementById('suspendedDateDisplay');
+    if (overlayDate) overlayDate.textContent = dateStr;
 
     const langBtn = document.getElementById('suspendedLangBtnText');
-    if (langBtn) {
-        langBtn.textContent = isAr ? 'English' : 'عربي';
-    }
+    if (langBtn) langBtn.textContent = isAr ? 'English' : 'عربي';
 
     if (typeof updateThemeUI === 'function') {
         updateThemeUI(document.documentElement.classList.contains('dark'));
     }
 
-    // Close any other open modals
-    document.querySelectorAll('.fixed.inset-0:not(#suspendedOverlay)').forEach(m => {
-        m.classList.add('hidden');
-    });
+    // 3. Navigate directly to 'suspended' dedicated page view!
+    if (typeof navigateTo === 'function') {
+        navigateTo('suspended');
+    }
 
-    overlay.classList.remove('hidden');
+    // 4. Also open the high-priority overlay (z-[100])
+    const overlay = document.getElementById('suspendedOverlay');
+    if (overlay) overlay.classList.remove('hidden');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function closeSuspendedScreen() {

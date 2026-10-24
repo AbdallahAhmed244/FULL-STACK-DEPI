@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
@@ -91,9 +91,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
-    <link rel="stylesheet" href="/css/main.css?v=3.0">
-    <link rel="stylesheet" href="/css/components.css?v=3.0">
-    <link rel="stylesheet" href="/css/animations.css?v=3.0">
+    <link rel="stylesheet" href="/css/main.css?v=3.2">
+    <link rel="stylesheet" href="/css/components.css?v=3.2">
+    <link rel="stylesheet" href="/css/animations.css?v=3.2">
 </head>
 <body class="min-h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white pb-14 md:pb-0">
 
@@ -1125,6 +1125,93 @@
 
         </section>
 
+        <!-- Dedicated Full Page for Suspended Accounts -->
+        <section id="view-suspended" class="hidden py-12 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto min-h-[70vh] flex items-center justify-center">
+            <div class="w-full bg-white dark:bg-slate-900 border-2 border-rose-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden text-center text-slate-900 dark:text-white transition-colors duration-300">
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative inline-flex items-center justify-center mb-6">
+                    <div class="w-24 h-24 rounded-3xl bg-rose-500/10 border-2 border-rose-500/40 flex items-center justify-center text-rose-600 dark:text-rose-400 shadow-inner">
+                        <i class="fa-solid fa-user-slash text-4xl"></i>
+                    </div>
+                    <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-4 w-4 bg-rose-600"></span>
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-rose-500/15 dark:bg-rose-500/25 text-rose-700 dark:text-rose-300 border border-rose-500/30">
+                        <i class="fa-solid fa-ban mr-1.5 rtl:ml-1.5"></i>
+                        <span>حساب معلّق / Account Suspended</span>
+                    </span>
+                </div>
+
+                <h1 class="font-heading text-2xl sm:text-3xl font-bold mb-2 text-slate-900 dark:text-white">
+                    تم تعليق هذا الحساب
+                </h1>
+
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-6 font-medium">
+                    <span id="pageSuspendedUserName">المستخدم</span> • <span id="pageSuspendedUserOrg" class="text-slate-700 dark:text-slate-200">المؤسسة</span>
+                </p>
+
+                <div class="bg-rose-50/70 dark:bg-rose-950/30 border-2 border-rose-200 dark:border-rose-900/60 rounded-2xl p-5 sm:p-6 text-right rtl:text-right mb-6 space-y-3">
+                    <div class="flex items-center gap-2 text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                        <span>سبب تعليق الحساب / Suspension Reason:</span>
+                    </div>
+                    <div id="pageSuspensionReason" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-relaxed bg-white dark:bg-slate-900/90 p-4 rounded-xl border border-rose-200 dark:border-rose-950 shadow-xs">
+                        -
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-rose-200/60 dark:border-rose-900/40">
+                        <span>تاريخ التعليق:</span>
+                        <span id="pageSuspendedDate" class="font-mono text-[11px] text-slate-700 dark:text-slate-300">-</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5 sm:p-6 text-right rtl:text-right mb-6">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-3">
+                        <i class="fa-solid fa-headset text-indigo-600 dark:text-indigo-400 text-sm"></i>
+                        <span>للتواصل مع فريق الدعم الفني وإدارة المنصة:</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-slate-400">البريد الإلكتروني المباشر للدعم:</div>
+                                <a id="pageSupportEmailLink" href="mailto:ahlawy.ahmed25@gmail.com" class="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                    ahlawy.ahmed25@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <button onclick="copySupportEmail()" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition flex items-center justify-center gap-1.5 shadow-xs">
+                                <i class="fa-solid fa-copy"></i>
+                                <span>نسخ البريد</span>
+                            </button>
+                            <a id="pageBtnEmailSupport" href="mailto:ahlawy.ahmed25@gmail.com?subject=FoodBridge%20Account%20Suspension%20Appeal" class="flex-1 sm:flex-initial px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>مراسلة الدعم الآن</span>
+                            </a>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mt-3">
+                        إذا كنت تعتقد أن هذا التعليق تم عن طريق الخطأ أو قمت بتسوية أسباب المخالفة، يرجى مراسلة الدعم الفني مع ذكر بريدك الإلكتروني لإعادة تنشيط الحساب.
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-center">
+                    <button onclick="navigateTo('landing')" class="px-6 py-2.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right rtl:fa-arrow-left"></i>
+                        <span>العودة إلى الصفحة الرئيسية</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
 <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-auto py-8">
@@ -1780,7 +1867,7 @@
     </div>
 
     <!-- Fullscreen Bilingual Suspended Account Screen -->
-    <div id="suspendedOverlay" class="hidden fixed inset-0 z-50 bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8 transition-colors duration-300">
+    <div id="suspendedOverlay" class="hidden fixed inset-0 z-[100] bg-slate-900/90 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8 transition-colors duration-300">
         <!-- Top Bar -->
         <div class="max-w-6xl w-full mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -1919,21 +2006,21 @@
 
 <div id="toastContainer" class="fixed bottom-16 sm:bottom-4 right-4 z-[90] flex flex-col space-y-2 pointer-events-none"></div>
 
-<script src="/js/config.js?v=3.0"></script>
-<script src="/js/i18n.js?v=3.0"></script>
-<script src="/js/theme.js?v=3.0"></script>
-<script src="/js/animations.js?v=3.0"></script>
-<script src="/js/ui.js?v=3.0"></script>
-<script src="/js/auth.js?v=3.0"></script>
-<script src="/js/signalr-client.js?v=3.0"></script>
-<script src="/js/maintenance.js?v=3.0"></script>
-<script src="/js/portals/explore.js?v=3.0"></script>
-<script src="/js/portals/provider.js?v=3.0"></script>
-<script src="/js/portals/charity.js?v=3.0"></script>
-<script src="/js/portals/admin.js?v=3.0"></script>
-<script src="/js/portals/impact.js?v=3.0"></script>
-<script src="/js/map.js?v=3.0"></script>
-<script src="/js/app.js?v=3.0"></script>
+<script src="/js/config.js?v=3.2"></script>
+<script src="/js/i18n.js?v=3.2"></script>
+<script src="/js/theme.js?v=3.2"></script>
+<script src="/js/animations.js?v=3.2"></script>
+<script src="/js/ui.js?v=3.2"></script>
+<script src="/js/auth.js?v=3.2"></script>
+<script src="/js/signalr-client.js?v=3.2"></script>
+<script src="/js/maintenance.js?v=3.2"></script>
+<script src="/js/portals/explore.js?v=3.2"></script>
+<script src="/js/portals/provider.js?v=3.2"></script>
+<script src="/js/portals/charity.js?v=3.2"></script>
+<script src="/js/portals/admin.js?v=3.2"></script>
+<script src="/js/portals/impact.js?v=3.2"></script>
+<script src="/js/map.js?v=3.2"></script>
+<script src="/js/app.js?v=3.2"></script>
 </body>
 </html>
 
