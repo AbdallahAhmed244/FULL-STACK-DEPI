@@ -855,8 +855,6 @@ function applyLanguage(lang) {
 
     const langBtn = document.getElementById('langBtnText');
     if (langBtn) langBtn.textContent = dict.langBtnText;
-    const maintLangBtn = document.getElementById('maintenanceLangBtnText');
-    if (maintLangBtn) maintLangBtn.textContent = isAr ? 'English' : 'عربي';
     const suspLangBtn = document.getElementById('suspendedLangBtnText');
     if (suspLangBtn) suspLangBtn.textContent = isAr ? 'English' : 'عربي';
     const navLanding = document.getElementById('nav-landing');
