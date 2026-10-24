@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +25,7 @@ public class FoodListingsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Discover([FromQuery] FoodListingFilterDto filter)
     {
         var result = await _listingService.DiscoverListingsAsync(filter);
@@ -32,6 +33,7 @@ public class FoodListingsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _listingService.GetListingByIdAsync(id);

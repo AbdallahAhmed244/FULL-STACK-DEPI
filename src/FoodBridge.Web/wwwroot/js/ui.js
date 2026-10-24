@@ -370,6 +370,11 @@ function updateNavLinks() {
 function navigateTo(viewName) {
     const isAr = currentLang === 'ar';
 
+    if (viewName === 'explore' && !currentUser) {
+        showToast(isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required', isAr ? 'يرجى تسجيل الدخول أو إنشاء حساب لعرض وتصفح تبرعات الطعام المتاحة.' : 'Please sign in or register to browse available food donations.', 'warning');
+        openAuthModal('login');
+        return;
+    }
     if (viewName === 'admin' && (!currentUser || currentUser.role !== 'Admin')) {
         showToast(isAr ? 'تنبيه أمني' : 'Access Restricted', isAr ? 'لوحة المشرف مخصصة للمسؤولين فقط. يرجى تسجيل الدخول بحساب المشرف.' : 'Please sign in with an Administrator account.', 'warning');
         openAuthModal('login');

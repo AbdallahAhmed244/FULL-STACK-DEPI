@@ -46,6 +46,16 @@ function resetExploreFilters() {
 }
 
 async function loadExploreListings() {
+    if (!currentUser) {
+        const grid = document.getElementById('listingsGrid');
+        const emptyState = document.getElementById('emptyListingsState');
+        const countDisplay = document.getElementById('listingCountDisplay');
+        if (countDisplay) countDisplay.textContent = '0 active food donations';
+        if (grid) grid.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+    }
+
     const search = document.getElementById('searchInput')?.value || '';
     const providerType = document.getElementById('providerTypeFilter')?.value || '';
     const date = document.getElementById('dateFilter')?.value || '';
@@ -66,7 +76,16 @@ async function loadExploreListings() {
     const countDisplay = document.getElementById('listingCountDisplay');
 
     try {
-        const res = await fetch(`${API_BASE}/foodlistings?${params.toString()}`);
+        const res = await fetch(`${API_BASE}/foodlistings?${params.toString()}`, {
+            headers: { 'Authorization': `Bearer ${currentUser.token}` }
+        });
+        if (res.status === 401) {
+            currentUser = null;
+            localStorage.removeItem('foodbridge_user');
+            updateAuthUI();
+            openAuthModal('login');
+            return;
+        }
         const data = await res.json();
 
         if (countDisplay) {
