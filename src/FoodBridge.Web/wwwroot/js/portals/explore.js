@@ -172,8 +172,28 @@ function renderListingCard(item) {
 }
 
 async function openListingDetailModal(listingId) {
+    if (!currentUser) {
+        const isAr = currentLang === 'ar';
+        showToast(
+            isAr ? 'تسجيل الدخول مطلوب' : 'Sign In Required',
+            isAr ? 'يرجى تسجيل الدخول أو إنشاء حساب لعرض تفاصيل التبرع والحجز.' : 'Please sign in to view details and reserve food.',
+            'warning'
+        );
+        openAuthModal('login');
+        return;
+    }
+
     try {
-        const res = await fetch(`${API_BASE}/foodlistings/${listingId}`);
+        const res = await fetch(`${API_BASE}/foodlistings/${listingId}`, {
+            headers: { 'Authorization': `Bearer ${currentUser.token}` }
+        });
+        if (!res.ok) {
+            if (res.status === 401) {
+                openAuthModal('login');
+                return;
+            }
+            throw new Error('Failed to fetch listing details');
+        }
         const listing = await res.json();
         currentDetailListing = listing;
 
