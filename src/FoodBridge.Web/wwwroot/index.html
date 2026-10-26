@@ -1029,22 +1029,61 @@
                 </div>
             </div>
 
-<div id="adminTabAudit" class="hidden">
-                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-heading font-bold text-base text-slate-900 mb-2" data-i18n="auditRecordsTitle">Administrative Audit Records</h3>
-                    <p class="text-slate-500 text-xs mb-4" data-i18n="auditRecordsDesc">Immutable log of security actions, user verifications, account suspensions, and content removals.</p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-slate-600">
-                            <thead class="bg-slate-50 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
+            <div id="adminTabAudit" class="hidden">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                </span>
+                                <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white" data-i18n="auditRecordsTitle">سجلات التدقيق الإداري والأمني</h3>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs mt-1" data-i18n="auditRecordsDesc">سجل تدقيق رقمي تفصيلي ومباشر لجميع العمليات الإدارية، ومن نفّذها، والطرف المستهدف، ومبررات كل قرار.</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span id="auditLogsCountBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                                0 سجل
+                            </span>
+                            <button onclick="loadAdminAuditLogs()" class="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                                <span data-i18n="btnRefreshAudit">تحديث</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search and Filters Bar -->
+                    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-700/50">
+                        <!-- Search Box -->
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="adminAuditSearchInput" oninput="handleAuditSearch(event)" placeholder="ابحث باسم المشرف، الإجراء، الطرف المستهدف، أو مبررات القرار..." data-i18n-placeholder="auditSearchPlaceholder" class="w-full pr-9 pl-4 py-2 rounded-xl text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
+                        <!-- Category Filter Pills -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs shrink-0">
+                            <button onclick="filterAuditLogs('all')" id="auditFilterBtn-all" class="audit-filter-pill px-3 py-1.5 rounded-xl font-bold bg-indigo-600 text-white shadow-xs transition shrink-0">الكل</button>
+                            <button onclick="filterAuditLogs('users')" id="auditFilterBtn-users" class="audit-filter-pill px-3 py-1.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition shrink-0">الحسابات والتجميد</button>
+                            <button onclick="filterAuditLogs('verifications')" id="auditFilterBtn-verifications" class="audit-filter-pill px-3 py-1.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition shrink-0">التوثيقات</button>
+                            <button onclick="filterAuditLogs('content')" id="auditFilterBtn-content" class="audit-filter-pill px-3 py-1.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition shrink-0">المحتوى والتبرعات</button>
+                            <button onclick="filterAuditLogs('waste')" id="auditFilterBtn-waste" class="audit-filter-pill px-3 py-1.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition shrink-0">الهدر والإتلاف</button>
+                            <button onclick="filterAuditLogs('system')" id="auditFilterBtn-system" class="audit-filter-pill px-3 py-1.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition shrink-0">الأمان والنظام</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-100 dark:border-slate-700/60">
+                        <table class="w-full text-right text-sm text-slate-600 dark:text-slate-300">
+                            <thead class="bg-slate-50 dark:bg-slate-900/60 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">
                                 <tr>
-                                    <th class="px-4 py-3" data-i18n="thTimestamp">Timestamp</th>
-                                    <th class="px-4 py-3" data-i18n="thAdmin">Admin</th>
-                                    <th class="px-4 py-3" data-i18n="thAction">Action</th>
-                                    <th class="px-4 py-3" data-i18n="thTargetEntity">Target Entity</th>
-                                    <th class="px-4 py-3" data-i18n="thDetails">Details</th>
+                                    <th class="px-4 py-3" data-i18n="thTimestamp">التوقيت</th>
+                                    <th class="px-4 py-3" data-i18n="thAdmin">المشرف (منفذ الإجراء)</th>
+                                    <th class="px-4 py-3" data-i18n="thAction">نوع الإجراء</th>
+                                    <th class="px-4 py-3" data-i18n="thTargetEntity">الطرف المستهدف (لمن)</th>
+                                    <th class="px-4 py-3" data-i18n="thDetails">التفاصيل ومبررات القرار</th>
+                                    <th class="px-3 py-3 text-center" data-i18n="thActionBtn">معاينة</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminAuditTableBody" class="divide-y divide-slate-100 text-xs">
+                            <tbody id="adminAuditTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-xs">
                                 
                             </tbody>
                         </table>
@@ -1764,6 +1803,108 @@
         </div>
     </div>
 
+    <!-- Admin Audit Log Full Details Modal -->
+    <div id="adminAuditDetailModal" class="hidden fixed inset-0 z-[70] overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="modal-card-animated bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl relative border border-slate-200 dark:border-slate-800">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-5">
+                <div class="flex items-center gap-3">
+                    <div id="auditModalIconBox" class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg shadow-xs">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-heading font-bold text-lg text-slate-900 dark:text-white" data-i18n="auditModalTitle">تفاصيل سجل التدقيق</h3>
+                            <span id="auditModalIdBadge" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">#0</span>
+                        </div>
+                        <p id="auditModalTimestamp" class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 font-mono"></p>
+                    </div>
+                </div>
+                <button onclick="closeAuditDetailModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <!-- 3 Metadata Cards (Actor, Action, Target) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <!-- Actor Card -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-user-shield text-indigo-500"></i>
+                            <span>منفذ الإجراء (Who)</span>
+                        </div>
+                        <div id="auditModalAdminName" class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate"></div>
+                        <div id="auditModalAdminEmail" class="text-[10px] text-slate-400 font-mono truncate mt-0.5"></div>
+                        <div id="auditModalAdminRole" class="mt-1"></div>
+                    </div>
+
+                    <!-- Action Card -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-bolt text-amber-500"></i>
+                            <span>نوع العملية (What)</span>
+                        </div>
+                        <div id="auditModalActionBadge" class="mt-0.5"></div>
+                        <div id="auditModalActionRaw" class="text-[10px] text-slate-400 font-mono mt-1"></div>
+                    </div>
+
+                    <!-- Target Card -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-bullseye text-rose-500"></i>
+                            <span>الطرف المستهدف (To Whom)</span>
+                        </div>
+                        <div id="auditModalTargetName" class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate"></div>
+                        <div id="auditModalTargetType" class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5"></div>
+                        <div id="auditModalTargetId" class="text-[10px] text-slate-400 font-mono truncate mt-0.5"></div>
+                    </div>
+                </div>
+
+                <!-- Highlighted Reason & Notes Box -->
+                <div id="auditModalReasonBox" class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50">
+                    <div class="flex items-center gap-2 text-xs font-bold text-amber-800 dark:text-amber-200 mb-1">
+                        <i class="fa-solid fa-quote-right text-amber-600"></i>
+                        <span>مبرر القرار وملاحظات الإجراء (Decision Reason)</span>
+                    </div>
+                    <p id="auditModalReasonText" class="text-xs text-amber-950 dark:text-amber-100 leading-relaxed font-medium whitespace-pre-line"></p>
+                </div>
+
+                <!-- Full Log Details Text -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                    <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-lines text-slate-400"></i>
+                        <span>نص السجل الإداري المسجل بالنظام</span>
+                    </div>
+                    <div id="auditModalFullDetails" class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-line"></div>
+                </div>
+
+                <!-- Collapsible Raw Technical Payload -->
+                <details class="text-xs group border border-slate-100 dark:border-slate-800 rounded-2xl p-3 bg-slate-50/50 dark:bg-slate-900/40">
+                    <summary class="cursor-pointer font-bold text-slate-500 dark:text-slate-400 flex items-center justify-between select-none">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-code text-indigo-500"></i>
+                            <span>البيانات التقنية الكاملة (Raw JSON Payload)</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-down text-[10px] transition group-open:rotate-180"></i>
+                    </summary>
+                    <pre id="auditModalRawJson" class="mt-2.5 p-3 rounded-xl bg-slate-900 text-emerald-400 text-[11px] font-mono overflow-x-auto max-h-48 border border-slate-800 dir-ltr text-left"></pre>
+                </details>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="flex items-center justify-between pt-4 mt-5 border-t border-slate-100 dark:border-slate-800">
+                <button onclick="copyAuditModalSummary()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition flex items-center gap-1.5">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>نسخ ملخص السجل</span>
+                </button>
+                <button onclick="closeAuditDetailModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Fullscreen Bilingual Maintenance Screen -->
     <div id="maintenanceOverlay" class="hidden fixed inset-0 z-50 bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between overflow-y-auto p-4 sm:p-6 lg:p-8 transition-colors duration-300">
         <!-- Top Bar -->
@@ -2006,21 +2147,21 @@
 
 <div id="toastContainer" class="fixed bottom-16 sm:bottom-4 right-4 z-[90] flex flex-col space-y-2 pointer-events-none"></div>
 
-<script src="/js/config.js?v=3.4"></script>
-<script src="/js/i18n.js?v=3.4"></script>
-<script src="/js/theme.js?v=3.4"></script>
-<script src="/js/animations.js?v=3.4"></script>
-<script src="/js/ui.js?v=3.4"></script>
-<script src="/js/auth.js?v=3.4"></script>
-<script src="/js/signalr-client.js?v=3.4"></script>
-<script src="/js/maintenance.js?v=3.4"></script>
-<script src="/js/portals/explore.js?v=3.4"></script>
-<script src="/js/portals/provider.js?v=3.4"></script>
-<script src="/js/portals/charity.js?v=3.4"></script>
-<script src="/js/portals/admin.js?v=3.4"></script>
-<script src="/js/portals/impact.js?v=3.4"></script>
-<script src="/js/map.js?v=3.4"></script>
-<script src="/js/app.js?v=3.4"></script>
+<script src="/js/config.js?v=3.5"></script>
+<script src="/js/i18n.js?v=3.5"></script>
+<script src="/js/theme.js?v=3.5"></script>
+<script src="/js/animations.js?v=3.5"></script>
+<script src="/js/ui.js?v=3.5"></script>
+<script src="/js/auth.js?v=3.5"></script>
+<script src="/js/signalr-client.js?v=3.5"></script>
+<script src="/js/maintenance.js?v=3.5"></script>
+<script src="/js/portals/explore.js?v=3.5"></script>
+<script src="/js/portals/provider.js?v=3.5"></script>
+<script src="/js/portals/charity.js?v=3.5"></script>
+<script src="/js/portals/admin.js?v=3.5"></script>
+<script src="/js/portals/impact.js?v=3.5"></script>
+<script src="/js/map.js?v=3.5"></script>
+<script src="/js/app.js?v=3.5"></script>
 </body>
 </html>
 

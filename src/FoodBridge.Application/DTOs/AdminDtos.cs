@@ -87,9 +87,13 @@ public class AuditLogDto
     public int Id { get; set; }
     public string AdminId { get; set; } = string.Empty;
     public string AdminName { get; set; } = string.Empty;
+    public string? AdminEmail { get; set; }
+    public string? AdminRole { get; set; }
     public string Action { get; set; } = string.Empty;
     public string TargetEntity { get; set; } = string.Empty;
     public string TargetId { get; set; } = string.Empty;
+    public string? TargetName { get; set; }
+    public string? TargetType { get; set; }
     public string Details { get; set; } = string.Empty;
     public DateTimeOffset Timestamp { get; set; }
 }

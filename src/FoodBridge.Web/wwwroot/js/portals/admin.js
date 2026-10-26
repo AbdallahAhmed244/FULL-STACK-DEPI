@@ -415,42 +415,419 @@ async function resolveProblemByAdmin(id) {
     }
 }
 
+let allAdminAuditLogs = [];
+let currentAuditFilter = 'all';
+let currentAuditSearch = '';
+let currentFilteredAuditLogs = [];
+let currentSelectedAuditLog = null;
+
+const ADMIN_AUDIT_ACTIONS = {
+    'SuspendUser': {
+        ar: 'تجميد حساب مستخدم',
+        en: 'Suspend User',
+        icon: 'fa-solid fa-user-slash',
+        category: 'users',
+        badgeClass: 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+    },
+    'ReactivateUser': {
+        ar: 'تفعيل وإلغاء تجميد',
+        en: 'Reactivate User',
+        icon: 'fa-solid fa-user-check',
+        category: 'users',
+        badgeClass: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+    },
+    'AutoSecuritySuspension': {
+        ar: 'تجميد أمني تلقائي (محاولات فاشلة)',
+        en: 'Auto Security Lockout',
+        icon: 'fa-solid fa-shield-halved',
+        category: 'users',
+        badgeClass: 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800'
+    },
+    'CreateAdmin': {
+        ar: 'إنشاء مشرف إداري',
+        en: 'Create Admin',
+        icon: 'fa-solid fa-user-shield',
+        category: 'users',
+        badgeClass: 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800'
+    },
+    'ApproveVerification': {
+        ar: 'اعتماد وتوثيق مؤسسة',
+        en: 'Approve Verification',
+        icon: 'fa-solid fa-circle-check',
+        category: 'verifications',
+        badgeClass: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+    },
+    'VerifyOrganization': {
+        ar: 'اعتماد وتوثيق مؤسسة',
+        en: 'Approve Verification',
+        icon: 'fa-solid fa-circle-check',
+        category: 'verifications',
+        badgeClass: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+    },
+    'RejectVerification': {
+        ar: 'رفض توثيق مؤسسة',
+        en: 'Reject Verification',
+        icon: 'fa-solid fa-circle-xmark',
+        category: 'verifications',
+        badgeClass: 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+    },
+    'RejectOrganization': {
+        ar: 'رفض توثيق مؤسسة',
+        en: 'Reject Verification',
+        icon: 'fa-solid fa-circle-xmark',
+        category: 'verifications',
+        badgeClass: 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+    },
+    'RemoveListing': {
+        ar: 'حذف إدراج طعام',
+        en: 'Remove Food Listing',
+        icon: 'fa-solid fa-trash-can',
+        category: 'content',
+        badgeClass: 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+    },
+    'RemoveReview': {
+        ar: 'حذف تقييم مسيء',
+        en: 'Remove Review',
+        icon: 'fa-solid fa-star-half-stroke',
+        category: 'content',
+        badgeClass: 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+    },
+    'ResolveProblem': {
+        ar: 'حل نزاع استلام',
+        en: 'Resolve Dispute',
+        icon: 'fa-solid fa-handshake-angle',
+        category: 'content',
+        badgeClass: 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
+    },
+    'ResolveProblemReport': {
+        ar: 'حل نزاع استلام',
+        en: 'Resolve Dispute',
+        icon: 'fa-solid fa-handshake-angle',
+        category: 'content',
+        badgeClass: 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
+    },
+    'SuspendProviderWasteViolation': {
+        ar: 'تجميد مورد (مخالفة هدر)',
+        en: 'Waste Violation Suspension',
+        icon: 'fa-solid fa-triangle-exclamation',
+        category: 'waste',
+        badgeClass: 'bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+    },
+    'WarnProviderFoodWaste': {
+        ar: 'إنذار وتنبيه هدر طعام',
+        en: 'Food Waste Advisory',
+        icon: 'fa-solid fa-bell',
+        category: 'waste',
+        badgeClass: 'bg-yellow-50 dark:bg-yellow-950/40 text-yellow-800 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800'
+    },
+    'RecordWasteDisposal': {
+        ar: 'توثيق إتلاف وتخلص آمن',
+        en: 'Safe Disposal Logged',
+        icon: 'fa-solid fa-recycle',
+        category: 'waste',
+        badgeClass: 'bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800'
+    },
+    'EnableMaintenanceMode': {
+        ar: 'تفعيل وضع الصيانة العام',
+        en: 'Enable Maintenance',
+        icon: 'fa-solid fa-lock',
+        category: 'system',
+        badgeClass: 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+    },
+    'DisableMaintenanceMode': {
+        ar: 'إنهاء وضع الصيانة',
+        en: 'Disable Maintenance',
+        icon: 'fa-solid fa-lock-open',
+        category: 'system',
+        badgeClass: 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+    },
+    'SystemProvisioning': {
+        ar: 'تهيئة وتأسيس المنصة',
+        en: 'System Provisioning',
+        icon: 'fa-solid fa-server',
+        category: 'system',
+        badgeClass: 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600'
+    }
+};
+
+function parseAuditLogReason(details) {
+    if (!details) return { main: '', reason: null };
+    const markers = ['Reason: ', 'Notes: ', 'المبرر: ', 'السبب: '];
+    for (const marker of markers) {
+        const idx = details.indexOf(marker);
+        if (idx !== -1) {
+            return {
+                main: details.substring(0, idx).trim(),
+                reason: details.substring(idx + marker.length).trim()
+            };
+        }
+    }
+    return { main: details.trim(), reason: null };
+}
+
 async function loadAdminAuditLogs() {
     if (!currentUser) return;
     const isAr = currentLang === 'ar';
     const tbody = document.getElementById('adminAuditTableBody');
+    if (!tbody) return;
+
     try {
-        const res = await fetch(`${API_BASE}/admin/audit-logs?take=50`, {
+        const res = await fetch(`${API_BASE}/admin/audit-logs?take=100`, {
             headers: { 'Authorization': `Bearer ${currentUser.token}` }
         });
-        const logs = await res.json();
-        if (!logs || logs.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 text-xs">${isAr ? 'لا توجد سجلات تدقيق حتى الآن.' : 'No audit records yet.'}</td></tr>`;
+        if (!res.ok) {
+            tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-rose-500 text-xs">${isAr ? 'تعذر جلب سجلات التدقيق.' : 'Failed to fetch audit logs.'}</td></tr>`;
             return;
         }
-
-        const actionTranslations = {
-            'VerifyOrganization': 'توثيق مؤسسة',
-            'RejectOrganization': 'رفض مؤسسة',
-            'SuspendUser': 'تجميد مستخدم',
-            'ReactivateUser': 'تفعيل مستخدم',
-            'RemoveListing': 'حذف تبرع',
-            'RemoveReview': 'حذف تقييم',
-            'ResolveProblem': 'حل نزاع استلام'
-        };
-
-        tbody.innerHTML = logs.map(l => `
-            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                <td class="px-4 py-2.5 text-slate-400 font-mono">${new Date(l.timestamp).toLocaleString(isAr ? 'ar-EG' : 'en-US')}</td>
-                <td class="px-4 py-2.5 font-bold text-slate-700 dark:text-slate-200">${escapeHtml(l.adminName)}</td>
-                <td class="px-4 py-2.5 font-semibold text-indigo-700 dark:text-indigo-400">${escapeHtml(isAr && actionTranslations[l.action] ? actionTranslations[l.action] : l.action)}</td>
-                <td class="px-4 py-2.5 text-slate-500 dark:text-slate-400">${escapeHtml(l.targetEntity)} #${escapeHtml(l.targetId)}</td>
-                <td class="px-4 py-2.5 text-slate-600 dark:text-slate-300 max-w-xs truncate">${escapeHtml(l.details)}</td>
-            </tr>
-        `).join('');
+        allAdminAuditLogs = await res.json() || [];
+        const countBadge = document.getElementById('auditLogsCountBadge');
+        if (countBadge) {
+            countBadge.textContent = isAr ? `${allAdminAuditLogs.length} سجل` : `${allAdminAuditLogs.length} logs`;
+        }
+        renderAdminAuditLogs();
     } catch (err) {
         console.error('Error fetching audit logs:', err);
+        tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-rose-500 text-xs">${isAr ? 'خطأ في الاتصال بالخادم.' : 'Server connection error.'}</td></tr>`;
     }
+}
+
+function filterAuditLogs(category) {
+    currentAuditFilter = category;
+    document.querySelectorAll('.audit-filter-pill').forEach(btn => {
+        btn.className = 'audit-filter-pill px-3 py-1.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition shrink-0';
+    });
+    const activeBtn = document.getElementById(`auditFilterBtn-${category}`);
+    if (activeBtn) {
+        activeBtn.className = 'audit-filter-pill px-3 py-1.5 rounded-xl font-bold bg-indigo-600 text-white shadow-xs transition shrink-0';
+    }
+    renderAdminAuditLogs();
+}
+
+function handleAuditSearch(event) {
+    currentAuditSearch = (event.target.value || '').trim().toLowerCase();
+    renderAdminAuditLogs();
+}
+
+function renderAdminAuditLogs() {
+    const isAr = currentLang === 'ar';
+    const tbody = document.getElementById('adminAuditTableBody');
+    if (!tbody) return;
+
+    currentFilteredAuditLogs = allAdminAuditLogs.filter(l => {
+        if (currentAuditFilter !== 'all') {
+            const conf = ADMIN_AUDIT_ACTIONS[l.action];
+            const cat = conf ? conf.category : 'other';
+            if (cat !== currentAuditFilter) return false;
+        }
+        if (currentAuditSearch) {
+            const searchHaystack = [
+                l.adminName,
+                l.adminEmail,
+                l.action,
+                l.targetEntity,
+                l.targetId,
+                l.targetName,
+                l.targetType,
+                l.details
+            ].filter(Boolean).join(' ').toLowerCase();
+
+            if (!searchHaystack.includes(currentAuditSearch)) return false;
+        }
+        return true;
+    });
+
+    if (currentFilteredAuditLogs.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="px-4 py-12 text-center text-slate-400 dark:text-slate-500">
+                    <i class="fa-solid fa-folder-open text-2xl mb-2 block"></i>
+                    <span>${isAr ? 'لا توجد سجلات مطابقة للبحث أو التصفية الحالية.' : 'No audit records match the current search/filter.'}</span>
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = currentFilteredAuditLogs.map((l, index) => {
+        const conf = ADMIN_AUDIT_ACTIONS[l.action] || {
+            ar: l.action,
+            en: l.action,
+            icon: 'fa-solid fa-circle-dot',
+            badgeClass: 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600'
+        };
+
+        const actionTitle = isAr ? conf.ar : conf.en;
+        const actionSubtitle = isAr ? conf.en : conf.ar;
+
+        const dateObj = new Date(l.timestamp);
+        const dateStr = dateObj.toLocaleDateString(isAr ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        const timeStr = dateObj.toLocaleTimeString(isAr ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        const isAutoSecurity = l.action === 'AutoSecuritySuspension' || (l.adminEmail && l.adminEmail.includes('security-bot'));
+        const adminInitials = (l.adminName || 'AD').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+
+        const shortTargetId = l.targetId && l.targetId.length > 12 ? `${l.targetId.substring(0, 8)}...` : (l.targetId || 'N/A');
+        const targetTitle = l.targetName || `${l.targetEntity} #${shortTargetId}`;
+        const targetSubtitle = l.targetType || l.targetEntity;
+
+        const parsed = parseAuditLogReason(l.details);
+
+        return `
+            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition group cursor-pointer" onclick="openAuditDetailModal(${index})">
+                <!-- Timestamp -->
+                <td class="px-4 py-3 whitespace-nowrap text-right">
+                    <div class="font-bold text-slate-700 dark:text-slate-200 text-xs">${dateStr}</div>
+                    <div class="text-[11px] text-slate-400 dark:text-slate-500 font-mono flex items-center gap-1 justify-end mt-0.5">
+                        <i class="fa-regular fa-clock text-[10px]"></i>
+                        <span>${timeStr}</span>
+                    </div>
+                </td>
+
+                <!-- Actor / Admin -->
+                <td class="px-4 py-3 text-right">
+                    <div class="flex items-center gap-2 justify-end">
+                        <div class="text-right">
+                            <div class="font-bold text-slate-800 dark:text-slate-100 text-xs flex items-center gap-1.5 justify-end">
+                                <span>${escapeHtml(l.adminName)}</span>
+                                ${isAutoSecurity ? '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300">BOT</span>' : ''}
+                            </div>
+                            ${l.adminEmail ? `<div class="text-[10px] text-slate-400 font-mono">${escapeHtml(l.adminEmail)}</div>` : ''}
+                            ${l.adminRole && !isAutoSecurity ? `<span class="inline-block mt-0.5 px-1.5 py-0.5 rounded text-[9px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">${escapeHtml(l.adminRole)}</span>` : ''}
+                        </div>
+                        <div class="w-8 h-8 rounded-xl ${isAutoSecurity ? 'bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300' : 'bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'} flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                            ${isAutoSecurity ? '<i class="fa-solid fa-robot"></i>' : adminInitials}
+                        </div>
+                    </div>
+                </td>
+
+                <!-- Action Type -->
+                <td class="px-4 py-3 whitespace-nowrap text-right">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold ${conf.badgeClass} shadow-xs">
+                        <i class="${conf.icon} text-xs"></i>
+                        <span>${escapeHtml(actionTitle)}</span>
+                    </span>
+                    <div class="text-[10px] text-slate-400 font-mono mt-0.5">${escapeHtml(actionSubtitle)}</div>
+                </td>
+
+                <!-- Target Entity (To Whom) -->
+                <td class="px-4 py-3 text-right min-w-[180px]">
+                    <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${escapeHtml(targetTitle)}</div>
+                    <div class="flex items-center gap-1.5 justify-end mt-0.5">
+                        <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded">${escapeHtml(targetSubtitle)}</span>
+                        <span class="text-[10px] font-mono text-slate-400">#${escapeHtml(shortTargetId)}</span>
+                    </div>
+                </td>
+
+                <!-- Details & Reasoning -->
+                <td class="px-4 py-3 text-right max-w-sm">
+                    <div class="text-xs text-slate-700 dark:text-slate-200 leading-snug line-clamp-2">${escapeHtml(parsed.main || l.details)}</div>
+                    ${parsed.reason ? `
+                        <div class="mt-1 p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 text-[11px] text-amber-900 dark:text-amber-200 flex items-start gap-1 justify-end">
+                            <span class="line-clamp-2 text-right"><strong class="font-bold">${isAr ? 'المبرر:' : 'Reason:'}</strong> ${escapeHtml(parsed.reason)}</span>
+                            <i class="fa-solid fa-quote-right text-amber-600 text-[10px] mt-0.5 shrink-0"></i>
+                        </div>
+                    ` : ''}
+                </td>
+
+                <!-- Action / View Button -->
+                <td class="px-3 py-3 text-center whitespace-nowrap" onclick="event.stopPropagation()">
+                    <button onclick="openAuditDetailModal(${index})" title="${isAr ? 'عرض تفاصيل السجل كاملة' : 'View full audit record'}" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-600 hover:text-white dark:bg-slate-700 dark:hover:bg-indigo-600 text-slate-600 dark:text-slate-300 flex items-center justify-center transition shadow-xs mx-auto">
+                        <i class="fa-solid fa-eye text-xs"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function openAuditDetailModal(index) {
+    const log = currentFilteredAuditLogs[index];
+    if (!log) return;
+    currentSelectedAuditLog = log;
+    const isAr = currentLang === 'ar';
+
+    const conf = ADMIN_AUDIT_ACTIONS[log.action] || {
+        ar: log.action,
+        en: log.action,
+        icon: 'fa-solid fa-circle-dot',
+        badgeClass: 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
+    };
+
+    const dateObj = new Date(log.timestamp);
+    const dateFormatted = dateObj.toLocaleString(isAr ? 'ar-EG' : 'en-US', {
+        dateStyle: 'full',
+        timeStyle: 'medium'
+    });
+
+    document.getElementById('auditModalIdBadge').textContent = `#${log.id}`;
+    document.getElementById('auditModalTimestamp').textContent = `${dateFormatted} (UTC: ${log.timestamp})`;
+
+    // Admin Info
+    document.getElementById('auditModalAdminName').textContent = log.adminName || 'Administrator';
+    document.getElementById('auditModalAdminEmail').textContent = log.adminEmail || 'No email provided';
+    document.getElementById('auditModalAdminRole').innerHTML = `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300">${escapeHtml(log.adminRole || 'Admin')}</span> <span class="font-mono text-[9px] text-slate-400">ID: ${escapeHtml(log.adminId ? log.adminId.substring(0, 10) + '...' : '')}</span>`;
+
+    // Action Info
+    document.getElementById('auditModalActionBadge').innerHTML = `
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold ${conf.badgeClass}">
+            <i class="${conf.icon} text-xs"></i>
+            <span>${escapeHtml(isAr ? conf.ar : conf.en)}</span>
+        </span>
+    `;
+    document.getElementById('auditModalActionRaw').textContent = `Raw Action: ${log.action}`;
+
+    // Target Info
+    document.getElementById('auditModalTargetName').textContent = log.targetName || `${log.targetEntity} #${log.targetId}`;
+    document.getElementById('auditModalTargetType').textContent = `الكيان: ${log.targetType || log.targetEntity}`;
+    document.getElementById('auditModalTargetId').textContent = `معرّف الكيان: #${log.targetId}`;
+
+    // Reasons & Details
+    const parsed = parseAuditLogReason(log.details);
+    const reasonBox = document.getElementById('auditModalReasonBox');
+    if (parsed.reason) {
+        reasonBox.classList.remove('hidden');
+        document.getElementById('auditModalReasonText').textContent = parsed.reason;
+    } else {
+        reasonBox.classList.add('hidden');
+    }
+
+    document.getElementById('auditModalFullDetails').textContent = log.details || (isAr ? 'لا توجد تفاصيل إضافية مسجلة.' : 'No additional details logged.');
+
+    // Raw JSON Payload
+    document.getElementById('auditModalRawJson').textContent = JSON.stringify(log, null, 2);
+
+    document.getElementById('adminAuditDetailModal').classList.remove('hidden');
+}
+
+function closeAuditDetailModal() {
+    const modal = document.getElementById('adminAuditDetailModal');
+    if (modal) modal.classList.add('hidden');
+    currentSelectedAuditLog = null;
+}
+
+function copyAuditModalSummary() {
+    if (!currentSelectedAuditLog) return;
+    const l = currentSelectedAuditLog;
+    const isAr = currentLang === 'ar';
+    const conf = ADMIN_AUDIT_ACTIONS[l.action];
+    const actionName = conf ? (isAr ? conf.ar : conf.en) : l.action;
+
+    const summaryText = `
+[سجل تدقيق منصة FoodBridge]
+- رقم السجل: #${l.id}
+- التوقيت: ${new Date(l.timestamp).toLocaleString(isAr ? 'ar-EG' : 'en-US')}
+- منفذ الإجراء (Who): ${l.adminName} (${l.adminEmail || 'N/A'})
+- نوع الإجراء (What): ${actionName} (${l.action})
+- الطرف المستهدف (To Whom): ${l.targetName || l.targetEntity} (#${l.targetId})
+- التفاصيل والسبب: ${l.details}
+    `.trim();
+
+    navigator.clipboard.writeText(summaryText)
+        .then(() => {
+            showToast(isAr ? 'تم النسخ' : 'Copied', isAr ? 'تم نسخ ملخص السجل الإداري بنجاح.' : 'Audit summary copied to clipboard.', 'success');
+        })
+        .catch(err => {
+            console.error('Clipboard copy error:', err);
+        });
 }
 
 function switchAdminTab(tab) {

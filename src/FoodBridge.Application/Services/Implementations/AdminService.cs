@@ -614,16 +614,149 @@ public class AdminService : IAdminService
             .AsNoTracking()
             .ToListAsync();
 
-        return logs.Select(a => new AuditLogDto
+        var userIds = logs
+            .Where(a => a.TargetEntity == "ApplicationUser" && !string.IsNullOrWhiteSpace(a.TargetId))
+            .Select(a => a.TargetId)
+            .Distinct()
+            .ToList();
+
+        var usersDict = userIds.Count > 0
+            ? await _context.Users
+                .Where(u => userIds.Contains(u.Id))
+                .Select(u => new
+                {
+                    u.Id,
+                    u.FullName,
+                    u.OrganizationName,
+                    u.Email,
+                    u.UserType
+                })
+                .ToDictionaryAsync(u => u.Id, u => u)
+            : new();
+
+        var listingIds = logs
+            .Where(a => a.TargetEntity == "FoodListing" && int.TryParse(a.TargetId, out _))
+            .Select(a => int.Parse(a.TargetId))
+            .Distinct()
+            .ToList();
+
+        var listingsDict = listingIds.Count > 0
+            ? await _context.FoodListings
+                .Include(f => f.Provider)
+                .Where(f => listingIds.Contains(f.Id))
+                .Select(f => new
+                {
+                    f.Id,
+                    f.FoodName,
+                    ProviderOrg = f.Provider != null ? f.Provider.OrganizationName : null
+                })
+                .ToDictionaryAsync(f => f.Id, f => f)
+            : new();
+
+        var reservationIds = logs
+            .Where(a => a.TargetEntity == "Reservation" && int.TryParse(a.TargetId, out _))
+            .Select(a => int.Parse(a.TargetId))
+            .Distinct()
+            .ToList();
+
+        var reservationsDict = reservationIds.Count > 0
+            ? await _context.Reservations
+                .Include(r => r.FoodListing)
+                .Include(r => r.Charity)
+                .Where(r => reservationIds.Contains(r.Id))
+                .Select(r => new
+                {
+                    r.Id,
+                    FoodName = r.FoodListing != null ? r.FoodListing.FoodName : "تبرع طعام",
+                    CharityName = r.Charity != null ? r.Charity.OrganizationName : "جمعية خيرية"
+                })
+                .ToDictionaryAsync(r => r.Id, r => r)
+            : new();
+
+        return logs.Select(a =>
         {
-            Id = a.Id,
-            AdminId = a.AdminId,
-            AdminName = a.Admin?.FullName ?? "Administrator",
-            Action = a.Action,
-            TargetEntity = a.TargetEntity,
-            TargetId = a.TargetId,
-            Details = a.Details,
-            Timestamp = a.Timestamp
+            var isAutoSecurity = a.Action == "AutoSecuritySuspension";
+            var adminName = isAutoSecurity ? "نظام الأمان التلقائي (Security Bot)" : (a.Admin?.FullName ?? "مسؤول المنصة");
+            var adminEmail = isAutoSecurity ? "security-bot@foodbridge.system" : (a.Admin?.Email ?? "");
+            var adminRole = isAutoSecurity ? "Security System" : (a.Admin?.SpecificType ?? "Administrator");
+
+            string? targetName = null;
+            string? targetType = a.TargetEntity;
+
+            if (a.TargetEntity == "ApplicationUser")
+            {
+                if (usersDict.TryGetValue(a.TargetId, out var u))
+                {
+                    targetName = !string.IsNullOrWhiteSpace(u.OrganizationName) && u.OrganizationName != u.FullName
+                        ? $"{u.FullName} ({u.OrganizationName})"
+                        : u.FullName;
+                    targetType = u.UserType switch
+                    {
+                        UserType.FoodProvider => "جهة مانحة (Food Provider)",
+                        UserType.Charity => "جمعية خيرية (Charity)",
+                        UserType.Administrator => "مشرف نظام (Administrator)",
+                        _ => "مستخدم (User)"
+                    };
+                }
+            }
+            else if (a.TargetEntity == "FoodListing")
+            {
+                if (int.TryParse(a.TargetId, out var fId) && listingsDict.TryGetValue(fId, out var f))
+                {
+                    targetName = !string.IsNullOrWhiteSpace(f.ProviderOrg)
+                        ? $"{f.FoodName} — {f.ProviderOrg}"
+                        : f.FoodName;
+                    targetType = "إدراج تبرع طعام (Food Listing)";
+                }
+            }
+            else if (a.TargetEntity == "Reservation")
+            {
+                if (int.TryParse(a.TargetId, out var rId) && reservationsDict.TryGetValue(rId, out var r))
+                {
+                    targetName = $"حجز: {r.FoodName} لصالح: {r.CharityName}";
+                    targetType = "حجز استلام (Reservation)";
+                }
+            }
+            else if (a.TargetEntity == "System")
+            {
+                targetName = a.TargetId == "MaintenanceMode" ? "نظام وضع الصيانة للمنصة" : "قاعدة بيانات المنصة والنظام";
+                targetType = "إعدادات النظام (System Core)";
+            }
+            else if (a.TargetEntity == "Review")
+            {
+                targetName = $"تقييم رقم #{a.TargetId}";
+                targetType = "تقييم جودة (Review)";
+            }
+
+            // Fallback: extract single-quoted entity name from Details if targetName wasn't resolved
+            if (string.IsNullOrWhiteSpace(targetName) && !string.IsNullOrWhiteSpace(a.Details))
+            {
+                var firstQuote = a.Details.IndexOf('\'');
+                if (firstQuote >= 0)
+                {
+                    var secondQuote = a.Details.IndexOf('\'', firstQuote + 1);
+                    if (secondQuote > firstQuote)
+                    {
+                        targetName = a.Details.Substring(firstQuote + 1, secondQuote - firstQuote - 1);
+                    }
+                }
+            }
+
+            return new AuditLogDto
+            {
+                Id = a.Id,
+                AdminId = a.AdminId,
+                AdminName = adminName,
+                AdminEmail = adminEmail,
+                AdminRole = adminRole,
+                Action = a.Action,
+                TargetEntity = a.TargetEntity,
+                TargetId = a.TargetId,
+                TargetName = targetName,
+                TargetType = targetType,
+                Details = a.Details,
+                Timestamp = a.Timestamp
+            };
         }).ToList();
     }
 }

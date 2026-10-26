@@ -210,4 +210,94 @@ public class AdminModerationTests
         var audit = await db.AuditLogs.FirstOrDefaultAsync(a => a.TargetId == "prov-suspend" && a.Action == "SuspendProviderWasteViolation");
         Assert.NotNull(audit);
     }
+
+    [Fact]
+    public async Task GetAuditLogsAsync_EnrichesTargetNameAndAdminDetails()
+    {
+        var db = TestDbContextFactory.Create(Guid.NewGuid().ToString());
+        var adminService = new AdminService(db, _mockNotification.Object);
+
+        var admin = new ApplicationUser
+        {
+            Id = "admin-audit-1",
+            FullName = "Eng. Abdallah",
+            Email = "abdallah@foodbridge.org",
+            SpecificType = "Operations Admin",
+            UserType = UserType.Administrator
+        };
+        var targetUser = new ApplicationUser
+        {
+            Id = "user-audit-target",
+            FullName = "Ahmed Target",
+            OrganizationName = "Cairo Bakery",
+            Email = "target@bakery.com",
+            UserType = UserType.FoodProvider
+        };
+        var foodListing = new FoodListing
+        {
+            Id = 555,
+            FoodName = "Fresh Sandwiches",
+            ProviderId = "user-audit-target",
+            Quantity = 15m,
+            UnitOfMeasurement = "meals"
+        };
+
+        db.Users.AddRange(admin, targetUser);
+        db.FoodListings.Add(foodListing);
+
+        db.AuditLogs.AddRange(
+            new AuditLog
+            {
+                Id = 1,
+                AdminId = "admin-audit-1",
+                Action = "SuspendUser",
+                TargetEntity = "ApplicationUser",
+                TargetId = "user-audit-target",
+                Details = "User 'Ahmed Target' (Cairo Bakery) was suspended. Reason: Expired food dispatch.",
+                Timestamp = DateTimeOffset.UtcNow
+            },
+            new AuditLog
+            {
+                Id = 2,
+                AdminId = "admin-audit-1",
+                Action = "RemoveListing",
+                TargetEntity = "FoodListing",
+                TargetId = "555",
+                Details = "Listing 'Fresh Sandwiches' removed. Reason: Incorrect packaging.",
+                Timestamp = DateTimeOffset.UtcNow.AddMinutes(1)
+            },
+            new AuditLog
+            {
+                Id = 3,
+                AdminId = "user-audit-target",
+                Action = "AutoSecuritySuspension",
+                TargetEntity = "ApplicationUser",
+                TargetId = "user-audit-target",
+                Details = "Account 'target@bakery.com' was automatically suspended after 10 failed login attempts.",
+                Timestamp = DateTimeOffset.UtcNow.AddMinutes(2)
+            }
+        );
+        await db.SaveChangesAsync();
+
+        var logs = await adminService.GetAuditLogsAsync();
+
+        Assert.Equal(3, logs.Count);
+
+        // Auto security log
+        var securityLog = logs.First(l => l.Action == "AutoSecuritySuspension");
+        Assert.Contains("Security Bot", securityLog.AdminName);
+        Assert.Equal("security-bot@foodbridge.system", securityLog.AdminEmail);
+        Assert.Equal("Ahmed Target (Cairo Bakery)", securityLog.TargetName);
+        Assert.Contains("Food Provider", securityLog.TargetType);
+
+        // Listing removal log
+        var listingLog = logs.First(l => l.Action == "RemoveListing");
+        Assert.Equal("Eng. Abdallah", listingLog.AdminName);
+        Assert.Equal("abdallah@foodbridge.org", listingLog.AdminEmail);
+        Assert.Contains("Fresh Sandwiches", listingLog.TargetName);
+
+        // User suspension log
+        var userLog = logs.First(l => l.Action == "SuspendUser");
+        Assert.Equal("Ahmed Target (Cairo Bakery)", userLog.TargetName);
+    }
 }
